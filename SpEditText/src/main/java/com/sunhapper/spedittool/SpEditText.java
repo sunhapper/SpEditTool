@@ -8,7 +8,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -61,7 +60,7 @@ public class SpEditText extends AppCompatEditText {
 
       @Override
       public void afterTextChanged(Editable s) {
-//        resolveDeleteSpecialStr();
+
       }
     });
 
@@ -69,24 +68,31 @@ public class SpEditText extends AppCompatEditText {
       @Override
       public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
-          int selectionStart = getSelectionStart();
-          int selectionEnd = getSelectionEnd();
-          SpData[] spDatas = getSpDatas();
-          // 遍历判断光标的位置
-          for (int i = 0; i < spDatas.length; i++) {
-            SpData spData = spDatas[i];
-            int rangeStart = spData.start;
-            if (selectionStart == spData.end) {
-              getEditableText().delete(rangeStart, selectionEnd);
-              return true;
-            }
-
-          }
+        return onDeleteEvent();
         }
 
         return false;
       }
     });
+  }
+
+  private boolean onDeleteEvent() {
+    int selectionStart = getSelectionStart();
+    int selectionEnd = getSelectionEnd();
+    if (selectionEnd!=selectionStart){
+      return false;
+    }
+    SpData[] spDatas = getSpDatas();
+    for (int i = 0; i < spDatas.length; i++) {
+      SpData spData = spDatas[i];
+      int rangeStart = spData.start;
+      if (selectionStart == spData.end) {
+        getEditableText().delete(rangeStart, selectionEnd);
+        return true;
+      }
+
+    }
+    return false;
   }
 
 
@@ -141,7 +147,6 @@ public class SpEditText extends AppCompatEditText {
   @Override
   protected void onSelectionChanged(int selStart, int selEnd) {
     super.onSelectionChanged(selStart, selEnd);
-
     SpData[] spDatas = getSpDatas();
     for (int i = 0; i < spDatas.length; i++) {
       SpData spData = spDatas[i];
@@ -158,7 +163,6 @@ public class SpEditText extends AppCompatEditText {
    */
   private boolean changeSelection(int selStart, int selEnd, int startPostion, int endPostion,
       boolean toEnd) {
-    Log.i(TAG, "selStart: "+selStart+"   selEnd:"+selEnd+"   startPostion:"+startPostion+"   endPostion:"+endPostion);
     boolean hasChange = false;
     if (selStart == selEnd) {
       if (startPostion != -1 && startPostion < selStart && selStart < endPostion) {
@@ -188,12 +192,18 @@ public class SpEditText extends AppCompatEditText {
   }
 
 
+  /**
+   * 插入特殊字符串
+   * @param showContent 特殊字符串显示在文本框中的内容
+   * @param rollBack 是否往前删除一个字符，因为@的时候可能留了一个字符在输入框里
+   * @param customData 特殊字符串的数据结构
+   * @param customSpan 特殊字符串的样式
+   */
   public void insertSpecialStr(String showContent, boolean rollBack, Object customData,
       Object customSpan) {
     if (TextUtils.isEmpty(showContent)) {
       return;
     }
-    //将特殊字符插入到EditText 中显示
     int index = getSelectionStart();
     Editable editable = getText();
     SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(editable);
