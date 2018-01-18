@@ -51,7 +51,7 @@ public class SpEditText extends AppCompatEditText {
           if (count == 1 && !TextUtils.isEmpty(charSequence)) {
             char mentionChar = charSequence.toString().charAt(start);
             if (character.equals(mentionChar) && mKeyReactListener != null) {
-              mKeyReactListener.onKeyReact(character.toString());
+              handKeyReactEvent(character);
               return;
             }
           }
@@ -68,7 +68,7 @@ public class SpEditText extends AppCompatEditText {
       @Override
       public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
-        return onDeleteEvent();
+          return onDeleteEvent();
         }
 
         return false;
@@ -76,10 +76,14 @@ public class SpEditText extends AppCompatEditText {
     });
   }
 
+  private void handKeyReactEvent(Character character) {
+    mKeyReactListener.onKeyReact(character.toString());
+  }
+
   private boolean onDeleteEvent() {
     int selectionStart = getSelectionStart();
     int selectionEnd = getSelectionEnd();
-    if (selectionEnd!=selectionStart){
+    if (selectionEnd != selectionStart) {
       return false;
     }
     SpData[] spDatas = getSpDatas();
@@ -106,7 +110,7 @@ public class SpEditText extends AppCompatEditText {
         spData.setEnd(end);
         spData.setStart(start);
       }
-      sortSpans(editable, spanneds, 0, spanneds.length - 1);
+      sortSpans(spanneds, 0, spanneds.length - 1);
       return spanneds;
     } else {
       return new SpData[]{};
@@ -115,34 +119,34 @@ public class SpEditText extends AppCompatEditText {
 
   }
 
-  private void sortSpans(Editable editable, SpData[] spanneds, int left, int right) {
+  private void sortSpans(SpData[] spDatas, int left, int right) {
     if (left >= right) {
       return;
     }
     int i = left;
     int j = right;
-    SpData keySpan = spanneds[left];
-    int key = editable.getSpanStart(spanneds[left]);
+    SpData keySpan = spDatas[left];
+    int key = spDatas[left].start;
     while (i < j) {
-      while (i < j && key <= editable.getSpanStart(spanneds[j])) {
+      while (i < j && key <= spDatas[j].start) {
         j--;
       }
-      spanneds[i] = spanneds[j];
-      while (i < j && key >= editable.getSpanStart(spanneds[i])) {
+      spDatas[i] = spDatas[j];
+      while (i < j && key >= spDatas[i].start) {
         i++;
       }
 
-      spanneds[j] = spanneds[i];
+      spDatas[j] = spDatas[i];
     }
 
-    spanneds[i] = keySpan;
-    sortSpans(editable, spanneds, left, i - 1);
-    sortSpans(editable, spanneds, i + 1, right);
+    spDatas[i] = keySpan;
+    sortSpans(spDatas, left, i - 1);
+    sortSpans(spDatas, i + 1, right);
 
   }
 
   /**
-   * 监听光标位置,对插入的字符一起删除
+   * 监听光标位置
    */
   @Override
   protected void onSelectionChanged(int selStart, int selEnd) {
@@ -150,9 +154,9 @@ public class SpEditText extends AppCompatEditText {
     SpData[] spDatas = getSpDatas();
     for (int i = 0; i < spDatas.length; i++) {
       SpData spData = spDatas[i];
-      int startPostion = spData.start;
-      int endPostion = spData.end;
-      if (changeSelection(selStart, selEnd, startPostion, endPostion, false)) {
+      int startPosition = spData.start;
+      int endPosition = spData.end;
+      if (changeSelection(selStart, selEnd, startPosition, endPosition, false)) {
         return;
       }
     }
@@ -160,31 +164,37 @@ public class SpEditText extends AppCompatEditText {
 
   /**
    * 不让光标进入特殊字符串内部
+   *
+   * @param selStart 光标起点
+   * @param selEnd 光标终点
+   * @param startPosition 特殊字符串起点
+   * @param endPosition 特殊字符串终点
+   * @param toEnd 将光标放起点还是终点,暂时没用上,都是放起点
    */
-  private boolean changeSelection(int selStart, int selEnd, int startPostion, int endPostion,
+  private boolean changeSelection(int selStart, int selEnd, int startPosition, int endPosition,
       boolean toEnd) {
     boolean hasChange = false;
     if (selStart == selEnd) {
-      if (startPostion != -1 && startPostion < selStart && selStart < endPostion) {
+      if (startPosition != -1 && startPosition < selStart && selStart < endPosition) {
         if (toEnd) {
-          setSelection(endPostion);
+          setSelection(endPosition);
         } else {
-          setSelection(startPostion);
+          setSelection(startPosition);
         }
         hasChange = true;
       }
     } else {
-      if (startPostion != -1 && startPostion < selStart && selStart < endPostion) {
+      if (startPosition != -1 && startPosition < selStart && selStart < endPosition) {
         if (toEnd) {
-          setSelection(endPostion, selEnd);
+          setSelection(endPosition, selEnd);
         } else {
-          setSelection(startPostion, selEnd);
+          setSelection(startPosition, selEnd);
         }
 
         hasChange = true;
       }
-      if (endPostion != -1 && startPostion < selEnd && selEnd < endPostion) {
-        setSelection(selStart, endPostion);
+      if (endPosition != -1 && startPosition < selEnd && selEnd < endPosition) {
+        setSelection(selStart, endPosition);
         hasChange = true;
       }
     }
@@ -194,6 +204,7 @@ public class SpEditText extends AppCompatEditText {
 
   /**
    * 插入特殊字符串
+   *
    * @param showContent 特殊字符串显示在文本框中的内容
    * @param rollBack 是否往前删除一个字符，因为@的时候可能留了一个字符在输入框里
    * @param customData 特殊字符串的数据结构
@@ -241,7 +252,13 @@ public class SpEditText extends AppCompatEditText {
 
   public class SpData {
 
+    /**
+     * EditText中显示的内容
+     */
     private String showContent;
+    /**
+     * 特殊内容的数据结构
+     */
     private Object customData;
     private int start;
     private int end;
