@@ -76,8 +76,14 @@ public class SpEditText extends AppCompatEditText {
     });
   }
 
-  private void handKeyReactEvent(Character character) {
-    mKeyReactListener.onKeyReact(character.toString());
+  private void handKeyReactEvent(final Character character) {
+    post(new Runnable() {
+      @Override
+      public void run() {
+        mKeyReactListener.onKeyReact(character.toString());
+      }
+    });
+
   }
 
   private boolean onDeleteEvent() {
