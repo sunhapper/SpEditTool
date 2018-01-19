@@ -21,12 +21,13 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     spEditText = findViewById(R.id.spEdt);
     spEditText.setReactKeys("@#%*");
-    spEditText.setmKeyReactListener(new KeyReactListener() {
+    spEditText.setKeyReactListener(new KeyReactListener() {
       @Override
       public void onKeyReact(String key) {
         switch (key) {
           case "@":
-            spEditText.insertSpecialStr(" @sunhapper ", true, 0, new ForegroundColorSpan(Color.RED));
+            spEditText
+                .insertSpecialStr(" @sunhapper ", true, 0, new ForegroundColorSpan(Color.RED));
             break;
           case "#":
             spEditText.insertSpecialStr(" #这是一个话题# ", true, 1, new ForegroundColorSpan(Color.RED));

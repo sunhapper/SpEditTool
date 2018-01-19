@@ -70,10 +70,30 @@ public class SpEditText extends AppCompatEditText {
         if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
           return onDeleteEvent();
         }
+        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && event.getAction() == KeyEvent.ACTION_DOWN) {
+          return onDpadRightEvent();
+        }
 
         return false;
       }
     });
+  }
+
+  private boolean onDpadRightEvent() {
+    int selectionStart = getSelectionStart();
+    int selectionEnd = getSelectionEnd();
+    if (selectionEnd != selectionStart) {
+      return false;
+    }
+    SpData[] spDatas = getSpDatas();
+    for (int i = 0; i < spDatas.length; i++) {
+      SpData spData = spDatas[i];
+      if (selectionStart == spData.start) {
+        setSelection(spData.end, spData.end);
+        return true;
+      }
+    }
+    return false;
   }
 
   private void handKeyReactEvent(final Character character) {
@@ -252,8 +272,8 @@ public class SpEditText extends AppCompatEditText {
   }
 
 
-  public void setmKeyReactListener(KeyReactListener mKeyReactListener) {
-    this.mKeyReactListener = mKeyReactListener;
+  public void setKeyReactListener(KeyReactListener keyReactListener) {
+    this.mKeyReactListener = keyReactListener;
   }
 
   public class SpData {
