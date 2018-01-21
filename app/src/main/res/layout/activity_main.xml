@@ -6,7 +6,7 @@
   android:layout_height="match_parent"
   tools:context="me.sunhapper.spcharedittool.MainActivity">
 
-  <com.sunhapper.spedittool.SpEditText
+  <com.sunhapper.spedittool.view.SpEditText
     android:id="@+id/spEdt"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
@@ -19,6 +19,15 @@
     android:layout_height="wrap_content"
     android:onClick="insertSp"
     android:text="插入特殊字符"
+    app:layout_constraintTop_toBottomOf="@id/spEdt" />
+
+  <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    android:onClick="insertGif"
+    android:text="插入gif"
     app:layout_constraintTop_toBottomOf="@id/spEdt" />
   <Button
     android:layout_width="wrap_content"
