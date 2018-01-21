@@ -1,4 +1,4 @@
-package com.sunhapper.spedittool;
+package com.sunhapper.spedittool.view;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatEditText;

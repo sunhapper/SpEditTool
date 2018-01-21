@@ -6,9 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
-import com.sunhapper.spedittool.SpEditText;
-import com.sunhapper.spedittool.SpEditText.KeyReactListener;
-import com.sunhapper.spedittool.SpEditText.SpData;
+import com.sunhapper.spedittool.view.SpEditText;
+import com.sunhapper.spedittool.view.SpEditText.KeyReactListener;
+import com.sunhapper.spedittool.view.SpEditText.SpData;
+import com.sunhapper.spedittool.util.TextGifUtil;
+import java.io.IOException;
+import pl.droidsonroids.gif.GifDrawable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,5 +61,15 @@ public class MainActivity extends AppCompatActivity {
           .append("\n");
     }
     Log.i(TAG, "getData: " + stringBuilder);
+  }
+
+  public void insertGif(View view) {
+    try {
+      GifDrawable gifDrawable=new GifDrawable(getResources(),R.drawable.a);
+      CharSequence charSequence= TextGifUtil.getGifText("[a]",gifDrawable);
+      TextGifUtil.setText(spEditText,charSequence);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
