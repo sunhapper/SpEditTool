@@ -7,6 +7,7 @@
   tools:context="me.sunhapper.spcharedittool.MainActivity">
 
   <com.sunhapper.spedittool.view.SpEditText
+    android:hint="输入@ # * %"
     android:id="@+id/spEdt"
     android:layout_width="0dp"
     android:layout_height="wrap_content"

@@ -11,7 +11,6 @@ import android.text.style.ImageSpan;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import com.sunhapper.spedittool.span.GifSpan.GifSpanWatcher;
-import pl.droidsonroids.gif.GifDrawable;
 
 /**
  * Created by sunhapper on 2018/1/21.
@@ -120,7 +119,7 @@ public class GifSpanUtil {
   }
 
 
-  public static Spannable getGifText(CharSequence text, GifDrawable gifDrawable) {
+  public static Spannable getDrawableText(CharSequence text, Drawable gifDrawable) {
     Spannable spannable = new SpannableString(text);
     ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
     spannable.setSpan(imageSpan,

@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             break;
           case "%":
             spEditText.insertSpecialStr(" 100% ", true, 2, new ForegroundColorSpan(Color.RED));
+            break;
           case "*":
             spEditText.insertSpecialStr(" ******* ", true, 3, new ForegroundColorSpan(Color.RED));
             break;
@@ -83,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
       GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
       GifDrawable gifDrawable1 = new GifDrawable(getResources(), R.drawable.b);
       GifDrawable gifDrawable2 = new GifDrawable(getResources(), R.drawable.c);
-      CharSequence charSequence = GifSpanUtil.getGifText("[a]", gifDrawable);
-      CharSequence charSequence1 = GifSpanUtil.getGifText("[b]", gifDrawable1);
-      CharSequence charSequence2 = GifSpanUtil.getGifText("[c]", gifDrawable2);
+      CharSequence charSequence = GifSpanUtil.getDrawableText("[a]", gifDrawable);
+      CharSequence charSequence1 = GifSpanUtil.getDrawableText("[b]", gifDrawable1);
+      CharSequence charSequence2 = GifSpanUtil.getDrawableText("[c]", gifDrawable2);
       SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
       spannableStringBuilder
           .append("表情1:").append(charSequence).append("  ")
