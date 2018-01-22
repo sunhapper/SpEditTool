@@ -19,14 +19,14 @@
 
 ```
 dependencies {
-	        compile 'com.github.sunhapper:SpEditTool:0.1.2'
+	        compile 'com.github.sunhapper:SpEditTool:0.1.3'
 	}
 ```
 
 ## xml
 
 ```
-  <com.sunhapper.spedittool.SpEditText
+  <com.sunhapper.spedittool.view.SpEditText
     android:id="@+id/spEdt"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
