@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 import com.sunhapper.spedittool.view.SpEditText;
 import com.sunhapper.spedittool.view.SpEditText.KeyReactListener;
 import com.sunhapper.spedittool.view.SpEditText.SpData;
@@ -61,13 +62,14 @@ public class MainActivity extends AppCompatActivity {
           .append("\n");
     }
     Log.i(TAG, "getData: " + stringBuilder);
+    Toast.makeText(this, stringBuilder, Toast.LENGTH_SHORT).show();
   }
 
   public void insertGif(View view) {
     try {
-      GifDrawable gifDrawable=new GifDrawable(getResources(),R.drawable.a);
-      CharSequence charSequence= GifSpanUtil.getGifText("[a]",gifDrawable);
-      GifSpanUtil.setText(spEditText,charSequence);
+      GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
+      CharSequence charSequence = GifSpanUtil.getGifText("[a]", gifDrawable);
+      GifSpanUtil.setText(spEditText, charSequence);
     } catch (IOException e) {
       e.printStackTrace();
     }
