@@ -1,35 +1,60 @@
 package com.sunhapper.spedittool.span;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.text.style.ImageSpan;
 
-public class GifAlignCenterSpan extends ImageSpan implements GifSpan {
+public class GifAlignCenterSpan extends   GifSpan {
 
   boolean hasResize = false;
   private static final String TAG = "GifAlignCenterSpan";
   private static final char[] ELLIPSIS_NORMAL = {'\u2026'}; // this is "..."
   private static final char[] ELLIPSIS_TWO_DOTS = {'\u2025'}; // this is ".."
 
-  public GifAlignCenterSpan(Context context, int resourceId) {
-    super(context, resourceId);
+  public GifAlignCenterSpan(Context context, Bitmap b) {
+    super(context, b);
+  }
+
+  public GifAlignCenterSpan(Context context, Bitmap b, int verticalAlignment) {
+    super(context, b, verticalAlignment);
   }
 
   public GifAlignCenterSpan(Drawable d) {
     super(d);
   }
 
+  public GifAlignCenterSpan(Drawable d, int verticalAlignment) {
+    super(d, verticalAlignment);
+  }
+
   public GifAlignCenterSpan(Drawable d, String source) {
     super(d, source);
+  }
+
+  public GifAlignCenterSpan(Drawable d, String source, int verticalAlignment) {
+    super(d, source, verticalAlignment);
   }
 
   public GifAlignCenterSpan(Context context, Uri uri) {
     super(context, uri);
   }
+
+  public GifAlignCenterSpan(Context context, Uri uri, int verticalAlignment) {
+    super(context, uri, verticalAlignment);
+  }
+
+  public GifAlignCenterSpan(Context context, int resourceId) {
+    super(context, resourceId);
+  }
+
+  public GifAlignCenterSpan(Context context, int resourceId, int verticalAlignment) {
+    super(context, resourceId, verticalAlignment);
+  }
+
 
   @Override
   public int getSize(Paint paint, CharSequence text,

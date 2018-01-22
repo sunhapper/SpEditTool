@@ -261,9 +261,11 @@ public class SpEditText extends AppCompatEditText {
       index--;
     }
     spannableStringBuilder.insert(index, spannableString);
-    setText(spannableStringBuilder);
+    setText(spannableStringBuilder,BufferType.EDITABLE);
     setSelection(index + spannableString.length());
   }
+
+
 
 
   public interface KeyReactListener {
