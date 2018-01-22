@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
+import com.sunhapper.spedittool.span.GifSpanUtil;
 
 public class SpEditText extends AppCompatEditText {
 
@@ -261,11 +262,9 @@ public class SpEditText extends AppCompatEditText {
       index--;
     }
     spannableStringBuilder.insert(index, spannableString);
-    setText(spannableStringBuilder,BufferType.EDITABLE);
+    GifSpanUtil.setText(this,spannableStringBuilder);
     setSelection(index + spannableString.length());
   }
-
-
 
 
   public interface KeyReactListener {

@@ -14,7 +14,8 @@ import android.util.Log;
  */
 
 public abstract class GifSpan extends ImageSpan {
-   boolean isChanging=false;
+
+  boolean isChanging = false;
   private static final String TAG = "GifSpan";
 
   public GifSpan(Context context, Bitmap b) {
@@ -69,18 +70,44 @@ public abstract class GifSpan extends ImageSpan {
 
     @Override
     public void onSpanAdded(Spannable text, Object what, int start, int end) {
-      Log.i(TAG, "onSpanAdded: " + text + "  what:" + what);
+      if (what instanceof GifSpan) {
+        GifSpan gifSpan = (GifSpan) what;
+        if (!gifSpan.isChanging) {
+          Log.i(TAG, "onSpanAdded: " + text + "  what:" + what);
+        }
+      } else {
+        Log.i(TAG, "onSpanAdded: " + text + "  what:" + what);
+      }
+
     }
 
     @Override
     public void onSpanRemoved(Spannable text, Object what, int start, int end) {
-      Log.i(TAG, "onSpanRemoved: " + text + "  what:" + what);
+      if (what instanceof GifSpan) {
+        GifSpan gifSpan = (GifSpan) what;
+        if (!gifSpan.isChanging) {
+          Log.i(TAG, "onSpanRemoved: " + text + "  what:" + what);
+          Drawable drawable = gifSpan.getGifDrawable();
+          if (drawable != null) {
+            drawable.setCallback(null);
+          }
+        }
+      } else {
+        Log.i(TAG, "onSpanRemoved: " + text + "  what:" + what);
+      }
     }
 
     @Override
     public void onSpanChanged(Spannable text, Object what, int ostart, int oend, int nstart,
         int nend) {
-      Log.i(TAG, "onSpanChanged: " + text + "  what:" + what);
+      if (what instanceof GifSpan) {
+        GifSpan gifSpan = (GifSpan) what;
+        if (!gifSpan.isChanging) {
+          Log.i(TAG, "onSpanChanged: " + text + "  what:" + what);
+        }
+      } else {
+        Log.i(TAG, "onSpanChanged: " + text + "  what:" + what);
+      }
     }
   }
 }
