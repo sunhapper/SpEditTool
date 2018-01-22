@@ -9,7 +9,7 @@ import android.view.View;
 import com.sunhapper.spedittool.view.SpEditText;
 import com.sunhapper.spedittool.view.SpEditText.KeyReactListener;
 import com.sunhapper.spedittool.view.SpEditText.SpData;
-import com.sunhapper.spedittool.util.TextGifUtil;
+import com.sunhapper.spedittool.span.GifSpanUtil;
 import java.io.IOException;
 import pl.droidsonroids.gif.GifDrawable;
 
@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
   public void insertGif(View view) {
     try {
       GifDrawable gifDrawable=new GifDrawable(getResources(),R.drawable.a);
-      CharSequence charSequence= TextGifUtil.getGifText("[a]",gifDrawable);
-      TextGifUtil.setText(spEditText,charSequence);
+      CharSequence charSequence= GifSpanUtil.getGifText("[a]",gifDrawable);
+      GifSpanUtil.setText(spEditText,charSequence);
     } catch (IOException e) {
       e.printStackTrace();
     }
