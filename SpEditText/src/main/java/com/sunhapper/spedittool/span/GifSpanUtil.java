@@ -8,7 +8,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import com.sunhapper.spedittool.span.GifSpan.GifSpanWatcher;
@@ -56,7 +55,6 @@ public class GifSpanUtil {
           drawable.setCallback(new Callback() {
             @Override
             public void invalidateDrawable(@NonNull Drawable who) {
-              Log.i(TAG, "invalidateDrawable: " + who.hashCode());
               GifSpan imageSpan = getGifSpanByDrawable(textView, drawable);
               if (imageSpan != null) {
                 CharSequence text = textView.getText();

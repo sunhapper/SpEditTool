@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.text.SpanWatcher;
 import android.text.Spannable;
 import android.text.style.ImageSpan;
-import android.util.Log;
 
 /**
  * Created by sunhapper on 2018/1/21.
@@ -70,14 +69,6 @@ public abstract class GifSpan extends ImageSpan {
 
     @Override
     public void onSpanAdded(Spannable text, Object what, int start, int end) {
-      if (what instanceof GifSpan) {
-        GifSpan gifSpan = (GifSpan) what;
-        if (!gifSpan.isChanging) {
-          Log.i(TAG, "onSpanAdded: " + text + "  what:" + what);
-        }
-      } else {
-        Log.i(TAG, "onSpanAdded: " + text + "  what:" + what);
-      }
 
     }
 
@@ -86,28 +77,17 @@ public abstract class GifSpan extends ImageSpan {
       if (what instanceof GifSpan) {
         GifSpan gifSpan = (GifSpan) what;
         if (!gifSpan.isChanging) {
-          Log.i(TAG, "onSpanRemoved: " + text + "  what:" + what);
           Drawable drawable = gifSpan.getGifDrawable();
           if (drawable != null) {
             drawable.setCallback(null);
           }
         }
-      } else {
-        Log.i(TAG, "onSpanRemoved: " + text + "  what:" + what);
       }
     }
 
     @Override
     public void onSpanChanged(Spannable text, Object what, int ostart, int oend, int nstart,
         int nend) {
-      if (what instanceof GifSpan) {
-        GifSpan gifSpan = (GifSpan) what;
-        if (!gifSpan.isChanging) {
-          Log.i(TAG, "onSpanChanged: " + text + "  what:" + what);
-        }
-      } else {
-        Log.i(TAG, "onSpanChanged: " + text + "  what:" + what);
-      }
     }
   }
 }
