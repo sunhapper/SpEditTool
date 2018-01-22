@@ -3,14 +3,17 @@ package me.sunhapper.spcharedittool;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import com.sunhapper.spedittool.span.GifAlignCenterSpan;
+import com.sunhapper.spedittool.span.GifSpanUtil;
 import com.sunhapper.spedittool.view.SpEditText;
 import com.sunhapper.spedittool.view.SpEditText.KeyReactListener;
 import com.sunhapper.spedittool.view.SpEditText.SpData;
-import com.sunhapper.spedittool.span.GifSpanUtil;
 import java.io.IOException;
 import pl.droidsonroids.gif.GifDrawable;
 
@@ -68,8 +71,28 @@ public class MainActivity extends AppCompatActivity {
   public void insertGif(View view) {
     try {
       GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
+      ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
+      spEditText.insertSpecialStr("[a]", false, "[a]", imageSpan);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void setGif(View view) {
+    try {
+      GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
+      GifDrawable gifDrawable1 = new GifDrawable(getResources(), R.drawable.b);
+      GifDrawable gifDrawable2 = new GifDrawable(getResources(), R.drawable.c);
       CharSequence charSequence = GifSpanUtil.getGifText("[a]", gifDrawable);
-      GifSpanUtil.setText(spEditText, charSequence);
+      CharSequence charSequence1 = GifSpanUtil.getGifText("[b]", gifDrawable1);
+      CharSequence charSequence2 = GifSpanUtil.getGifText("[c]", gifDrawable2);
+      SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+      spannableStringBuilder
+          .append("表情1:").append(charSequence).append("  ")
+          .append("表情2:").append(charSequence1).append("  ")
+          .append("表情3:").append(charSequence2).append("  ");
+      GifSpanUtil.setText(spEditText, spannableStringBuilder);
+      spEditText.setSelection(spannableStringBuilder.length());
     } catch (IOException e) {
       e.printStackTrace();
     }

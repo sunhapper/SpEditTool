@@ -15,26 +15,47 @@
     app:layout_constraintTop_toTopOf="parent" />
 
   <Button
+    android:id="@+id/button2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:onClick="insertSp"
-    android:text="插入特殊字符"
+    android:text="插入sp字符"
+    app:layout_constraintEnd_toStartOf="@+id/button"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/spEdt" />
 
   <Button
+    android:id="@+id/button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
     android:onClick="insertGif"
     android:text="插入gif"
+    app:layout_constraintEnd_toStartOf="@+id/button3"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toEndOf="@+id/button2"
     app:layout_constraintTop_toBottomOf="@id/spEdt" />
+
   <Button
+    android:id="@+id/button3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:onClick="setGif"
+    android:text="设置gif"
+    app:layout_constraintEnd_toStartOf="@+id/button4"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toEndOf="@+id/button"
+    app:layout_constraintTop_toBottomOf="@id/spEdt" />
+
+  <Button
+    android:id="@+id/button4"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:onClick="getData"
-    android:text="获取自定义数据"
-    app:layout_constraintRight_toRightOf="parent"
+    android:text="获取数据"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toEndOf="@+id/button3"
     app:layout_constraintTop_toBottomOf="@id/spEdt" />
 
 </android.support.constraint.ConstraintLayout>
