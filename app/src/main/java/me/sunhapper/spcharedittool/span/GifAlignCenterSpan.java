@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import com.sunhapper.spedittool.span.GifSpan;
 import me.sunhapper.spcharedittool.Measurable;
 
@@ -84,12 +85,14 @@ public class GifAlignCenterSpan extends GifSpan {
   private Drawable getResizedDrawable(Paint paint) {
     int fontMetricsInt = paint.getFontMetricsInt(null);
     Drawable d = getDrawable();
-    if (d != null) {
+    if (d != null && !hasResize) {
       if (d instanceof Measurable) {
         Measurable measurableDrawable = (Measurable) d;
         if (measurableDrawable.canMeasure()) {
+          Log.i(TAG, "getResizedDrawable: ");
           if (measurableDrawable.getHeight() > 0
               && measurableDrawable.getWidth() > 0) {
+            hasResize = true;
             d.setBounds(new Rect(0, 0,
                 (int) (1f * fontMetricsInt * measurableDrawable.getWidth() / measurableDrawable
                     .getHeight()),
@@ -97,6 +100,7 @@ public class GifAlignCenterSpan extends GifSpan {
           }
         }
       } else {
+        hasResize = true;
         d.setBounds(new Rect(0, 0, fontMetricsInt, fontMetricsInt));
       }
     }

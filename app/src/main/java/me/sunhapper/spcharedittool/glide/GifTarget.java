@@ -24,6 +24,7 @@ public class GifTarget extends SimpleTarget<GifDrawable> {
       resource.setLoopCount(GifDrawable.LOOP_FOREVER);
       resource.start();
     }
+    gifDrawable.invalidateSelf();
   }
 
   public GifTarget(PreGifDrawable gifDrawable) {

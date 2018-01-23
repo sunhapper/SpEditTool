@@ -6,6 +6,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import me.sunhapper.spcharedittool.Measurable;
 
@@ -15,6 +16,7 @@ import me.sunhapper.spcharedittool.Measurable;
 
 public class PreGifDrawable extends Drawable implements Drawable.Callback, Measurable {
 
+  private static final String TAG = "PreGifDrawable";
   private GifDrawable mDrawable;
 
   @Override
@@ -78,24 +80,28 @@ public class PreGifDrawable extends Drawable implements Drawable.Callback, Measu
   @Override
   public void setBounds(@NonNull Rect bounds) {
     super.setBounds(bounds);
-//    if (mDrawable != null) {
-//      mDrawable.setBounds(bounds);
-//    }
+    if (mDrawable != null) {
+      mDrawable.setBounds(bounds);
+    }
   }
 
   @Override
   public int getWidth() {
     if (mDrawable != null) {
+      Log.i(TAG, "getWidth: ");
       return mDrawable.getIntrinsicWidth();
     }
+    Log.i(TAG, "getWidth: 0");
     return 0;
   }
 
   @Override
   public int getHeight() {
     if (mDrawable != null) {
+      Log.i(TAG, "getHeight: ");
       return mDrawable.getIntrinsicHeight();
     }
+    Log.i(TAG, "getHeight: 0");
     return 0;
   }
 
