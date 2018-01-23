@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     spEditText = findViewById(R.id.spEdt);
-    spEditText.setReactKeys("@#%*");
+//    spEditText.setReactKeys("@#%*");
     spEditText.setKeyReactListener(new KeyReactListener() {
       @Override
       public void onKeyReact(String key) {
