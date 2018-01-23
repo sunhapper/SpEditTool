@@ -1,6 +1,7 @@
 package com.sunhapper.spedittool.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
+import com.sunhapper.spedittool.R;
 import com.sunhapper.spedittool.span.GifSpanUtil;
 
 public class SpEditText extends AppCompatEditText {
@@ -20,6 +22,7 @@ public class SpEditText extends AppCompatEditText {
 
   public SpEditText(Context context) {
     super(context);
+    readAttrs(context, null);
     init();
   }
 
@@ -28,6 +31,7 @@ public class SpEditText extends AppCompatEditText {
     if (isInEditMode()) {
       return;
     }
+    readAttrs(context, attrs);
     init();
   }
 
@@ -41,6 +45,7 @@ public class SpEditText extends AppCompatEditText {
    * 设置删除事件监听
    */
   private void init() {
+
     addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -78,6 +83,21 @@ public class SpEditText extends AppCompatEditText {
         return false;
       }
     });
+  }
+
+  private void readAttrs(Context context, AttributeSet attrs) {
+    if (attrs != null) {
+      TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SpEditText);
+      if (ta != null) {
+        String reactKeyStr = ta.getString(R.styleable.SpEditText_react_keys);
+        if (!TextUtils.isEmpty(reactKeyStr)) {
+          reactKeys = reactKeyStr.toCharArray();
+        }
+        ta.recycle();
+      }
+
+    }
+
   }
 
   private boolean onDpadRightEvent() {
@@ -262,7 +282,7 @@ public class SpEditText extends AppCompatEditText {
       index--;
     }
     spannableStringBuilder.insert(index, spannableString);
-    GifSpanUtil.setText(this,spannableStringBuilder);
+    GifSpanUtil.setText(this, spannableStringBuilder);
     setSelection(index + spannableString.length());
   }
 
