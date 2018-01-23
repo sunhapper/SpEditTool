@@ -1,4 +1,4 @@
-package me.sunhapper.spcharedittool;
+package me.sunhapper.spcharedittool.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,12 +9,17 @@ import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import com.sunhapper.spedittool.span.GifAlignCenterSpan;
+import com.bumptech.glide.Glide;
 import com.sunhapper.spedittool.span.GifSpanUtil;
 import com.sunhapper.spedittool.view.SpEditText;
 import com.sunhapper.spedittool.view.SpEditText.KeyReactListener;
 import com.sunhapper.spedittool.view.SpEditText.SpData;
 import java.io.IOException;
+import me.sunhapper.spcharedittool.R;
+import me.sunhapper.spcharedittool.util.DrawableUtil;
+import me.sunhapper.spcharedittool.glide.GifTarget;
+import me.sunhapper.spcharedittool.glide.PreGifDrawable;
+import me.sunhapper.spcharedittool.span.GifAlignCenterSpan;
 import pl.droidsonroids.gif.GifDrawable;
 
 public class MainActivity extends AppCompatActivity {
@@ -83,15 +88,20 @@ public class MainActivity extends AppCompatActivity {
     try {
       GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
       GifDrawable gifDrawable1 = new GifDrawable(getResources(), R.drawable.b);
-      GifDrawable gifDrawable2 = new GifDrawable(getResources(), R.drawable.c);
-      CharSequence charSequence = GifSpanUtil.getDrawableText("[a]", gifDrawable);
-      CharSequence charSequence1 = GifSpanUtil.getDrawableText("[b]", gifDrawable1);
-      CharSequence charSequence2 = GifSpanUtil.getDrawableText("[c]", gifDrawable2);
+      PreGifDrawable preGifDrawable = new PreGifDrawable();
+      Glide.with(this)
+          .asGif()
+          .load(
+              "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37.gif")
+          .into(new GifTarget(preGifDrawable));
+      CharSequence charSequence = DrawableUtil.getDrawableText("[a]", gifDrawable);
+      CharSequence charSequence1 = DrawableUtil.getDrawableText("[b]", gifDrawable1);
+      CharSequence charSequence2 = DrawableUtil.getDrawableText("[c]", preGifDrawable);
       SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
       spannableStringBuilder
-          .append("表情1:").append(charSequence).append("  ")
-          .append("表情2:").append(charSequence1).append("  ")
-          .append("表情3:").append(charSequence2).append("  ");
+          .append("表情1:").append(charSequence)
+          .append("表情2:").append(charSequence1)
+          .append("表情3:").append(charSequence2);
       GifSpanUtil.setText(spEditText, spannableStringBuilder);
       spEditText.setSelection(spannableStringBuilder.length());
     } catch (IOException e) {

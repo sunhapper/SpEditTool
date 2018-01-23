@@ -4,10 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Drawable.Callback;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import com.sunhapper.spedittool.span.GifSpan.GifSpanWatcher;
@@ -36,7 +34,7 @@ public class GifSpanUtil {
     if (oldCharSequence instanceof Spannable) {
 
       GifSpan[] gifSpans = ((Spannable) oldCharSequence)
-          .getSpans(0, oldCharSequence.length(), GifAlignCenterSpan.class);
+          .getSpans(0, oldCharSequence.length(), GifSpan.class);
       for (GifSpan span : gifSpans) {
         ((Spannable) oldCharSequence).removeSpan(span);
       }
@@ -96,7 +94,7 @@ public class GifSpanUtil {
     }
   }
 
-  public static GifSpan getGifSpanByDrawable(TextView textView, Drawable drawable) {
+  private static GifSpan getGifSpanByDrawable(TextView textView, Drawable drawable) {
     GifSpan gifSpan = null;
     CharSequence text = textView.getText();
     if (!TextUtils.isEmpty(text)) {
@@ -113,19 +111,8 @@ public class GifSpanUtil {
         }
       }
     }
-
     return gifSpan;
 
-  }
-
-
-  public static Spannable getDrawableText(CharSequence text, Drawable gifDrawable) {
-    Spannable spannable = new SpannableString(text);
-    ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
-    spannable.setSpan(imageSpan,
-        0, text.length(),
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    return spannable;
   }
 
 
