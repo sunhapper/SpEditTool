@@ -13,7 +13,7 @@ import me.sunhapper.spcharedittool.Measurable;
 
 public class GifAlignCenterSpan extends GifSpan {
 
-  boolean hasResize = false;
+  boolean resized = false;
   private static final String TAG = "GifAlignCenterSpan";
   private static final char[] ELLIPSIS_NORMAL = {'\u2026'}; // this is "..."
   private static final char[] ELLIPSIS_TWO_DOTS = {'\u2025'}; // this is ".."
@@ -85,24 +85,28 @@ public class GifAlignCenterSpan extends GifSpan {
   private Drawable getResizedDrawable(Paint paint) {
     int fontMetricsInt = paint.getFontMetricsInt(null);
     Drawable d = getDrawable();
-    if (d != null && !hasResize) {
-      if (d instanceof Measurable) {
-        Measurable measurableDrawable = (Measurable) d;
-        if (measurableDrawable.canMeasure()) {
+    if (d == null) {
+      return null;
+    }
+    if (d instanceof Measurable) {
+      Measurable measurableDrawable = (Measurable) d;
+      resized = (!measurableDrawable.needResize()) && resized;
+      if (!resized) {
+        resized = true;
+        if (measurableDrawable.canMeasure() && measurableDrawable.getHeight() > 0
+            && measurableDrawable.getWidth() > 0) {
           Log.i(TAG, "getResizedDrawable: ");
-          if (measurableDrawable.getHeight() > 0
-              && measurableDrawable.getWidth() > 0) {
-            hasResize = true;
-            d.setBounds(new Rect(0, 0,
-                (int) (1f * fontMetricsInt * measurableDrawable.getWidth() / measurableDrawable
-                    .getHeight()),
-                fontMetricsInt));
-          }
+          d.setBounds(new Rect(0, 0,
+              (int) (1f * fontMetricsInt * measurableDrawable.getWidth() / measurableDrawable
+                  .getHeight()),
+              fontMetricsInt));
         }
-      } else {
-        hasResize = true;
-        d.setBounds(new Rect(0, 0, fontMetricsInt, fontMetricsInt));
       }
+    } else {
+      resized = true;
+      d.setBounds(new Rect(0, 0,
+          (int) (1f * fontMetricsInt * d.getIntrinsicWidth() / d.getIntrinsicWidth()),
+          fontMetricsInt));
     }
     return d;
   }

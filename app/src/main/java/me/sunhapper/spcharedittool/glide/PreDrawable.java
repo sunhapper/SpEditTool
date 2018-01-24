@@ -6,18 +6,17 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
 import me.sunhapper.spcharedittool.Measurable;
 
 /**
  * Created by sunha on 2018/1/23 0023.
  */
 
-public class PreGifDrawable extends Drawable implements Drawable.Callback, Measurable {
+public class PreDrawable extends Drawable implements Drawable.Callback, Measurable {
 
   private static final String TAG = "PreGifDrawable";
-  private GifDrawable mDrawable;
+  private Drawable mDrawable;
+  private boolean needResize;
 
   @Override
   public void draw(Canvas canvas) {
@@ -48,12 +47,13 @@ public class PreGifDrawable extends Drawable implements Drawable.Callback, Measu
     return PixelFormat.UNKNOWN;
   }
 
-  public void setDrawable(GifDrawable drawable) {
+  public void setDrawable(Drawable drawable) {
     if (this.mDrawable != null) {
       this.mDrawable.setCallback(null);
     }
     drawable.setCallback(this);
     this.mDrawable = drawable;
+    needResize = true;
   }
 
   @Override
@@ -79,6 +79,7 @@ public class PreGifDrawable extends Drawable implements Drawable.Callback, Measu
 
   @Override
   public void setBounds(@NonNull Rect bounds) {
+    needResize = false;
     super.setBounds(bounds);
     if (mDrawable != null) {
       mDrawable.setBounds(bounds);
@@ -88,25 +89,30 @@ public class PreGifDrawable extends Drawable implements Drawable.Callback, Measu
   @Override
   public int getWidth() {
     if (mDrawable != null) {
-      Log.i(TAG, "getWidth: ");
       return mDrawable.getIntrinsicWidth();
     }
-    Log.i(TAG, "getWidth: 0");
     return 0;
   }
 
   @Override
   public int getHeight() {
     if (mDrawable != null) {
-      Log.i(TAG, "getHeight: ");
       return mDrawable.getIntrinsicHeight();
     }
-    Log.i(TAG, "getHeight: 0");
     return 0;
   }
 
   @Override
   public boolean canMeasure() {
     return mDrawable != null;
+  }
+
+  @Override
+  public boolean needResize() {
+    return mDrawable != null && needResize;
+  }
+
+  public Drawable getDrawable() {
+    return mDrawable;
   }
 }
