@@ -6,9 +6,10 @@ import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
-import com.sunhapper.spedittool.span.GifSpan.GifSpanWatcher;
+import com.sunhapper.spedittool.R;
 
 /**
  * Created by sunhapper on 2018/1/21.
@@ -24,66 +25,70 @@ public class GifSpanUtil {
 
   public static void setText(final TextView textView, final CharSequence text,
       final BufferType type) {
-    CharSequence oldCharSequence = "";
-    try {
-      oldCharSequence = textView.getText();
-    } catch (ClassCastException e) {
-      e.printStackTrace();
-    }
-
-    if (oldCharSequence instanceof Spannable) {
-
-      GifSpan[] gifSpans = ((Spannable) oldCharSequence)
-          .getSpans(0, oldCharSequence.length(), GifSpan.class);
-      for (GifSpan span : gifSpans) {
-        ((Spannable) oldCharSequence).removeSpan(span);
-      }
-      GifSpanWatcher[] watchers = ((Spannable) text)
-          .getSpans(0, text.length(), GifSpanWatcher.class);
-      for (GifSpanWatcher watcher : watchers) {
-        ((Spannable) oldCharSequence).removeSpan(watcher);
-      }
-    }
+//    CharSequence oldCharSequence = "";
+//    try {
+//      oldCharSequence = textView.getText();
+//    } catch (ClassCastException e) {
+//      e.printStackTrace();
+//    }
+//    if (oldCharSequence instanceof Editable) {
+//      ((Editable) oldCharSequence).clearSpans();
+////      GifSpan[] gifSpans = ((Spannable) oldCharSequence)
+////          .getSpans(0, oldCharSequence.length(), GifSpan.class);
+////      for (GifSpan span : gifSpans) {
+////        ((Spannable) oldCharSequence).removeSpan(span);
+////      }
+////      GifSpanWatcher[] watchers = ((Spannable) text)
+////          .getSpans(0, text.length(), GifSpanWatcher.class);
+////      for (GifSpanWatcher watcher : watchers) {
+////        ((Spannable) oldCharSequence).removeSpan(watcher);
+////      }
+//    }
     if (text instanceof Spannable) {
       GifSpan[] gifSpans = ((Spannable) text).getSpans(0, text.length(), GifSpan.class);
-      for (GifSpan gifSpan : gifSpans) {
-        final Drawable drawable = gifSpan.getGifDrawable();
-        if (drawable != null) {
-          drawable.setCallback(new Callback() {
-            @Override
-            public void invalidateDrawable(@NonNull Drawable who) {
-              GifSpan imageSpan = getGifSpanByDrawable(textView, drawable);
-              if (imageSpan != null) {
-                CharSequence text = textView.getText();
-                if (!TextUtils.isEmpty(text)) {
-                  if (text instanceof Spannable) {
-                    Spannable spannable = (Spannable) text;
-                    int start = spannable.getSpanStart(imageSpan);
-                    int end = spannable.getSpanEnd(imageSpan);
-                    int flags = spannable.getSpanFlags(imageSpan);
-                    imageSpan.isChanging = true;
-                    spannable.removeSpan(imageSpan);
-                    spannable.setSpan(imageSpan, start, end, flags);
-                    imageSpan.isChanging = false;
-                  }
-                }
-
+      Callback callback = new Callback() {
+        @Override
+        public void invalidateDrawable(@NonNull Drawable who) {
+          Log.i(TAG, "invalidateDrawable start: " + Thread.currentThread().getName());
+          GifSpan imageSpan = getGifSpanByDrawable(textView, who);
+          if (imageSpan != null) {
+            CharSequence text = textView.getText();
+            if (!TextUtils.isEmpty(text)) {
+              if (text instanceof Spannable) {
+                Spannable spannable = (Spannable) text;
+                int start = spannable.getSpanStart(imageSpan);
+                int end = spannable.getSpanEnd(imageSpan);
+                int flags = spannable.getSpanFlags(imageSpan);
+                imageSpan.isChanging = true;
+                spannable.removeSpan(imageSpan);
+                spannable.setSpan(imageSpan, start, end, flags);
+                imageSpan.isChanging = false;
               }
             }
 
-            @Override
-            public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
+          }
+        }
 
-            }
+        @Override
+        public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
 
-            @Override
-            public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
+        }
 
-            }
-          });
+        @Override
+        public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
+
+        }
+      };
+      //让textview持有callback,防止callback被回收
+      textView.setTag(R.id.drawable_callback_tag, callback);
+      for (GifSpan gifSpan : gifSpans) {
+        final Drawable drawable = gifSpan.getGifDrawable();
+        if (drawable != null) {
+          drawable.setCallback((Callback) textView.getTag(R.id.drawable_callback_tag));
         }
       }
     }
+    Log.i(TAG, "setText: 10");
     textView.setText(text, type);
     CharSequence charSequence = textView.getText();
     if (charSequence instanceof Spannable) {
@@ -92,6 +97,7 @@ public class GifSpanUtil {
           Spanned.SPAN_INCLUSIVE_INCLUSIVE | Spanned.SPAN_PRIORITY);
 
     }
+    Log.i(TAG, "setText: end");
   }
 
   private static GifSpan getGifSpanByDrawable(TextView textView, Drawable drawable) {

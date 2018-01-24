@@ -26,12 +26,18 @@ public class MainActivity extends AppCompatActivity {
 
   private static final String TAG = "MainActivity";
   private SpEditText spEditText;
+  private GifDrawable gifDrawable;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     spEditText = findViewById(R.id.spEdt);
+    try {
+      gifDrawable = new GifDrawable(getResources(), R.drawable.a);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 //    spEditText.setReactKeys("@#%*");
     spEditText.setKeyReactListener(new KeyReactListener() {
       @Override
@@ -74,19 +80,14 @@ public class MainActivity extends AppCompatActivity {
     Toast.makeText(this, stringBuilder, Toast.LENGTH_SHORT).show();
   }
 
+
   public void insertGif(View view) {
-    try {
-      GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
-      ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
-      spEditText.insertSpecialStr("[a]", false, "[a]", imageSpan);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
+    spEditText.insertSpecialStr("[a]", false, "[a]", imageSpan);
   }
 
   public void setGif(View view) {
     try {
-      GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
       GifDrawable gifDrawable1 = new GifDrawable(getResources(), R.drawable.b);
       PreDrawable preDrawable = new PreDrawable();
       GlideApp.with(this)

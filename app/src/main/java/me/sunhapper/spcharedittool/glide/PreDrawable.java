@@ -6,6 +6,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import me.sunhapper.spcharedittool.Measurable;
 
 /**
@@ -58,7 +59,9 @@ public class PreDrawable extends Drawable implements Drawable.Callback, Measurab
 
   @Override
   public void invalidateDrawable(Drawable who) {
+    Log.i(TAG, "invalidateDrawable: ");
     if (getCallback() != null) {
+      Log.i(TAG, "invalidateDrawable: " + getCallback());
       getCallback().invalidateDrawable(who);
     }
   }
