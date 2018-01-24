@@ -46,39 +46,7 @@ public class GifSpanUtil {
 //    }
     if (text instanceof Spannable) {
       GifSpan[] gifSpans = ((Spannable) text).getSpans(0, text.length(), GifSpan.class);
-      Callback callback = new Callback() {
-        @Override
-        public void invalidateDrawable(@NonNull Drawable who) {
-          Log.i(TAG, "invalidateDrawable start: " + Thread.currentThread().getName());
-          GifSpan imageSpan = getGifSpanByDrawable(textView, who);
-          if (imageSpan != null) {
-            CharSequence text = textView.getText();
-            if (!TextUtils.isEmpty(text)) {
-              if (text instanceof Spannable) {
-                Spannable spannable = (Spannable) text;
-                int start = spannable.getSpanStart(imageSpan);
-                int end = spannable.getSpanEnd(imageSpan);
-                int flags = spannable.getSpanFlags(imageSpan);
-                imageSpan.isChanging = true;
-                spannable.removeSpan(imageSpan);
-                spannable.setSpan(imageSpan, start, end, flags);
-                imageSpan.isChanging = false;
-              }
-            }
-
-          }
-        }
-
-        @Override
-        public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
-
-        }
-
-        @Override
-        public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
-
-        }
-      };
+      Callback callback = new CallbackForTextView(textView);
       //让textview持有callback,防止callback被回收
       textView.setTag(R.id.drawable_callback_tag, callback);
       for (GifSpan gifSpan : gifSpans) {
@@ -119,6 +87,56 @@ public class GifSpanUtil {
     }
     return gifSpan;
 
+  }
+
+
+  public static class CallbackForTextView implements Callback {
+
+    long lastInvalidateTime;
+    TextView textView;
+
+    public CallbackForTextView(TextView textView) {
+      this.textView = textView;
+    }
+
+    @Override
+    public void invalidateDrawable(@NonNull Drawable who) {
+
+      if (System.currentTimeMillis() - lastInvalidateTime > 100) {
+        lastInvalidateTime = System.currentTimeMillis();
+        Log.i(TAG, "invalidateDrawable start: " + this);
+        GifSpan imageSpan = getGifSpanByDrawable(textView, who);
+        if (imageSpan != null) {
+          CharSequence text = textView.getText();
+          if (!TextUtils.isEmpty(text)) {
+            if (text instanceof Spannable) {
+              Spannable spannable = (Spannable) text;
+              int start = spannable.getSpanStart(imageSpan);
+              int end = spannable.getSpanEnd(imageSpan);
+              int flags = spannable.getSpanFlags(imageSpan);
+              imageSpan.isChanging = true;
+              spannable.removeSpan(imageSpan);
+              spannable.setSpan(imageSpan, start, end, flags);
+              imageSpan.isChanging = false;
+            }
+          }
+
+        }
+        Log.i(TAG, "invalidateDrawable end: " + this);
+      }
+
+
+    }
+
+    @Override
+    public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
+
+    }
+
+    @Override
+    public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
+
+    }
   }
 
 

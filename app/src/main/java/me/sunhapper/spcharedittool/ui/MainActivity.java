@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
   }
 
 
-  public void insertGif(View view) {
+  public void insertGif(View view) throws IOException {
+    GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
     ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
     spEditText.insertSpecialStr("[a]", false, "[a]", imageSpan);
   }
