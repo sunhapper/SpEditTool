@@ -20,12 +20,14 @@ import me.sunhapper.spcharedittool.glide.DrawableTarget;
 import me.sunhapper.spcharedittool.glide.PreDrawable;
 import me.sunhapper.spcharedittool.span.GifAlignCenterSpan;
 import me.sunhapper.spcharedittool.util.DrawableUtil;
+import me.sunhapper.spcharedittool.view.RefreshTextView;
 import pl.droidsonroids.gif.GifDrawable;
 
 public class MainActivity extends AppCompatActivity {
 
   private static final String TAG = "MainActivity";
   private SpEditText spEditText;
+  private RefreshTextView textView;
   private GifDrawable gifDrawable;
 
   @Override
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     spEditText = findViewById(R.id.spEdt);
+    textView = findViewById(R.id.textView);
     try {
       gifDrawable = new GifDrawable(getResources(), R.drawable.a);
     } catch (IOException e) {
@@ -105,9 +108,11 @@ public class MainActivity extends AppCompatActivity {
           .append("表情2:").append(charSequence1)
           .append("表情3:").append(charSequence2);
       GifSpanUtil.setText(spEditText, spannableStringBuilder);
+      GifSpanUtil.setText(textView, spannableStringBuilder);
       spEditText.setSelection(spannableStringBuilder.length());
     } catch (IOException e) {
       e.printStackTrace();
     }
+
   }
 }
