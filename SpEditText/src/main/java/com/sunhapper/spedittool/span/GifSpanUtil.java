@@ -22,7 +22,7 @@ public class GifSpanUtil {
     setText(textView, text, BufferType.NORMAL);
   }
 
-  public static void setText(final TextView textView, final CharSequence text,
+  public static void setText(final TextView textView, final CharSequence nText,
       final BufferType type) {
 //    CharSequence oldCharSequence = "";
 //    try {
@@ -43,6 +43,9 @@ public class GifSpanUtil {
 ////        ((Spannable) oldCharSequence).removeSpan(watcher);
 ////      }
 //    }
+
+    textView.setText(nText, type);
+    CharSequence text=textView.getText();
     if (text instanceof Spannable) {
       GifSpan[] gifSpans = ((Spannable) text).getSpans(0, text.length(), GifSpan.class);
       Object oldCallback = textView
@@ -59,15 +62,11 @@ public class GifSpanUtil {
           drawable.setCallback(callback);
         }
       }
-    }
-    textView.setText(text, type);
-    CharSequence charSequence = textView.getText();
-    if (charSequence instanceof Spannable) {
-      Spannable spannableAfter = (Spannable) charSequence;
-      spannableAfter.setSpan(GifSpan.getGifSpanWatcher(), 0, text.length(),
+      ((Spannable) text).setSpan(GifSpan.getGifSpanWatcher(), 0, text.length(),
           Spanned.SPAN_INCLUSIVE_INCLUSIVE | Spanned.SPAN_PRIORITY);
 
     }
+
   }
 
   private static GifSpan getGifSpanByDrawable(TextView textView, Drawable drawable) {
@@ -109,23 +108,34 @@ public class GifSpanUtil {
       if (!enable) {
         return;
       }
-      textView.invalidate();
+      if (System.currentTimeMillis()-lastInvalidateTime>40){
+        lastInvalidateTime=System.currentTimeMillis();
+        textView.invalidate();
+      }
 
 //      GifSpan imageSpan = getGifSpanByDrawable(textView, who);
 //      if (imageSpan != null) {
+//        Rect rect = who.getBounds();
+//        who.setBounds(rect);
+//      }
+//      if (imageSpan != null) {
 //        CharSequence text = textView.getText();
+//        Log.i(TAG, "invalidateDrawable: 0");
 //        if (!TextUtils.isEmpty(text)) {
 //          if (text instanceof Spannable) {
 //            Spannable spannable = (Spannable) text;
+//            Log.i(TAG, "invalidateDrawable: 1");
 //            int start = spannable.getSpanStart(imageSpan);
 //            int end = spannable.getSpanEnd(imageSpan);
 //            int flags = spannable.getSpanFlags(imageSpan);
+//            Log.i(TAG, "invalidateDrawable: 2");
 //            imageSpan.isChanging = true;
-//            spannable.removeSpan(imageSpan);
+////            spannable.removeSpan(imageSpan);
 //            spannable.setSpan(imageSpan, start, end, flags);
 //            imageSpan.isChanging = false;
 //          }
 //        }
+//        Log.i(TAG, "invalidateDrawable: 4");
 //      }
 
     }
