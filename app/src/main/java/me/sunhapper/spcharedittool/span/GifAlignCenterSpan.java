@@ -4,10 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import com.sunhapper.spedittool.span.GifSpan;
+import android.text.style.ImageSpan;
 import me.sunhapper.spcharedittool.Measurable;
 
-public class GifAlignCenterSpan extends GifSpan {
+public class GifAlignCenterSpan extends ImageSpan {
 
   boolean resized = false;
   private static final String TAG = "GifAlignCenterSpan";
@@ -62,7 +62,7 @@ public class GifAlignCenterSpan extends GifSpan {
               fontMetricsInt));
         }
       }
-    } else if (!resized){
+    } else if (!resized) {
       resized = true;
       d.setBounds(new Rect(0, 0,
           (int) (1f * fontMetricsInt * d.getIntrinsicWidth() / d.getIntrinsicWidth()),
@@ -98,8 +98,6 @@ public class GifAlignCenterSpan extends GifSpan {
       canvas.restore();
     }
   }
-
-
 
 //  private Drawable getCachedDrawable(Paint paint) {
 //    WeakReference<Drawable> wr = mDrawableRef;

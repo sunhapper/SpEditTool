@@ -57,6 +57,12 @@ public class PreDrawable extends Drawable implements Drawable.Callback, Measurab
   }
 
   @Override
+  protected void onBoundsChange(Rect bounds) {
+    super.onBoundsChange(bounds);
+    needResize = false;
+  }
+
+  @Override
   public void invalidateDrawable(Drawable who) {
     if (getCallback() != null) {
       getCallback().invalidateDrawable(this);
@@ -79,10 +85,17 @@ public class PreDrawable extends Drawable implements Drawable.Callback, Measurab
 
   @Override
   public void setBounds(@NonNull Rect bounds) {
-    needResize = false;
     super.setBounds(bounds);
     if (mDrawable != null) {
       mDrawable.setBounds(bounds);
+    }
+  }
+
+  @Override
+  public void setBounds(int left, int top, int right, int bottom) {
+    super.setBounds(left, top, right, bottom);
+    if (mDrawable != null) {
+      mDrawable.setBounds(left, top, right, bottom);
     }
   }
 
