@@ -14,7 +14,7 @@ import me.sunhapper.spcharedittool.Measurable;
 
 public class PreDrawable extends Drawable implements Drawable.Callback, Measurable {
 
-  private static final String TAG = "PreGifDrawable";
+  private static final String TAG = "PreDrawable";
   private Drawable mDrawable;
   private boolean needResize;
 
@@ -54,6 +54,9 @@ public class PreDrawable extends Drawable implements Drawable.Callback, Measurab
     drawable.setCallback(this);
     this.mDrawable = drawable;
     needResize = true;
+    if (getCallback() != null) {
+      getCallback().invalidateDrawable(this);
+    }
   }
 
   @Override

@@ -16,8 +16,10 @@ import com.sunhapper.spedittool.R;
 
 public class GifSpanUtil {
 
+  private static final String TAG = "GifSpanUtil";
   public static void setText(final TextView textView, final CharSequence text) {
-    setText(textView, text, BufferType.NORMAL);
+    //需要SPANNABLE，保证textView中取出来的是SpannableString
+    setText(textView, text, BufferType.SPANNABLE);
   }
 
   public static void setText(final TextView textView, final CharSequence nText,
@@ -44,6 +46,7 @@ public class GifSpanUtil {
           Spanned.SPAN_INCLUSIVE_INCLUSIVE | Spanned.SPAN_PRIORITY);
 
     }
+    textView.invalidate();
 
   }
 
