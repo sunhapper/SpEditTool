@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
   public void getData(View view) {
     SpData[] spDatas = spEditText.getSpDatas();
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(spEditText.getText())
-        .append("\n");
+    stringBuilder.append("完整字符串：").append(spEditText.getText())
+        .append("\n").append("特殊字符串：\n");
     for (SpData spData : spDatas) {
       stringBuilder.append(spData.toString())
           .append("\n");
