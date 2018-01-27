@@ -19,7 +19,7 @@
 
 本来不想使用继承这样侵入的方式去实现，但是需要监听光标的变化，而sdk并没有提供设置光标监听的方法。
 
-### 如何记录特殊字符串的位置和代表的信息
+### 记录特殊字符串的位置和代表的信息
 
 这个是实现功能的关键点，总结了下网上的方案
 > [MentionEditText](https://github.com/luckyandyzhang/MentionEditText)
@@ -29,14 +29,14 @@
 > [RichEditor](https://github.com/JustYJQ/RichEditor)
 
 这个库自己维护了一个List，记录了特殊字符串的内容，在删除或者光标变化时遍历这个List判断光标是否处在特殊字符串的位置
-这个库最初自己咋一看觉得可以满足需求，在List的元素中加一个字段就可以记录@信息的数据结构了，但是简单用了之后发现一个很严重的问题：像@11 @1这样前面是相同内容的字符串处理的时候遍历算出的位置是不对的，而且很容易触发setSelection的递归调用导致StackOverflow
+最初自己咋一看觉得可以满足需求，在List的元素中加一个字段就可以记录@xxx的数据结构了，但是简单用了之后发现一个很严重的问题：像@11 @1这样前面是相同内容的字符串处理的时候遍历算出的位置是不对的，而且很容易触发setSelection的递归调用导致StackOverflow
 
 > [SpEditTool](https://github.com/sunhapper/SpEditTool)
 
 自己写的库，容我自卖自夸一下
 这里利用了Spannable的setSpan方法为对应的特殊字符串设置一个Object作为标记，好处有这么两点
 
-*  这个标记的位置是由EditText中的Editable对象来维护的，插入字符，删除特殊字符串位置自动就会变化，说白了就是本来该自己做的事情现在交给谷歌，不光效率高，还不用做什么特殊操作，偷了一个大懒
+*  这个标记的位置是由EditText中的Editable对象来维护的，插入字符，删除特殊字符串位置自动就会变化，虽然偷懒，但是效果不错
 *  因为标记和特殊字符串是一一对应的，所以无论文本框的内容如何变化都不用担心匹配出错
 
 主要代码：
@@ -86,7 +86,7 @@
 
 
 
-### 如何获取插入的特殊字符串
+### 获取插入的特殊字符串
 
 使用Spanned接口的getSpans方法
 
@@ -212,6 +212,6 @@ addTextChangedListener(new TextWatcher() {
 
 完成以上几步，一个支持插入@ #话题#等各种要高亮要整体删除的EditText就完成了
 
-> 欢迎大家使用已有的轮子
-> 项目地址[https://github.com/sunhapper/SpEditTool](https://github.com/sunhapper/SpEditTool)
+> 欢迎大家使用已有的轮子<br>
+> 项目地址[https://github.com/sunhapper/SpEditTool](https://github.com/sunhapper/SpEditTool)<br>
 > 欢迎star，提PR、issue

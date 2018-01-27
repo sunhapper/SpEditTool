@@ -1,4 +1,5 @@
 # 介绍
+
 输入@xxx #话题#等特殊字符，实现整体删除，文字高亮等功能的自定义EditText
 
 # 使用说明  
@@ -19,7 +20,7 @@
 
 ```
 dependencies {
-	        compile 'com.github.sunhapper:SpEditTool:0.1.4'
+	        compile 'com.github.sunhapper:SpEditTool:0.1.5'
 	}
 ```
 
@@ -97,4 +98,4 @@ SpData[] spDatas = spEditText.getSpDatas();
 
 ```
 
-
+> 欢迎star，提PR、issue
