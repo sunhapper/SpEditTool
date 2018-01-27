@@ -2,6 +2,10 @@
 
 输入@xxx #话题#等特殊字符，实现整体删除，文字高亮等功能的自定义EditText
 
+## 截图
+
+<img src="artworks/fullSp.gif" width = "240" height = "400" alt="ScreenShot"  />
+
 # 使用说明  
 
 ## Gradle  
