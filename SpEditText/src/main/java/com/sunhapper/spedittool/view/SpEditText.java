@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 import com.sunhapper.spedittool.R;
-import com.sunhapper.spedittool.span.GifSpanUtil;
+import com.sunhapper.spedittool.span.GifTextUtil;
 
 public class SpEditText extends AppCompatEditText {
 
@@ -53,6 +53,9 @@ public class SpEditText extends AppCompatEditText {
 
       @Override
       public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+        if (reactKeys == null) {
+          return;
+        }
         for (Character character : reactKeys) {
           if (count == 1 && !TextUtils.isEmpty(charSequence)) {
             char mentionChar = charSequence.toString().charAt(start);
@@ -282,7 +285,7 @@ public class SpEditText extends AppCompatEditText {
       index--;
     }
     spannableStringBuilder.insert(index, spannableString);
-    GifSpanUtil.setText(this, spannableStringBuilder);
+    GifTextUtil.setText(this, spannableStringBuilder);
     setSelection(index + spannableString.length());
   }
 

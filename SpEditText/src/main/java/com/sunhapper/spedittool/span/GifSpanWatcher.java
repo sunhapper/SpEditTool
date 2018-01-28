@@ -9,8 +9,9 @@ import android.text.style.ImageSpan;
  * Created by sunha on 2018/1/25 0025.
  */
 
-public class GifSpanWatcher implements SpanWatcher {
+class GifSpanWatcher implements SpanWatcher {
 
+  private static final String TAG = "GifSpanWatcher";
   @Override
   public void onSpanAdded(Spannable text, Object what, int start, int end) {
 

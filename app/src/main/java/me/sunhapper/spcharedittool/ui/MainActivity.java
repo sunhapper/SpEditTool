@@ -9,13 +9,14 @@ import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import com.sunhapper.spedittool.span.GifSpanUtil;
+import com.sunhapper.spedittool.span.GifTextUtil;
 import com.sunhapper.spedittool.view.SpEditText;
 import com.sunhapper.spedittool.view.SpEditText.KeyReactListener;
 import com.sunhapper.spedittool.view.SpEditText.SpData;
 import java.io.IOException;
 import me.sunhapper.spcharedittool.GlideApp;
 import me.sunhapper.spcharedittool.R;
+import me.sunhapper.spcharedittool.drawable.RefreshGifDrawable;
 import me.sunhapper.spcharedittool.glide.DrawableTarget;
 import me.sunhapper.spcharedittool.glide.PreDrawable;
 import me.sunhapper.spcharedittool.span.GifAlignCenterSpan;
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
   private static final String TAG = "MainActivity";
   private SpEditText spEditText;
-  private GifDrawable gifDrawable;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +34,6 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     spEditText = findViewById(R.id.spEdt);
     spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
-    try {
-      gifDrawable = new GifDrawable(getResources(), R.drawable.a);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
 //    spEditText.setReactKeys("@#%*");
     spEditText.setKeyReactListener(new KeyReactListener() {
       @Override
@@ -90,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
   public void setGif(View view) {
     try {
-      GifDrawable gifDrawable1 = new GifDrawable(getResources(), R.drawable.b);
+      GifDrawable gifDrawable = new RefreshGifDrawable(getResources(), R.drawable.a);
+      GifDrawable gifDrawable1 = new RefreshGifDrawable(getResources(), R.drawable.b);
       PreDrawable preDrawable = new PreDrawable();
       GlideApp.with(this)
           .load(
@@ -105,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
           .append("表情1:").append(charSequence)
           .append("表情2:").append(charSequence1)
           .append("表情3:").append(charSequence2);
-      GifSpanUtil.setText(spEditText, spannableStringBuilder);
+      GifTextUtil.setTextWithReuseDrawable(spEditText, spannableStringBuilder);
       spEditText.setSelection(spannableStringBuilder.length());
     } catch (IOException e) {
       e.printStackTrace();

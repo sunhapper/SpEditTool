@@ -6,21 +6,74 @@ import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import com.sunhapper.spedittool.R;
+import com.sunhapper.spedittool.drawable.RefreshableDrawable;
 
 /**
  * Created by sunhapper on 2018/1/21.
  */
 
-public class GifSpanUtil {
+public class GifTextUtil {
 
-  private static final String TAG = "GifSpanUtil";
+  private static final String TAG = "GifTextUtil";
   public static void setText(final TextView textView, final CharSequence text) {
     //需要SPANNABLE，保证textView中取出来的是SpannableString
     setText(textView, text, BufferType.SPANNABLE);
   }
+
+
+  public static void setTextWithReuseDrawable(final TextView textView, final CharSequence text) {
+    //需要SPANNABLE，保证textView中取出来的是SpannableString
+    setTextWithReuseDrawable(textView, text, BufferType.SPANNABLE);
+  }
+
+  public static void setTextWithReuseDrawable(final TextView textView, final CharSequence nText,
+      final BufferType type) {
+    CharSequence oldText="";
+    try {
+      //EditText第一次获取到的是个空字符串，会强转成Editable，出现ClassCastException
+      oldText= textView.getText();
+    }catch (ClassCastException e){
+      e.fillInStackTrace();
+    }
+    if (oldText instanceof Spannable){
+      ImageSpan[] gifSpans = ((Spannable) oldText).getSpans(0, oldText.length(), ImageSpan.class);
+      for (ImageSpan gifSpan : gifSpans) {
+        Drawable drawable = gifSpan.getDrawable();
+        if (drawable != null&&drawable instanceof RefreshableDrawable) {
+          ((RefreshableDrawable) drawable).removeHost(textView);
+        }
+      }
+    }
+
+    textView.setText(nText, type);
+    CharSequence text = textView.getText();
+
+    if (text instanceof Spannable) {
+      RefreshableDrawable temp=null;
+      int tempInterval=0;
+      ImageSpan[] gifSpans = ((Spannable) text).getSpans(0, text.length(), ImageSpan.class);
+      for (ImageSpan gifSpan : gifSpans) {
+        Drawable drawable = gifSpan.getDrawable();
+        if (drawable != null&&drawable instanceof RefreshableDrawable) {
+          if (((RefreshableDrawable) drawable).canRefresh()){
+            if (tempInterval<((RefreshableDrawable) drawable).getInterval()){
+              temp= (RefreshableDrawable) drawable;
+            }
+          }
+        }
+      }
+      if (temp!=null){
+        temp.addHost(textView);
+      }
+    }
+    textView.invalidate();
+
+  }
+
 
   public static void setText(final TextView textView, final CharSequence nText,
       final BufferType type) {
@@ -68,6 +121,7 @@ public class GifSpanUtil {
       }
       if (System.currentTimeMillis() - lastInvalidateTime > 40) {
         lastInvalidateTime = System.currentTimeMillis();
+        Log.i(TAG, "invalidateDrawable: "+textView);
         textView.invalidate();
       }
     }
