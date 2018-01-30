@@ -141,7 +141,11 @@ public class SpEditText extends AppCompatEditText {
       SpData spData = spDatas[i];
       int rangeStart = spData.start;
       if (selectionStart == spData.end) {
-        getEditableText().delete(rangeStart, selectionEnd);
+       Editable editable= getText();
+       SpannableStringBuilder spannableStringBuilder=new SpannableStringBuilder(editable);
+        spannableStringBuilder.delete(rangeStart, selectionEnd);
+        GifTextUtil.setText(this,spannableStringBuilder);
+        setSelection(rangeStart);
         return true;
       }
 
