@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import com.sunhapper.spedittool.R;
@@ -18,7 +17,6 @@ import com.sunhapper.spedittool.drawable.RefreshableDrawable;
 
 public class GifTextUtil {
 
-  private static final String TAG = "GifTextUtil";
   public static void setText(final TextView textView, final CharSequence text) {
     //需要SPANNABLE，保证textView中取出来的是SpannableString
     setText(textView, text, BufferType.SPANNABLE);
@@ -121,7 +119,6 @@ public class GifTextUtil {
       }
       if (System.currentTimeMillis() - lastInvalidateTime > 40) {
         lastInvalidateTime = System.currentTimeMillis();
-        Log.i(TAG, "invalidateDrawable: "+textView);
         textView.invalidate();
       }
     }
