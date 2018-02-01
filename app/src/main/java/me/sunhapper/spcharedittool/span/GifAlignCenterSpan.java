@@ -13,6 +13,7 @@ public class GifAlignCenterSpan extends ImageSpan {
   private static final String TAG = "GifAlignCenterSpan";
   private static final char[] ELLIPSIS_NORMAL = {'\u2026'}; // this is "..."
   private static final char[] ELLIPSIS_TWO_DOTS = {'\u2025'}; // this is ".."
+  private int fontMetricsInt =42;
 
 
   public GifAlignCenterSpan(Drawable d) {
@@ -23,28 +24,35 @@ public class GifAlignCenterSpan extends ImageSpan {
   @Override
   public int getSize(Paint paint, CharSequence text,
       int start, int end, Paint.FontMetricsInt fm) {
-    Drawable d = getResizedDrawable(paint);
-    if (d == null) {
-      return 0;
-    }
+//    Drawable d = getResizedDrawable(paint);
+//    if (d == null) {
+//      return 0;
+//    }
+//
+//    Rect rect = d.getBounds();
+//    if (fm != null) {
+//      Paint.FontMetricsInt fontMetrics = new Paint.FontMetricsInt();
+//      paint.getFontMetricsInt(fontMetrics);
+//
+//      fm.ascent = fontMetrics.ascent;
+//      fm.descent = fontMetrics.descent;
+//
+//      fm.top = fontMetrics.top;
+//      fm.bottom = fontMetrics.bottom;
+//    }
+//
+//    return rect.right;
 
-    Rect rect = d.getBounds();
-    if (fm != null) {
-      Paint.FontMetricsInt fontMetrics = new Paint.FontMetricsInt();
-      paint.getFontMetricsInt(fontMetrics);
-
-      fm.ascent = fontMetrics.ascent;
-      fm.descent = fontMetrics.descent;
-
-      fm.top = fontMetrics.top;
-      fm.bottom = fontMetrics.bottom;
-    }
-
-    return rect.right;
+    getResizedDrawable(paint);
+    return super.getSize(paint, text, start, end, fm);
   }
 
   private Drawable getResizedDrawable(Paint paint) {
-    int fontMetricsInt = paint.getFontMetricsInt(null);
+//    if (fontMetricsInt == 0) {
+//      fontMetricsInt = paint.getFontMetricsInt(null);
+//      Log.i(TAG, "getResizedDrawable: " + fontMetricsInt);
+//    }
+//    int fontMetricsInt = paint.getFontMetricsInt(null);
     Drawable d = getDrawable();
     if (d == null) {
       return null;

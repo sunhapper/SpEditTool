@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     spEditText = findViewById(R.id.spEdt);
-    spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
+    spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 //    spEditText.setReactKeys("@#%*");
     spEditText.setKeyReactListener(new KeyReactListener() {
       @Override
@@ -78,9 +79,16 @@ public class MainActivity extends AppCompatActivity {
 
 
   public void insertGif(View view) throws IOException {
+//    GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
+//    ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
+//    spEditText.insertSpecialStr("[a]", false, "[a]", imageSpan);
     GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
-    ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
-    spEditText.insertSpecialStr("[a]", false, "[a]", imageSpan);
+    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+    for (int i = 0; i < 200; i++) {
+      ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
+      spannableStringBuilder.append("[a]", imageSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+    spEditText.setText(spannableStringBuilder);
   }
 
   public void setGif(View view) {
