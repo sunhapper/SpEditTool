@@ -21,9 +21,7 @@ import me.sunhapper.spcharedittool.emoji.EmojiconScrollTabBar.EaseScrollTabBarIt
 public class EmojiconMenu extends EmojiconMenuBase {
 
   private int emojiconColumns;
-  private int bigEmojiconColumns;
-  private final int defaultBigColumns = 4;
-  private final int defaultColumns = 7;
+  private final static int DEFAULT_COLUMNS = 7;
   private EmojiconScrollTabBar tabBar;
   private EmojiconIndicatorView indicatorView;
   private EmojiconPagerView pagerView;
@@ -49,9 +47,8 @@ public class EmojiconMenu extends EmojiconMenuBase {
 
   private void init(Context context, AttributeSet attrs) {
     LayoutInflater.from(context).inflate(R.layout.common_emoj_widget_emojicon, this);
-    TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.TimEmojiconMenu);
-    emojiconColumns = ta.getInt(R.styleable.TimEmojiconMenu_emojiconColumns, defaultColumns);
-    bigEmojiconColumns = ta.getInt(R.styleable.TimEmojiconMenu_bigEmojiconRows, defaultBigColumns);
+    TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EmojiconMenu);
+    emojiconColumns = ta.getInt(R.styleable.EmojiconMenu_emojiconColumns, DEFAULT_COLUMNS);
     ta.recycle();
 
     pagerView = findViewById(R.id.pager_view);
@@ -97,7 +94,7 @@ public class EmojiconMenu extends EmojiconMenuBase {
     }
 
     pagerView.setPagerViewListener(new EmojiconPagerViewListener());
-    pagerView.init(emojiconGroupList, emojiconColumns, bigEmojiconColumns);
+    pagerView.init(emojiconGroupList, emojiconColumns);
 
     tabBar.setTabBarItemClickListener(new EaseScrollTabBarItemClickListener() {
 
@@ -184,9 +181,9 @@ public class EmojiconMenu extends EmojiconMenuBase {
     }
 
     @Override
-    public void onExpressionClicked(Emojicon emojicon) {
+    public void onExpressionClicked(PngFileEmoji pngFileEmoji) {
       if (listener != null) {
-        listener.onExpressionClicked(emojicon);
+        listener.onExpressionClicked(pngFileEmoji);
       }
     }
 

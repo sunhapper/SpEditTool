@@ -16,18 +16,10 @@ public class EmojiconPagerView extends ViewPager {
 
   private Context context;
   private List<EmojiconGroupEntity> groupEntities;
-  private List<Emojicon> totalEmojiconList = new ArrayList<Emojicon>();
-
   private PagerAdapter pagerAdapter;
-
   private int emojiconRows = 3;
   private int emojiconColumns = 7;
-
-  private int bigEmojiconRows = 2;
-  private int bigEmojiconColumns = 4;
-
   private int firstGroupPageSize;
-
   private int maxPageCount;
   private int previousPagerPosition;
   private EaseEmojiconPagerViewListener pagerViewListener;
@@ -43,21 +35,17 @@ public class EmojiconPagerView extends ViewPager {
   }
 
 
-  public void init(List<EmojiconGroupEntity> emojiconGroupList, int emijiconColumns,
-      int bigEmojiconColumns) {
+  public void init(List<EmojiconGroupEntity> emojiconGroupList, int emijiconColumns) {
     if (emojiconGroupList == null) {
       throw new RuntimeException("emojiconGroupList is null");
     }
 
     this.groupEntities = emojiconGroupList;
     this.emojiconColumns = emijiconColumns;
-    this.bigEmojiconColumns = bigEmojiconColumns;
 
-    viewpages = new ArrayList<View>();
+    viewpages = new ArrayList<>();
     for (int i = 0; i < groupEntities.size(); i++) {
       EmojiconGroupEntity group = groupEntities.get(i);
-      List<Emojicon> groupEmojicons = group.getEmojiconList();
-      totalEmojiconList.addAll(groupEmojicons);
       List<View> gridViews = getGroupGridViews(group);
       if (i == 0) {
         firstGroupPageSize = gridViews.size();
@@ -97,23 +85,22 @@ public class EmojiconPagerView extends ViewPager {
    * 获取表情组的gridview list
    */
   public List<View> getGroupGridViews(EmojiconGroupEntity groupEntity) {
-    List<Emojicon> emojiconList = groupEntity.getEmojiconList();
+    List<PngFileEmoji> pngFileEmojiList = groupEntity.getPngFileEmojiList();
     int itemSize = emojiconColumns * emojiconRows - 1;
-    int totalSize = emojiconList.size();
+    int totalSize = pngFileEmojiList.size();
     int pageSize = totalSize % itemSize == 0 ? totalSize / itemSize : totalSize / itemSize + 1;
     List<View> views = new ArrayList<View>();
     for (int i = 0; i < pageSize; i++) {
       View view = View.inflate(context, R.layout.common_emoj_expression_gridview, null);
       GridView gv =  view.findViewById(R.id.gridview);
       gv.setNumColumns(emojiconColumns);
-      List<Emojicon> list = new ArrayList<Emojicon>();
+      List<PngFileEmoji> list = new ArrayList<PngFileEmoji>();
       if (i != pageSize - 1) {
-        list.addAll(emojiconList.subList(i * itemSize, (i + 1) * itemSize));
+        list.addAll(pngFileEmojiList.subList(i * itemSize, (i + 1) * itemSize));
       } else {
-        list.addAll(emojiconList.subList(i * itemSize, totalSize));
+        list.addAll(pngFileEmojiList.subList(i * itemSize, totalSize));
       }
-      Emojicon deleteIcon = new Emojicon();
-      deleteIcon.setEmojiText(EmojiManager.DELETE_KEY);
+      PngFileEmoji deleteIcon = new PngFileEmoji();
       list.add(deleteIcon);
       final EmojiconGridAdapter gridAdapter = new EmojiconGridAdapter(context, 1, list);
       gv.setAdapter(gridAdapter);
@@ -121,13 +108,12 @@ public class EmojiconPagerView extends ViewPager {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-          Emojicon emojicon = gridAdapter.getItem(position);
+          PngFileEmoji pngFileEmoji = gridAdapter.getItem(position);
           if (pagerViewListener != null) {
-            String emojiText = emojicon.getEmojiText();
-            if (emojiText != null && emojiText.equals(EmojiManager.DELETE_KEY)) {
+            if (pngFileEmoji.isDeleteIcon()) {
               pagerViewListener.onDeleteImageClicked();
             } else {
-              pagerViewListener.onExpressionClicked(emojicon);
+              pagerViewListener.onExpressionClicked(pngFileEmoji);
             }
 
           }
@@ -172,9 +158,9 @@ public class EmojiconPagerView extends ViewPager {
 
 
   private int getPageSize(EmojiconGroupEntity groupEntity) {
-    List<Emojicon> emojiconList = groupEntity.getEmojiconList();
+    List<PngFileEmoji> pngFileEmojiList = groupEntity.getPngFileEmojiList();
     int itemSize = emojiconColumns * emojiconRows - 1;
-    int totalSize = emojiconList.size();
+    int totalSize = pngFileEmojiList.size();
     return totalSize % itemSize == 0 ? totalSize / itemSize : totalSize / itemSize + 1;
   }
 
@@ -265,7 +251,7 @@ public class EmojiconPagerView extends ViewPager {
 
     void onDeleteImageClicked();
 
-    void onExpressionClicked(Emojicon emojicon);
+    void onExpressionClicked(PngFileEmoji pngFileEmoji);
 
   }
 }

@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 import com.sunhapper.spedittool.span.GifTextUtil;
@@ -18,12 +20,14 @@ import java.io.IOException;
 import me.sunhapper.spcharedittool.GlideApp;
 import me.sunhapper.spcharedittool.R;
 import me.sunhapper.spcharedittool.drawable.RefreshGifDrawable;
+import me.sunhapper.spcharedittool.emoji.EmojiconMenu;
+import me.sunhapper.spcharedittool.emoji.EmojiconMenuBase.EmojiconMenuListener;
+import me.sunhapper.spcharedittool.emoji.PngFileEmoji;
 import me.sunhapper.spcharedittool.glide.DrawableTarget;
 import me.sunhapper.spcharedittool.glide.PreDrawable;
 import me.sunhapper.spcharedittool.span.GifAlignCenterSpan;
 import me.sunhapper.spcharedittool.util.DrawableUtil;
 import me.sunhapper.spcharedittool.util.PreferenceUtil;
-import me.sunhapper.spcharedittool.emoji.EmojiconMenu;
 import pl.droidsonroids.gif.GifDrawable;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +48,21 @@ public class MainActivity extends AppCompatActivity {
     emojiInputView = findViewById(R.id.emojiInputView);
     spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 //    spEditText.setReactKeys("@#%*");
+    emojiInputView.setEmojiconMenuListener(new EmojiconMenuListener() {
+      @Override
+      public void onExpressionClicked(PngFileEmoji pngFileEmoji) {
+
+      }
+
+      @Override
+      public void onDeleteImageClicked() {
+        if (!TextUtils.isEmpty(spEditText.getText())) {
+          KeyEvent event = new KeyEvent(0, 0, 0, KeyEvent.KEYCODE_DEL, 0, 0, 0, 0,
+              KeyEvent.KEYCODE_ENDCALL);
+          spEditText.dispatchKeyEvent(event);
+        }
+      }
+    });
     spEditText.setKeyReactListener(new KeyReactListener() {
       @Override
       public void onKeyReact(String key) {

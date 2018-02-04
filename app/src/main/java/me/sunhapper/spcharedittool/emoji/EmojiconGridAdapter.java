@@ -10,11 +10,10 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 import me.sunhapper.spcharedittool.R;
 
-public class EmojiconGridAdapter extends ArrayAdapter<Emojicon> {
+public class EmojiconGridAdapter extends ArrayAdapter<PngFileEmoji> {
 
 
-
-  public EmojiconGridAdapter(Context context, int textViewResourceId, List<Emojicon> objects) {
+  public EmojiconGridAdapter(Context context, int textViewResourceId, List<PngFileEmoji> objects) {
     super(context, textViewResourceId, objects);
   }
 
@@ -22,28 +21,19 @@ public class EmojiconGridAdapter extends ArrayAdapter<Emojicon> {
   public View getView(int position, View convertView, ViewGroup parent) {
     if (convertView == null) {
 
-        convertView = View.inflate(getContext(), R.layout.common_emoj_row_expression, null);
+      convertView = View.inflate(getContext(), R.layout.common_emoj_row_expression, null);
 
     }
 
-    ImageView imageView =  convertView.findViewById(R.id.iv_expression);
-    Emojicon emojicon = getItem(position);
-    if (EmojiManager.DELETE_KEY.equals(emojicon.getEmojiText())) {
+    ImageView imageView = convertView.findViewById(R.id.iv_expression);
+    Emoji pngFileEmoji = getItem(position);
+    if (pngFileEmoji.isDeleteIcon()) {
       imageView.setImageResource(R.drawable.common_emoj_delete_expression);
     } else {
-      if (emojicon.getIcon() != 0) {
-        imageView.setImageResource(emojicon.getIcon());
-      } else if (emojicon.getIconPath() != null) {
-        Glide.with(getContext())
-            .load(emojicon.getIconPath())
-            .apply(new RequestOptions().placeholder(R.drawable.common_emoj_smile_default))
-            .into(imageView);
-      } else if (emojicon.getIconSet() != null) {
-        Glide.with(getContext())
-            .load(emojicon.getIconSet().iconPng)
-            .apply(new RequestOptions().placeholder(R.drawable.common_emoj_smile_default))
-            .into(imageView);
-      }
+      Glide.with(getContext())
+          .load(pngFileEmoji.getRes())
+          .apply(new RequestOptions().placeholder(R.drawable.common_emoj_smile_default))
+          .into(imageView);
     }
 
     return convertView;

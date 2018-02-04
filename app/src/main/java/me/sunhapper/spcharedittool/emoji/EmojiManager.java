@@ -35,7 +35,6 @@ import pl.droidsonroids.gif.GifDrawable;
 public class EmojiManager {
 
   private final String TAG = "EmojManager";
-  public static final String DELETE_KEY = "em_delete_delete_expression";
 
   private final Map<Pattern, Object> emoticons = new HashMap<>();
   private HashMap<String, GifDrawable> gifDrawableHashMap = new HashMap<>();
@@ -217,11 +216,11 @@ public class EmojiManager {
   }
 
 
-  public  Emojicon[] createData(Context context) {
+  public  PngFileEmoji[] createData(Context context) {
     init(context);
-    Emojicon[] datas = new Emojicon[emojiList.length];
+    PngFileEmoji[] datas = new PngFileEmoji[emojiList.length];
     for (int i = 0; i < emojiList.length; i++) {
-      datas[i] = new Emojicon(emojiPngs.get(i), emojiGifs.get(i), emojiList[i]);
+      datas[i] = new PngFileEmoji(emojiPngs.get(i),  emojiList[i]);
     }
     return datas;
   }

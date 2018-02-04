@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 
 public class EmojiconMenuBase extends LinearLayout {
 
-  protected EaseEmojiconMenuListener listener;
+  protected EmojiconMenuListener listener;
 
   public EmojiconMenuBase(Context context) {
     super(context);
@@ -26,16 +26,16 @@ public class EmojiconMenuBase extends LinearLayout {
   /**
    * 设置回调监听
    */
-  public void setEmojiconMenuListener(EaseEmojiconMenuListener listener) {
+  public void setEmojiconMenuListener(EmojiconMenuListener listener) {
     this.listener = listener;
   }
 
-  public interface EaseEmojiconMenuListener {
+  public interface EmojiconMenuListener {
 
     /**
      * 表情被点击
      */
-    void onExpressionClicked(Emojicon emojicon);
+    void onExpressionClicked(PngFileEmoji pngFileEmoji);
 
     /**
      * 删除按钮被点击
