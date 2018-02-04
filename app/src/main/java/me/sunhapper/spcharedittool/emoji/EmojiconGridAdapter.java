@@ -1,4 +1,4 @@
-package me.sunhapper.spcharedittool.view;
+package me.sunhapper.spcharedittool.emoji;
 
 import android.content.Context;
 import android.view.View;
@@ -10,11 +10,11 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 import me.sunhapper.spcharedittool.R;
 
-public class EmojiconGridAdapter extends ArrayAdapter<TimEmojicon> {
+public class EmojiconGridAdapter extends ArrayAdapter<Emojicon> {
 
 
 
-  public EmojiconGridAdapter(Context context, int textViewResourceId, List<TimEmojicon> objects) {
+  public EmojiconGridAdapter(Context context, int textViewResourceId, List<Emojicon> objects) {
     super(context, textViewResourceId, objects);
   }
 
@@ -27,7 +27,7 @@ public class EmojiconGridAdapter extends ArrayAdapter<TimEmojicon> {
     }
 
     ImageView imageView =  convertView.findViewById(R.id.iv_expression);
-    TimEmojicon emojicon = getItem(position);
+    Emojicon emojicon = getItem(position);
     if (EmojiManager.DELETE_KEY.equals(emojicon.getEmojiText())) {
       imageView.setImageResource(R.drawable.common_emoj_delete_expression);
     } else {

@@ -1,4 +1,4 @@
-package me.sunhapper.spcharedittool.view;
+package me.sunhapper.spcharedittool.emoji;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,7 +16,7 @@ import me.sunhapper.spcharedittool.R;
 import me.sunhapper.spcharedittool.util.Utils;
 
 @SuppressLint("NewApi")
-public class TimEmojiconIndicatorView extends LinearLayout {
+public class EmojiconIndicatorView extends LinearLayout {
 
   private Context context;
   private Bitmap selectedBitmap;
@@ -26,16 +26,16 @@ public class TimEmojiconIndicatorView extends LinearLayout {
 
   private int dotHeight = 12;
 
-  public TimEmojiconIndicatorView(Context context, AttributeSet attrs, int defStyle) {
+  public EmojiconIndicatorView(Context context, AttributeSet attrs, int defStyle) {
     this(context, null);
   }
 
-  public TimEmojiconIndicatorView(Context context, AttributeSet attrs) {
+  public EmojiconIndicatorView(Context context, AttributeSet attrs) {
     super(context, attrs);
     init(context, attrs);
   }
 
-  public TimEmojiconIndicatorView(Context context) {
+  public EmojiconIndicatorView(Context context) {
     this(context, null);
   }
 

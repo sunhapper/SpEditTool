@@ -1,4 +1,4 @@
-package me.sunhapper.spcharedittool.view;
+package me.sunhapper.spcharedittool.emoji;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
@@ -15,7 +15,7 @@ import java.util.List;
 import me.sunhapper.spcharedittool.R;
 import me.sunhapper.spcharedittool.util.Utils;
 
-public class TimEmojiconScrollTabBar extends RelativeLayout {
+public class EmojiconScrollTabBar extends RelativeLayout {
 
   private Context context;
   private HorizontalScrollView scrollView;
@@ -28,15 +28,15 @@ public class TimEmojiconScrollTabBar extends RelativeLayout {
 
   private int tabWidth = 60;
 
-  public TimEmojiconScrollTabBar(Context context) {
+  public EmojiconScrollTabBar(Context context) {
     this(context, null);
   }
 
-  public TimEmojiconScrollTabBar(Context context, AttributeSet attrs, int defStyle) {
+  public EmojiconScrollTabBar(Context context, AttributeSet attrs, int defStyle) {
     this(context, attrs);
   }
 
-  public TimEmojiconScrollTabBar(Context context, AttributeSet attrs) {
+  public EmojiconScrollTabBar(Context context, AttributeSet attrs) {
     super(context, attrs);
     init(context, attrs);
   }

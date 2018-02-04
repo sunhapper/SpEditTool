@@ -5,12 +5,12 @@
   android:layout_height="wrap_content"
   android:orientation="vertical">
 
-  <me.sunhapper.spcharedittool.view.TimEmojiconPagerView
+  <me.sunhapper.spcharedittool.emoji.EmojiconPagerView
     android:id="@+id/pager_view"
     android:layout_width="match_parent"
     android:layout_height="142dp" />
 
-  <me.sunhapper.spcharedittool.view.TimEmojiconIndicatorView
+  <me.sunhapper.spcharedittool.emoji.EmojiconIndicatorView
     android:id="@+id/indicator_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
     android:background="#CFCFCF"
     android:visibility="gone" />
 
-  <me.sunhapper.spcharedittool.view.TimEmojiconScrollTabBar
+  <me.sunhapper.spcharedittool.emoji.EmojiconScrollTabBar
     android:id="@+id/tab_bar"
     android:layout_width="match_parent"
     android:layout_height="35dp"

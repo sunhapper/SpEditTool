@@ -1,4 +1,4 @@
-package me.sunhapper.spcharedittool.view;
+package me.sunhapper.spcharedittool.emoji;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -12,37 +12,37 @@ import java.util.List;
 import me.sunhapper.spcharedittool.R;
 import me.sunhapper.spcharedittool.util.FileUtil;
 import me.sunhapper.spcharedittool.util.PreferenceUtil;
-import me.sunhapper.spcharedittool.view.TimEmojiconPagerView.EaseEmojiconPagerViewListener;
-import me.sunhapper.spcharedittool.view.TimEmojiconScrollTabBar.EaseScrollTabBarItemClickListener;
+import me.sunhapper.spcharedittool.emoji.EmojiconPagerView.EaseEmojiconPagerViewListener;
+import me.sunhapper.spcharedittool.emoji.EmojiconScrollTabBar.EaseScrollTabBarItemClickListener;
 
 /**
  * 表情图片控件
  */
-public class TimEmojiconMenu extends TimEmojiconMenuBase {
+public class EmojiconMenu extends EmojiconMenuBase {
 
   private int emojiconColumns;
   private int bigEmojiconColumns;
   private final int defaultBigColumns = 4;
   private final int defaultColumns = 7;
-  private TimEmojiconScrollTabBar tabBar;
-  private TimEmojiconIndicatorView indicatorView;
-  private TimEmojiconPagerView pagerView;
+  private EmojiconScrollTabBar tabBar;
+  private EmojiconIndicatorView indicatorView;
+  private EmojiconPagerView pagerView;
 
-  private List<TimEmojiconGroupEntity> emojiconGroupList = new ArrayList<TimEmojiconGroupEntity>();
+  private List<EmojiconGroupEntity> emojiconGroupList = new ArrayList<EmojiconGroupEntity>();
 
 
   @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-  public TimEmojiconMenu(Context context, AttributeSet attrs, int defStyle) {
+  public EmojiconMenu(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
     init(context, attrs);
   }
 
-  public TimEmojiconMenu(Context context, AttributeSet attrs) {
+  public EmojiconMenu(Context context, AttributeSet attrs) {
     super(context, attrs);
     init(context, attrs);
   }
 
-  public TimEmojiconMenu(Context context) {
+  public EmojiconMenu(Context context) {
     super(context);
     init(context, null);
   }
@@ -90,9 +90,9 @@ public class TimEmojiconMenu extends TimEmojiconMenuBase {
 
   private void initDefault() {
     emojiconGroupList = new ArrayList<>();
-    emojiconGroupList.add(new TimEmojiconGroupEntity(R.drawable.common_emoj_smile,
+    emojiconGroupList.add(new EmojiconGroupEntity(R.drawable.common_emoj_smile,
         Arrays.asList(EmojiManager.getInstance().createData(getContext()))));
-    for (TimEmojiconGroupEntity groupEntity : emojiconGroupList) {
+    for (EmojiconGroupEntity groupEntity : emojiconGroupList) {
       tabBar.addTab(groupEntity.getIcon());
     }
 
@@ -113,7 +113,7 @@ public class TimEmojiconMenu extends TimEmojiconMenuBase {
   /**
    * 添加表情组
    */
-  public void addEmojiconGroup(TimEmojiconGroupEntity groupEntity) {
+  public void addEmojiconGroup(EmojiconGroupEntity groupEntity) {
     emojiconGroupList.add(groupEntity);
     pagerView.addEmojiconGroup(groupEntity, true);
     tabBar.addTab(groupEntity.getIcon());
@@ -122,9 +122,9 @@ public class TimEmojiconMenu extends TimEmojiconMenuBase {
   /**
    * 添加一系列表情组
    */
-  public void addEmojiconGroup(List<TimEmojiconGroupEntity> groupEntitieList) {
+  public void addEmojiconGroup(List<EmojiconGroupEntity> groupEntitieList) {
     for (int i = 0; i < groupEntitieList.size(); i++) {
-      TimEmojiconGroupEntity groupEntity = groupEntitieList.get(i);
+      EmojiconGroupEntity groupEntity = groupEntitieList.get(i);
       emojiconGroupList.add(groupEntity);
       pagerView.addEmojiconGroup(groupEntity, i == groupEntitieList.size() - 1 ? true : false);
       tabBar.addTab(groupEntity.getIcon());
@@ -184,7 +184,7 @@ public class TimEmojiconMenu extends TimEmojiconMenuBase {
     }
 
     @Override
-    public void onExpressionClicked(TimEmojicon emojicon) {
+    public void onExpressionClicked(Emojicon emojicon) {
       if (listener != null) {
         listener.onExpressionClicked(emojicon);
       }

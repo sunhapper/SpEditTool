@@ -1,16 +1,16 @@
-package me.sunhapper.spcharedittool.view;
+package me.sunhapper.spcharedittool.emoji;
 
 import java.util.List;
 
 /**
  * 一组表情所对应的实体类
  */
-public class TimEmojiconGroupEntity {
+public class EmojiconGroupEntity {
 
   /**
    * 表情数据
    */
-  private List<TimEmojicon> emojiconList;
+  private List<Emojicon> emojiconList;
   /**
    * 图片
    */
@@ -21,21 +21,21 @@ public class TimEmojiconGroupEntity {
   private String name;
 
 
-  public TimEmojiconGroupEntity() {
+  public EmojiconGroupEntity() {
   }
 
-  public TimEmojiconGroupEntity(int icon, List<TimEmojicon> emojiconList) {
+  public EmojiconGroupEntity(int icon, List<Emojicon> emojiconList) {
     this.icon = icon;
     this.emojiconList = emojiconList;
   }
 
 
 
-  public List<TimEmojicon> getEmojiconList() {
+  public List<Emojicon> getEmojiconList() {
     return emojiconList;
   }
 
-  public void setEmojiconList(List<TimEmojicon> emojiconList) {
+  public void setEmojiconList(List<Emojicon> emojiconList) {
     this.emojiconList = emojiconList;
   }
 

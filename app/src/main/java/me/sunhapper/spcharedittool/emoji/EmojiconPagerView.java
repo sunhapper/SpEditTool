@@ -1,4 +1,4 @@
-package me.sunhapper.spcharedittool.view;
+package me.sunhapper.spcharedittool.emoji;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import me.sunhapper.spcharedittool.R;
 
-public class TimEmojiconPagerView extends ViewPager {
+public class EmojiconPagerView extends ViewPager {
 
   private Context context;
-  private List<TimEmojiconGroupEntity> groupEntities;
-  private List<TimEmojicon> totalEmojiconList = new ArrayList<TimEmojicon>();
+  private List<EmojiconGroupEntity> groupEntities;
+  private List<Emojicon> totalEmojiconList = new ArrayList<Emojicon>();
 
   private PagerAdapter pagerAdapter;
 
@@ -33,17 +33,17 @@ public class TimEmojiconPagerView extends ViewPager {
   private EaseEmojiconPagerViewListener pagerViewListener;
   private List<View> viewpages;
 
-  public TimEmojiconPagerView(Context context, AttributeSet attrs) {
+  public EmojiconPagerView(Context context, AttributeSet attrs) {
     super(context, attrs);
     this.context = context;
   }
 
-  public TimEmojiconPagerView(Context context) {
+  public EmojiconPagerView(Context context) {
     this(context, null);
   }
 
 
-  public void init(List<TimEmojiconGroupEntity> emojiconGroupList, int emijiconColumns,
+  public void init(List<EmojiconGroupEntity> emojiconGroupList, int emijiconColumns,
       int bigEmojiconColumns) {
     if (emojiconGroupList == null) {
       throw new RuntimeException("emojiconGroupList is null");
@@ -55,8 +55,8 @@ public class TimEmojiconPagerView extends ViewPager {
 
     viewpages = new ArrayList<View>();
     for (int i = 0; i < groupEntities.size(); i++) {
-      TimEmojiconGroupEntity group = groupEntities.get(i);
-      List<TimEmojicon> groupEmojicons = group.getEmojiconList();
+      EmojiconGroupEntity group = groupEntities.get(i);
+      List<Emojicon> groupEmojicons = group.getEmojiconList();
       totalEmojiconList.addAll(groupEmojicons);
       List<View> gridViews = getGroupGridViews(group);
       if (i == 0) {
@@ -96,8 +96,8 @@ public class TimEmojiconPagerView extends ViewPager {
   /**
    * 获取表情组的gridview list
    */
-  public List<View> getGroupGridViews(TimEmojiconGroupEntity groupEntity) {
-    List<TimEmojicon> emojiconList = groupEntity.getEmojiconList();
+  public List<View> getGroupGridViews(EmojiconGroupEntity groupEntity) {
+    List<Emojicon> emojiconList = groupEntity.getEmojiconList();
     int itemSize = emojiconColumns * emojiconRows - 1;
     int totalSize = emojiconList.size();
     int pageSize = totalSize % itemSize == 0 ? totalSize / itemSize : totalSize / itemSize + 1;
@@ -106,13 +106,13 @@ public class TimEmojiconPagerView extends ViewPager {
       View view = View.inflate(context, R.layout.common_emoj_expression_gridview, null);
       GridView gv =  view.findViewById(R.id.gridview);
       gv.setNumColumns(emojiconColumns);
-      List<TimEmojicon> list = new ArrayList<TimEmojicon>();
+      List<Emojicon> list = new ArrayList<Emojicon>();
       if (i != pageSize - 1) {
         list.addAll(emojiconList.subList(i * itemSize, (i + 1) * itemSize));
       } else {
         list.addAll(emojiconList.subList(i * itemSize, totalSize));
       }
-      TimEmojicon deleteIcon = new TimEmojicon();
+      Emojicon deleteIcon = new Emojicon();
       deleteIcon.setEmojiText(EmojiManager.DELETE_KEY);
       list.add(deleteIcon);
       final EmojiconGridAdapter gridAdapter = new EmojiconGridAdapter(context, 1, list);
@@ -121,7 +121,7 @@ public class TimEmojiconPagerView extends ViewPager {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-          TimEmojicon emojicon = gridAdapter.getItem(position);
+          Emojicon emojicon = gridAdapter.getItem(position);
           if (pagerViewListener != null) {
             String emojiText = emojicon.getEmojiText();
             if (emojiText != null && emojiText.equals(EmojiManager.DELETE_KEY)) {
@@ -144,7 +144,7 @@ public class TimEmojiconPagerView extends ViewPager {
   /**
    * 添加表情组
    */
-  public void addEmojiconGroup(TimEmojiconGroupEntity groupEntity, boolean notifyDataChange) {
+  public void addEmojiconGroup(EmojiconGroupEntity groupEntity, boolean notifyDataChange) {
     int pageSize = getPageSize(groupEntity);
     if (pageSize > maxPageCount) {
       maxPageCount = pageSize;
@@ -171,8 +171,8 @@ public class TimEmojiconPagerView extends ViewPager {
   }
 
 
-  private int getPageSize(TimEmojiconGroupEntity groupEntity) {
-    List<TimEmojicon> emojiconList = groupEntity.getEmojiconList();
+  private int getPageSize(EmojiconGroupEntity groupEntity) {
+    List<Emojicon> emojiconList = groupEntity.getEmojiconList();
     int itemSize = emojiconColumns * emojiconRows - 1;
     int totalSize = emojiconList.size();
     return totalSize % itemSize == 0 ? totalSize / itemSize : totalSize / itemSize + 1;
@@ -184,7 +184,7 @@ public class TimEmojiconPagerView extends ViewPager {
     public void onPageSelected(int position) {
       int endSize = 0;
       int groupPosition = 0;
-      for (TimEmojiconGroupEntity groupEntity : groupEntities) {
+      for (EmojiconGroupEntity groupEntity : groupEntities) {
         int groupPageSize = getPageSize(groupEntity);
         //选中的position在当前遍历的group里
         if (endSize + groupPageSize > position) {
@@ -265,7 +265,7 @@ public class TimEmojiconPagerView extends ViewPager {
 
     void onDeleteImageClicked();
 
-    void onExpressionClicked(TimEmojicon emojicon);
+    void onExpressionClicked(Emojicon emojicon);
 
   }
 }

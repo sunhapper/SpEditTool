@@ -1,10 +1,10 @@
-package me.sunhapper.spcharedittool.view;
+package me.sunhapper.spcharedittool.emoji;
 
 import java.io.File;
 
-public class TimEmojicon {
+public class Emojicon {
 
-  public TimEmojicon() {
+  public Emojicon() {
   }
 
   /**
@@ -13,12 +13,12 @@ public class TimEmojicon {
    * @param icon 静态图片resource id
    * @param emojiText 表情emoji文本内容
    */
-  public TimEmojicon(int icon, String emojiText) {
+  public Emojicon(int icon, String emojiText) {
     this.icon = icon;
     this.emojiText = emojiText;
   }
 
-  public TimEmojicon(File iconPng, File iconGif, String emojiText) {
+  public Emojicon(File iconPng, File iconGif, String emojiText) {
     this.iconSet = new IconSet(iconGif, iconPng);
     this.emojiText = emojiText;
   }

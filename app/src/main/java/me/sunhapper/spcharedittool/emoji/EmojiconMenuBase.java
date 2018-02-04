@@ -1,24 +1,24 @@
-package me.sunhapper.spcharedittool.view;
+package me.sunhapper.spcharedittool.emoji;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-public class TimEmojiconMenuBase extends LinearLayout {
+public class EmojiconMenuBase extends LinearLayout {
 
   protected EaseEmojiconMenuListener listener;
 
-  public TimEmojiconMenuBase(Context context) {
+  public EmojiconMenuBase(Context context) {
     super(context);
   }
 
   @SuppressLint("NewApi")
-  public TimEmojiconMenuBase(Context context, AttributeSet attrs, int defStyle) {
+  public EmojiconMenuBase(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
   }
 
-  public TimEmojiconMenuBase(Context context, AttributeSet attrs) {
+  public EmojiconMenuBase(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
@@ -35,7 +35,7 @@ public class TimEmojiconMenuBase extends LinearLayout {
     /**
      * 表情被点击
      */
-    void onExpressionClicked(TimEmojicon emojicon);
+    void onExpressionClicked(Emojicon emojicon);
 
     /**
      * 删除按钮被点击

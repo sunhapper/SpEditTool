@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.sunhapper.spcharedittool.view;
+package me.sunhapper.spcharedittool.emoji;
 
 import android.content.Context;
 import android.net.Uri;
@@ -217,11 +217,11 @@ public class EmojiManager {
   }
 
 
-  public  TimEmojicon[] createData(Context context) {
+  public  Emojicon[] createData(Context context) {
     init(context);
-    TimEmojicon[] datas = new TimEmojicon[emojiList.length];
+    Emojicon[] datas = new Emojicon[emojiList.length];
     for (int i = 0; i < emojiList.length; i++) {
-      datas[i] = new TimEmojicon(emojiPngs.get(i), emojiGifs.get(i), emojiList[i]);
+      datas[i] = new Emojicon(emojiPngs.get(i), emojiGifs.get(i), emojiList[i]);
     }
     return datas;
   }
