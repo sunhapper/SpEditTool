@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+  <HorizontalScrollView
+    android:id="@+id/scroll_view"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:layout_alignParentBottom="true"
+    android:background="#FFFFFF"
+    android:scrollbars="none">
+
+    <LinearLayout
+      android:id="@+id/tab_container"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="horizontal"></LinearLayout>
+  </HorizontalScrollView>
+  <TextView
+    android:id="@+id/send_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:background="#00b9ff"
+    android:gravity="center"
+    android:text="发送"
+    android:textColor="@android:color/white" />
+</LinearLayout>

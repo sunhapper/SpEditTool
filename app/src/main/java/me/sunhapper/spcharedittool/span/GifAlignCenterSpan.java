@@ -1,9 +1,11 @@
 package me.sunhapper.spcharedittool.span;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.style.ImageSpan;
 import me.sunhapper.spcharedittool.Measurable;
 
@@ -20,6 +22,10 @@ public class GifAlignCenterSpan extends ImageSpan {
     super(d);
   }
 
+
+  public GifAlignCenterSpan(Context context, Uri uri) {
+    super(context, uri);
+  }
 
   @Override
   public int getSize(Paint paint, CharSequence text,

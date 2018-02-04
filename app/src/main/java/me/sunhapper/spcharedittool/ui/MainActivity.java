@@ -1,7 +1,9 @@
 package me.sunhapper.spcharedittool.ui;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -9,6 +11,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.sunhapper.spedittool.span.GifTextUtil;
 import com.sunhapper.spedittool.view.SpEditText;
@@ -22,18 +25,27 @@ import me.sunhapper.spcharedittool.glide.DrawableTarget;
 import me.sunhapper.spcharedittool.glide.PreDrawable;
 import me.sunhapper.spcharedittool.span.GifAlignCenterSpan;
 import me.sunhapper.spcharedittool.util.DrawableUtil;
+import me.sunhapper.spcharedittool.util.FileUtil;
+import me.sunhapper.spcharedittool.util.PreferenceUtil;
+import me.sunhapper.spcharedittool.view.TimEmojiconMenu;
 import pl.droidsonroids.gif.GifDrawable;
 
 public class MainActivity extends AppCompatActivity {
 
   private static final String TAG = "MainActivity";
   private SpEditText spEditText;
+  private TimEmojiconMenu emojiInputView;
+  private boolean emojiInit;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    emojiInit = PreferenceUtil.getEmojiInitResult(this);
+
+
     spEditText = findViewById(R.id.spEdt);
+    emojiInputView = findViewById(R.id.emojiInputView);
     spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 //    spEditText.setReactKeys("@#%*");
     spEditText.setKeyReactListener(new KeyReactListener() {
@@ -116,4 +128,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
   }
+
 }
