@@ -1,10 +1,9 @@
 package me.sunhapper.spcharedittool.ui;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
-import com.sunhapper.spedittool.span.GifTextUtil;
 import com.sunhapper.spedittool.view.SpEditText;
 import com.sunhapper.spedittool.view.SpEditText.KeyReactListener;
 import com.sunhapper.spedittool.view.SpEditText.SpData;
@@ -20,15 +18,17 @@ import java.io.IOException;
 import me.sunhapper.spcharedittool.GlideApp;
 import me.sunhapper.spcharedittool.R;
 import me.sunhapper.spcharedittool.drawable.RefreshGifDrawable;
+import me.sunhapper.spcharedittool.emoji.DefaultGifEmoji;
 import me.sunhapper.spcharedittool.emoji.DeleteEmoji;
 import me.sunhapper.spcharedittool.emoji.Emoji;
+import me.sunhapper.spcharedittool.emoji.EmojiManager;
+import me.sunhapper.spcharedittool.emoji.EmojiManager.OnUnzipSuccessListener;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenu;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenuBase.EmojiconMenuListener;
 import me.sunhapper.spcharedittool.glide.DrawableTarget;
 import me.sunhapper.spcharedittool.glide.PreDrawable;
 import me.sunhapper.spcharedittool.span.GifAlignCenterSpan;
 import me.sunhapper.spcharedittool.util.DrawableUtil;
-import me.sunhapper.spcharedittool.util.PreferenceUtil;
 import pl.droidsonroids.gif.GifDrawable;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,14 +36,11 @@ public class MainActivity extends AppCompatActivity {
   private static final String TAG = "MainActivity";
   private SpEditText spEditText;
   private EmojiconMenu emojiInputView;
-  private boolean emojiInit;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    emojiInit = PreferenceUtil.getEmojiInitResult(this);
-
     spEditText = findViewById(R.id.spEdt);
     emojiInputView = findViewById(R.id.emojiInputView);
     spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -57,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 KeyEvent.KEYCODE_ENDCALL);
             spEditText.dispatchKeyEvent(event);
           }
+        } else if (emoji instanceof DefaultGifEmoji) {
+          insertEmoji(emoji);
         }
       }
     });
@@ -84,6 +83,13 @@ public class MainActivity extends AppCompatActivity {
     });
   }
 
+  private void insertEmoji(Emoji emoji) {
+    Drawable gifDrawable = EmojiManager.getInstance()
+        .getDrawableByEmoji(this, emoji);
+    ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
+    spEditText.insertSpecialStr(emoji.getEmojiText(), false, emoji.getEmojiText(), imageSpan);
+  }
+
   public void insertSp(View view) {
     spEditText.insertSpecialStr(" 这是插入的字符串 ", false, 4, new ForegroundColorSpan(Color.BLUE));
   }
@@ -102,39 +108,38 @@ public class MainActivity extends AppCompatActivity {
   }
 
 
-  public void insertGif(View view) throws IOException {
-//    GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
-//    ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
-//    spEditText.insertSpecialStr("[a]", false, "[a]", imageSpan);
-    GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
-    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
-    for (int i = 0; i < 200; i++) {
-      ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
-      spannableStringBuilder.append("[a]", imageSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    }
-    spEditText.setText(spannableStringBuilder);
+  public void insertAllGif(View view) throws IOException {
+    EmojiManager.getInstance().getDefaultEmojiData(new OnUnzipSuccessListener() {
+      @Override
+      public void onUnzipSuccess(DefaultGifEmoji[] defaultGifEmojis) {
+        for (DefaultGifEmoji defaultGifEmoji : defaultGifEmojis) {
+          insertEmoji(defaultGifEmoji);
+        }
+
+//        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+//        for (DefaultGifEmoji defaultGifEmoji : defaultGifEmojis) {
+//          Drawable gifDrawable = EmojiManager.getInstance()
+//              .getDrawableByEmoji(MainActivity.this, defaultGifEmoji);
+//          ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
+//          spannableStringBuilder
+//              .append(defaultGifEmoji.getEmojiText(), imageSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        }
+//        spEditText.insertSpecialStr(spannableStringBuilder, false, spannableStringBuilder, null);
+      }
+    });
   }
 
   public void setGif(View view) {
     try {
       GifDrawable gifDrawable = new RefreshGifDrawable(getResources(), R.drawable.a);
-      GifDrawable gifDrawable1 = new RefreshGifDrawable(getResources(), R.drawable.b);
       PreDrawable preDrawable = new PreDrawable();
       GlideApp.with(this)
           .load(
               "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37.gif")
           .placeholder(gifDrawable)
           .into(new DrawableTarget(preDrawable));
-      CharSequence charSequence = DrawableUtil.getDrawableText("[a]", gifDrawable);
-      CharSequence charSequence1 = DrawableUtil.getDrawableText("[b]", gifDrawable1);
-      CharSequence charSequence2 = DrawableUtil.getDrawableText("[c]", preDrawable);
-      SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
-      spannableStringBuilder
-          .append("表情1:").append(charSequence)
-          .append("表情2:").append(charSequence1)
-          .append("表情3:").append(charSequence2);
-      GifTextUtil.setTextWithReuseDrawable(spEditText, spannableStringBuilder);
-      spEditText.setSelection(spannableStringBuilder.length());
+      CharSequence charSequence = DrawableUtil.getDrawableText("[c]", preDrawable);
+      spEditText.insertSpecialStr(charSequence, false, charSequence, null);
     } catch (IOException e) {
       e.printStackTrace();
     }

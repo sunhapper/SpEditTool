@@ -141,10 +141,10 @@ public class SpEditText extends AppCompatEditText {
       SpData spData = spDatas[i];
       int rangeStart = spData.start;
       if (selectionStart == spData.end) {
-       Editable editable= getText();
-       SpannableStringBuilder spannableStringBuilder=new SpannableStringBuilder(editable);
+        Editable editable = getText();
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(editable);
         spannableStringBuilder.delete(rangeStart, selectionEnd);
-        GifTextUtil.setText(this,spannableStringBuilder);
+        GifTextUtil.setText(this, spannableStringBuilder);
         setSelection(rangeStart);
         return true;
       }
@@ -264,7 +264,7 @@ public class SpEditText extends AppCompatEditText {
    * @param customData 特殊字符串的数据结构
    * @param customSpan 特殊字符串的样式
    */
-  public void insertSpecialStr(String showContent, boolean rollBack, Object customData,
+  public void insertSpecialStr(CharSequence showContent, boolean rollBack, Object customData,
       Object customSpan) {
     if (TextUtils.isEmpty(showContent)) {
       return;
@@ -309,7 +309,7 @@ public class SpEditText extends AppCompatEditText {
     /**
      * EditText中显示的内容
      */
-    private String showContent;
+    private CharSequence showContent;
     /**
      * 特殊内容的数据结构
      */
@@ -342,11 +342,11 @@ public class SpEditText extends AppCompatEditText {
       this.customData = customData;
     }
 
-    public String getShowContent() {
+    public CharSequence getShowContent() {
       return showContent;
     }
 
-    private void setShowContent(String showContent) {
+    private void setShowContent(CharSequence showContent) {
       this.showContent = showContent;
     }
 
