@@ -174,16 +174,9 @@ public class EmojiconMenu extends EmojiconMenuBase {
     }
 
     @Override
-    public void onDeleteImageClicked() {
+    public void onExpressionClicked(Emoji emoji) {
       if (listener != null) {
-        listener.onDeleteImageClicked();
-      }
-    }
-
-    @Override
-    public void onExpressionClicked(PngFileEmoji pngFileEmoji) {
-      if (listener != null) {
-        listener.onExpressionClicked(pngFileEmoji);
+        listener.onExpressionClicked(emoji);
       }
     }
 

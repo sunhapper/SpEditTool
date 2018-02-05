@@ -10,7 +10,7 @@ public class EmojiconGroupEntity {
   /**
    * 表情数据
    */
-  private List<PngFileEmoji> pngFileEmojiList;
+  private List<DefaultGifEmoji> defaultGifEmojiList;
   /**
    * 图片
    */
@@ -24,19 +24,19 @@ public class EmojiconGroupEntity {
   public EmojiconGroupEntity() {
   }
 
-  public EmojiconGroupEntity(int icon, List<PngFileEmoji> pngFileEmojiList) {
+  public EmojiconGroupEntity(int icon, List<DefaultGifEmoji> defaultGifEmojiList) {
     this.icon = icon;
-    this.pngFileEmojiList = pngFileEmojiList;
+    this.defaultGifEmojiList = defaultGifEmojiList;
   }
 
 
 
-  public List<PngFileEmoji> getPngFileEmojiList() {
-    return pngFileEmojiList;
+  public List<DefaultGifEmoji> getDefaultGifEmojiList() {
+    return defaultGifEmojiList;
   }
 
-  public void setPngFileEmojiList(List<PngFileEmoji> pngFileEmojiList) {
-    this.pngFileEmojiList = pngFileEmojiList;
+  public void setDefaultGifEmojiList(List<DefaultGifEmoji> defaultGifEmojiList) {
+    this.defaultGifEmojiList = defaultGifEmojiList;
   }
 
   public int getIcon() {

@@ -14,11 +14,14 @@
 package me.sunhapper.spcharedittool.emoji;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
-import android.widget.TextView;
+import android.widget.ImageView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,8 +39,8 @@ public class EmojiManager {
 
   private final String TAG = "EmojManager";
 
-  private final Map<Pattern, Object> emoticons = new HashMap<>();
-  private HashMap<String, GifDrawable> gifDrawableHashMap = new HashMap<>();
+  private final Map<Pattern, Emoji> emoticons = new HashMap<>();
+  private HashMap<String, Drawable> drawableCacheMap = new HashMap<>();
 
   private volatile static EmojiManager instance;
 
@@ -63,7 +66,6 @@ public class EmojiManager {
       "[爱你]", "[NO]", "[OK]", "[爱情]", "[飞吻]", "[跳跳]", "[发抖]",
       "[怄火]", "[转圈]", "[磕头]", "[回头]", "[跳绳]", "[挥手]"
   };
-  private static List<File> emojiPngs = new ArrayList<>();
   private static List<File> emojiGifs = new ArrayList<>();
 
 
@@ -81,156 +83,99 @@ public class EmojiManager {
     return instance;
   }
 
-  public void init(Context context) {
-
+  public void initDefault(Context context) {
     for (int i = 1; i < 6; i++) {
       for (int j = 0; j < 3; j++) {
         for (int k = 0; k < 7; k++) {
           if (j == 2 && k == 6) {
             continue;
           }
-          File pngFile;
           File gifFile;
-
-          pngFile = new File(FileUtil.getEmojiDir(context),
-              "/emoji/e" + i + "/" + k + "_" + j + ".png");
           gifFile = new File(FileUtil.getEmojiDir(context),
               "/emoji/e" + i + "/" + k + "_" + j + ".gif");
-          emojiPngs.add(pngFile);
           emojiGifs.add(gifFile);
         }
       }
     }
     for (int i = 0; i < emojiList.length; i++) {
-      addPattern(emojiList[i], new IconSet(emojiGifs.get(i), emojiPngs.get(i)));
+      emoticons.put(Pattern.compile(Pattern.quote(emojiList[i])),
+          new DefaultGifEmoji(emojiGifs.get(i), emojiList[i]));
     }
-  }
-
-
-  private void addPattern(String emojiText, Object res) {
-    emoticons.put(Pattern.compile(Pattern.quote(emojiText)), res);
   }
 
 
   /**
    * replace existing spannable with smiles
    */
-  public boolean addSmiles(Context context, Spannable spannable) {
-    boolean hasChanges = false;
-    for (Entry<Pattern, Object> entry : emoticons.entrySet()) {
-      Matcher matcher = entry.getKey().matcher(spannable);
+  public Spannable getSmiledText(Context context, String text) {
+    SpannableString spannableString = new SpannableString(text);
+    for (Entry<Pattern, Emoji> entry : emoticons.entrySet()) {
+      Matcher matcher = entry.getKey().matcher(text);
       while (matcher.find()) {
-        boolean set = true;
-        for (ImageSpan span : spannable.getSpans(matcher.start(),
-            matcher.end(), ImageSpan.class)) {
-          if (spannable.getSpanStart(span) >= matcher.start()
-              && spannable.getSpanEnd(span) <= matcher.end()) {
-            spannable.removeSpan(span);
-          } else {
-            set = false;
-            break;
-          }
+        ImageSpan imageSpan = null;
+        Emoji emoji = entry.getValue();
+        if (emoji instanceof DefaultGifEmoji) {
+          imageSpan = getGifImageSpan((File) emoji.getRes());
         }
-        if (set) {
-          hasChanges = true;
-          Object value = entry.getValue();
-          if (value instanceof String && !((String) value).startsWith("http")) {
-            File file = new File((String) value);
-            if (!file.exists() || file.isDirectory()) {
-              return false;
-            }
-            spannable.setSpan(new ImageSpan(context, Uri.fromFile(file)),
-                matcher.start(), matcher.end(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-          } else if (value instanceof IconSet) {
-            IconSet iconSet = (IconSet) value;
-            if (iconSet.iconPng.exists()) {
-              ImageSpan imageSpan = new GifAlignCenterSpan(context,
-                  Uri.fromFile(((IconSet) value).iconPng));
-              spannable.setSpan(imageSpan,
-                  matcher.start(), matcher.end(),
-                  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else {
-              return false;
-            }
-          } else {
-            spannable.setSpan(new ImageSpan(context, (Integer) value),
-                matcher.start(), matcher.end(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Object value = emoji.getRes();
+        if (value instanceof String && !((String) value).startsWith("http")) {
+          //本地路径
+          File file = new File((String) value);
+          if (file.exists() && !file.isDirectory()) {
+            imageSpan = new ImageSpan(context, Uri.fromFile(file));
           }
+        } else {
+          imageSpan = new ImageSpan(context, (Integer) value);
+        }
+        if (imageSpan != null) {
+          spannableString.setSpan(imageSpan,
+              matcher.start(), matcher.end(),
+              Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
       }
     }
-
-    return hasChanges;
+    return spannableString;
   }
 
+  private ImageSpan getGifImageSpan(File gifFile) {
+    ImageSpan imageSpan = null;
+    try {
+      Drawable gifDrawable;
+      if (drawableCacheMap.containsKey((gifFile.getAbsolutePath()))) {
+        gifDrawable = drawableCacheMap
+            .get(gifFile.getAbsolutePath());
+        imageSpan = new GifAlignCenterSpan(gifDrawable);
+      } else if (gifFile.exists()) {
 
-  public Spannable getGifSmiles(CharSequence text, TextView textView) {
-    Spannable spannable = new SpannableString(text);
-    for (Entry<Pattern, Object> entry : emoticons.entrySet()) {
-      Matcher matcher = entry.getKey().matcher(spannable);
-      while (matcher.find()) {
-        boolean set = true;
-        for (ImageSpan span : spannable.getSpans(matcher.start(),
-            matcher.end(), ImageSpan.class)) {
-          if (spannable.getSpanStart(span) >= matcher.start()
-              && spannable.getSpanEnd(span) <= matcher.end()) {
-            spannable.removeSpan(span);
-          } else {
-            set = false;
-            break;
-          }
-        }
-        if (set) {
-          Object value = entry.getValue();
-          if (value instanceof IconSet) {
-//                        Drawable gifDrawable = ImageTextUtil.getUrlDrawable(((IconSet) value).iconGif.getAbsolutePath(), textView);
-//                        Drawable gifDrawable = imageGetter.getDrawable(((IconSet) value).iconGif.getAbsolutePath());
-            try {
-              ImageSpan imageSpan;
-              GifDrawable gifDrawable1;
-              if (gifDrawableHashMap.containsKey(((IconSet) value).iconGif.getAbsolutePath())) {
-                gifDrawable1 = gifDrawableHashMap.get(((IconSet) value).iconGif.getAbsolutePath());
-                imageSpan = new GifAlignCenterSpan(gifDrawable1);
+        gifDrawable = new GifDrawable(gifFile);
+        imageSpan = new GifAlignCenterSpan(gifDrawable);
+        drawableCacheMap
+            .put(gifFile.getAbsolutePath(), gifDrawable);
 
-              } else {
-                gifDrawable1 = new GifDrawable(((IconSet) value).iconGif);
-//                            gifDrawable1.start();
-                imageSpan = new GifAlignCenterSpan(gifDrawable1);
-                gifDrawableHashMap.put(((IconSet) value).iconGif.getAbsolutePath(), gifDrawable1);
-              }
-              spannable.setSpan(imageSpan,
-                  matcher.start(), matcher.end(),
-                  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
-
-
-          }
-        }
       }
+
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    return spannable;
+    return imageSpan;
   }
 
 
-  public  PngFileEmoji[] createData(Context context) {
-    init(context);
-    PngFileEmoji[] datas = new PngFileEmoji[emojiList.length];
+  public DefaultGifEmoji[] createData(Context context) {
+    initDefault(context);
+    DefaultGifEmoji[] datas = new DefaultGifEmoji[emojiList.length];
     for (int i = 0; i < emojiList.length; i++) {
-      datas[i] = new PngFileEmoji(emojiPngs.get(i),  emojiList[i]);
+      datas[i] = new DefaultGifEmoji(emojiGifs.get(i), emojiList[i]);
     }
     return datas;
   }
 
-  public Spannable getPngSmiledText(Context context, CharSequence text) {
-    Spannable spannable = new SpannableString(text);
-//        addHttp(context, spannable);
-    addSmiles(context, spannable);
-    return spannable;
-  }
 
+  public void displayImage(ImageView imageView, Emoji emoji) {
+    Glide.with(imageView)
+        .load(emoji.getRes())
+        .apply(new RequestOptions().placeholder(emoji.getDefaultResId()))
+        .into(imageView);
+  }
 
 }

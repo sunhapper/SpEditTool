@@ -20,9 +20,10 @@ import java.io.IOException;
 import me.sunhapper.spcharedittool.GlideApp;
 import me.sunhapper.spcharedittool.R;
 import me.sunhapper.spcharedittool.drawable.RefreshGifDrawable;
+import me.sunhapper.spcharedittool.emoji.DeleteEmoji;
+import me.sunhapper.spcharedittool.emoji.Emoji;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenu;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenuBase.EmojiconMenuListener;
-import me.sunhapper.spcharedittool.emoji.PngFileEmoji;
 import me.sunhapper.spcharedittool.glide.DrawableTarget;
 import me.sunhapper.spcharedittool.glide.PreDrawable;
 import me.sunhapper.spcharedittool.span.GifAlignCenterSpan;
@@ -43,23 +44,19 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     emojiInit = PreferenceUtil.getEmojiInitResult(this);
 
-
     spEditText = findViewById(R.id.spEdt);
     emojiInputView = findViewById(R.id.emojiInputView);
     spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 //    spEditText.setReactKeys("@#%*");
     emojiInputView.setEmojiconMenuListener(new EmojiconMenuListener() {
       @Override
-      public void onExpressionClicked(PngFileEmoji pngFileEmoji) {
-
-      }
-
-      @Override
-      public void onDeleteImageClicked() {
-        if (!TextUtils.isEmpty(spEditText.getText())) {
-          KeyEvent event = new KeyEvent(0, 0, 0, KeyEvent.KEYCODE_DEL, 0, 0, 0, 0,
-              KeyEvent.KEYCODE_ENDCALL);
-          spEditText.dispatchKeyEvent(event);
+      public void onExpressionClicked(Emoji emoji) {
+        if (emoji instanceof DeleteEmoji) {
+          if (!TextUtils.isEmpty(spEditText.getText())) {
+            KeyEvent event = new KeyEvent(0, 0, 0, KeyEvent.KEYCODE_DEL, 0, 0, 0, 0,
+                KeyEvent.KEYCODE_ENDCALL);
+            spEditText.dispatchKeyEvent(event);
+          }
         }
       }
     });

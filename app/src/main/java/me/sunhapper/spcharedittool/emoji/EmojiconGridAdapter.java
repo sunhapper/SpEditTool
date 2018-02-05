@@ -5,15 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 import me.sunhapper.spcharedittool.R;
 
-public class EmojiconGridAdapter extends ArrayAdapter<PngFileEmoji> {
+public class EmojiconGridAdapter extends ArrayAdapter<Emoji> {
 
 
-  public EmojiconGridAdapter(Context context, int textViewResourceId, List<PngFileEmoji> objects) {
+  public EmojiconGridAdapter(Context context, int textViewResourceId, List<Emoji> objects) {
     super(context, textViewResourceId, objects);
   }
 
@@ -26,17 +24,11 @@ public class EmojiconGridAdapter extends ArrayAdapter<PngFileEmoji> {
     }
 
     ImageView imageView = convertView.findViewById(R.id.iv_expression);
-    Emoji pngFileEmoji = getItem(position);
-    if (pngFileEmoji.isDeleteIcon()) {
-      imageView.setImageResource(R.drawable.common_emoj_delete_expression);
-    } else {
-      Glide.with(getContext())
-          .load(pngFileEmoji.getRes())
-          .apply(new RequestOptions().placeholder(R.drawable.common_emoj_smile_default))
-          .into(imageView);
-    }
-
+    Emoji emoji = getItem(position);
+    EmojiManager.getInstance().displayImage(imageView, emoji);
     return convertView;
   }
+
+
 
 }

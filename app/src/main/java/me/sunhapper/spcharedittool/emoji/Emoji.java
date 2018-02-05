@@ -8,14 +8,17 @@ import android.graphics.drawable.Drawable;
 
 public interface Emoji {
 
-  Drawable getCachedDrawable();
+  Drawable getDrawable();
 
   CharSequence getEmojiText();
+
 
   Object getRes();
 
   int getResType();
 
   boolean isDeleteIcon();
+
+  int getDefaultResId();
 
 }

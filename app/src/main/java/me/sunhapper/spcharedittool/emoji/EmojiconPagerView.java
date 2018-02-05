@@ -85,22 +85,22 @@ public class EmojiconPagerView extends ViewPager {
    * 获取表情组的gridview list
    */
   public List<View> getGroupGridViews(EmojiconGroupEntity groupEntity) {
-    List<PngFileEmoji> pngFileEmojiList = groupEntity.getPngFileEmojiList();
+    List<DefaultGifEmoji> defaultGifEmojiList = groupEntity.getDefaultGifEmojiList();
     int itemSize = emojiconColumns * emojiconRows - 1;
-    int totalSize = pngFileEmojiList.size();
+    int totalSize = defaultGifEmojiList.size();
     int pageSize = totalSize % itemSize == 0 ? totalSize / itemSize : totalSize / itemSize + 1;
     List<View> views = new ArrayList<View>();
     for (int i = 0; i < pageSize; i++) {
       View view = View.inflate(context, R.layout.common_emoj_expression_gridview, null);
-      GridView gv =  view.findViewById(R.id.gridview);
+      GridView gv = view.findViewById(R.id.gridview);
       gv.setNumColumns(emojiconColumns);
-      List<PngFileEmoji> list = new ArrayList<PngFileEmoji>();
+      List<Emoji> list = new ArrayList<>();
       if (i != pageSize - 1) {
-        list.addAll(pngFileEmojiList.subList(i * itemSize, (i + 1) * itemSize));
+        list.addAll(defaultGifEmojiList.subList(i * itemSize, (i + 1) * itemSize));
       } else {
-        list.addAll(pngFileEmojiList.subList(i * itemSize, totalSize));
+        list.addAll(defaultGifEmojiList.subList(i * itemSize, totalSize));
       }
-      PngFileEmoji deleteIcon = new PngFileEmoji();
+      DeleteEmoji deleteIcon = new DeleteEmoji();
       list.add(deleteIcon);
       final EmojiconGridAdapter gridAdapter = new EmojiconGridAdapter(context, 1, list);
       gv.setAdapter(gridAdapter);
@@ -108,16 +108,10 @@ public class EmojiconPagerView extends ViewPager {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-          PngFileEmoji pngFileEmoji = gridAdapter.getItem(position);
+          Emoji emoji = gridAdapter.getItem(position);
           if (pagerViewListener != null) {
-            if (pngFileEmoji.isDeleteIcon()) {
-              pagerViewListener.onDeleteImageClicked();
-            } else {
-              pagerViewListener.onExpressionClicked(pngFileEmoji);
-            }
-
+            pagerViewListener.onExpressionClicked(emoji);
           }
-
         }
       });
 
@@ -158,9 +152,9 @@ public class EmojiconPagerView extends ViewPager {
 
 
   private int getPageSize(EmojiconGroupEntity groupEntity) {
-    List<PngFileEmoji> pngFileEmojiList = groupEntity.getPngFileEmojiList();
+    List<DefaultGifEmoji> defaultGifEmojiList = groupEntity.getDefaultGifEmojiList();
     int itemSize = emojiconColumns * emojiconRows - 1;
-    int totalSize = pngFileEmojiList.size();
+    int totalSize = defaultGifEmojiList.size();
     return totalSize % itemSize == 0 ? totalSize / itemSize : totalSize / itemSize + 1;
   }
 
@@ -249,9 +243,8 @@ public class EmojiconPagerView extends ViewPager {
      */
     void onGroupMaxPageSizeChanged(int maxCount);
 
-    void onDeleteImageClicked();
 
-    void onExpressionClicked(PngFileEmoji pngFileEmoji);
+    void onExpressionClicked(Emoji emoji);
 
   }
 }

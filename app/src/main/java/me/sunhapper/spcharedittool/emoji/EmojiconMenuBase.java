@@ -32,14 +32,6 @@ public class EmojiconMenuBase extends LinearLayout {
 
   public interface EmojiconMenuListener {
 
-    /**
-     * 表情被点击
-     */
-    void onExpressionClicked(PngFileEmoji pngFileEmoji);
-
-    /**
-     * 删除按钮被点击
-     */
-    void onDeleteImageClicked();
+    void onExpressionClicked(Emoji emoji);
   }
 }
