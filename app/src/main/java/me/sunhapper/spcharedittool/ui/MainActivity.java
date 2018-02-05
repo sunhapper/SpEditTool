@@ -27,7 +27,7 @@ import me.sunhapper.spcharedittool.emoji.EmojiconMenu;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenuBase.EmojiconMenuListener;
 import me.sunhapper.spcharedittool.glide.DrawableTarget;
 import me.sunhapper.spcharedittool.glide.PreDrawable;
-import me.sunhapper.spcharedittool.span.GifAlignCenterSpan;
+import me.sunhapper.spcharedittool.span.EqualHeightSpan;
 import me.sunhapper.spcharedittool.util.DrawableUtil;
 import pl.droidsonroids.gif.GifDrawable;
 
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
   private void insertEmoji(Emoji emoji) {
     Drawable gifDrawable = EmojiManager.getInstance()
         .getDrawableByEmoji(this, emoji);
-    ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
+    ImageSpan imageSpan = new EqualHeightSpan(gifDrawable);
     spEditText.insertSpecialStr(emoji.getEmojiText(), false, emoji.getEmojiText(), imageSpan);
   }
 

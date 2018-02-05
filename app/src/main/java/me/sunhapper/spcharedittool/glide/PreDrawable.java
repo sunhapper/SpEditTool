@@ -16,12 +16,14 @@ import me.sunhapper.spcharedittool.Measurable;
  * Created by sunha on 2018/1/23 0023.
  */
 
-public class PreDrawable extends Drawable implements RefreshableDrawable,Drawable.Callback, Measurable {
-  private List< TextView> hosts;
+public class PreDrawable extends Drawable implements RefreshableDrawable, Drawable.Callback,
+    Measurable {
+
+  private List<TextView> hosts;
   private static final String TAG = "PreDrawable";
   private Drawable mDrawable;
-  private boolean needResize;
-  private CallBack callBack=new CallBack();
+  private boolean needResize=true;
+  private CallBack callBack = new CallBack();
 
   @Override
   public void draw(Canvas canvas) {
@@ -53,7 +55,7 @@ public class PreDrawable extends Drawable implements RefreshableDrawable,Drawabl
   }
 
   public void setDrawable(Drawable drawable) {
-    if (drawable==null){
+    if (drawable == null) {
       return;
     }
     if (this.mDrawable != null) {
@@ -62,9 +64,7 @@ public class PreDrawable extends Drawable implements RefreshableDrawable,Drawabl
     drawable.setCallback(this);
     this.mDrawable = drawable;
     needResize = true;
-    if (getCallback() != null) {
-      getCallback().invalidateDrawable(this);
-    }
+    invalidateSelf();
   }
 
   @Override
@@ -133,7 +133,8 @@ public class PreDrawable extends Drawable implements RefreshableDrawable,Drawabl
 
   @Override
   public boolean needResize() {
-    return mDrawable != null && needResize;
+    boolean resize = mDrawable != null && needResize;
+    return resize;
   }
 
   public Drawable getDrawable() {
@@ -152,29 +153,29 @@ public class PreDrawable extends Drawable implements RefreshableDrawable,Drawabl
 
   @Override
   public void addHost(TextView tv) {
-    if (hosts==null){
-      hosts=new ArrayList<>();
+    if (hosts == null) {
+      hosts = new ArrayList<>();
       //Glide的GifDrawable的findCallback会一直去找不为Drawable的Callback
       // 所以不能直接implements Drawable.Callback
       setCallback(callBack);
     }
-    if (!hosts.contains(tv)){
+    if (!hosts.contains(tv)) {
       hosts.add(tv);
     }
   }
 
   @Override
   public void removeHost(TextView tv) {
-    if (hosts!=null&&hosts.contains(tv)){
+    if (hosts != null && hosts.contains(tv)) {
       hosts.remove(tv);
     }
   }
 
-  class CallBack implements Drawable.Callback{
+  class CallBack implements Drawable.Callback {
 
     @Override
     public void invalidateDrawable(@NonNull Drawable who) {
-      if (hosts!=null){
+      if (hosts != null) {
         for (TextView tv : hosts) {
           tv.invalidate();
         }

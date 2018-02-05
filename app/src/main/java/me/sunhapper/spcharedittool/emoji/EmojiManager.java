@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import me.sunhapper.spcharedittool.span.GifAlignCenterSpan;
+import me.sunhapper.spcharedittool.span.EqualHeightSpan;
 import me.sunhapper.spcharedittool.util.FileUtil;
 import me.sunhapper.spcharedittool.util.PreferenceUtil;
 
@@ -160,11 +160,11 @@ public class EmojiManager {
     if (drawableCacheMap.containsKey(emoji.getCacheKey())) {
       drawable = drawableCacheMap
           .get(emoji.getCacheKey());
-      imageSpan = new GifAlignCenterSpan(drawable);
+      imageSpan = new EqualHeightSpan(drawable);
     } else {
 
       drawable = emoji.getDrawable(context);
-      imageSpan = new GifAlignCenterSpan(drawable);
+      imageSpan = new EqualHeightSpan(drawable);
       drawableCacheMap
           .put(emoji.getCacheKey(), drawable);
 
@@ -224,10 +224,10 @@ public class EmojiManager {
     Drawable gifDrawable;
     if (drawableCacheMap.containsKey(emoji.getCacheKey())) {
       gifDrawable = drawableCacheMap.get(emoji.getCacheKey());
-      imageSpan = new GifAlignCenterSpan(gifDrawable);
+      imageSpan = new EqualHeightSpan(gifDrawable);
     } else {
       gifDrawable = emoji.getDrawable(context);
-      imageSpan = new GifAlignCenterSpan(gifDrawable);
+      imageSpan = new EqualHeightSpan(gifDrawable);
       drawableCacheMap
           .put(emoji.getCacheKey(), gifDrawable);
 

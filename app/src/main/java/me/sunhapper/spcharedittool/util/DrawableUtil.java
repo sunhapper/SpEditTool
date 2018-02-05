@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
-import me.sunhapper.spcharedittool.span.GifAlignCenterSpan;
+import me.sunhapper.spcharedittool.span.EqualHeightSpan;
 
 /**
  * Created by sunha on 2018/1/23 0023.
@@ -14,7 +14,7 @@ public class DrawableUtil {
 
   public static Spannable getDrawableText(CharSequence text, Drawable gifDrawable) {
     Spannable spannable = new SpannableString(text);
-    ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
+    ImageSpan imageSpan = new EqualHeightSpan(gifDrawable);
     spannable.setSpan(imageSpan,
         0, text.length(),
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
