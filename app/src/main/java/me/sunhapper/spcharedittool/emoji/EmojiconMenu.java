@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import me.sunhapper.spcharedittool.R;
-import me.sunhapper.spcharedittool.util.FileUtil;
-import me.sunhapper.spcharedittool.util.PreferenceUtil;
+import me.sunhapper.spcharedittool.emoji.EmojiManager.OnUnzipSuccessListener;
 import me.sunhapper.spcharedittool.emoji.EmojiconPagerView.EaseEmojiconPagerViewListener;
 import me.sunhapper.spcharedittool.emoji.EmojiconScrollTabBar.EaseScrollTabBarItemClickListener;
 
@@ -54,28 +53,12 @@ public class EmojiconMenu extends EmojiconMenuBase {
     pagerView = findViewById(R.id.pager_view);
     indicatorView = findViewById(R.id.indicator_view);
     tabBar = findViewById(R.id.tab_bar);
-  boolean unziped=  PreferenceUtil.getEmojiInitResult(getContext());
-  if (unziped){
-    initDefault();
-  }else {
-    new Thread(new Runnable() {
+    EmojiManager.getInstance().getDefaultEmojiData(new OnUnzipSuccessListener() {
       @Override
-      public void run() {
-        boolean unzipResult = FileUtil
-            .unzipFromAssets(getContext(), FileUtil.getEmojiDir(getContext()), "emoji");
-        PreferenceUtil.setEmojiInitResult(getContext(),unzipResult);
-        if (unzipResult){
-          post(new Runnable() {
-            @Override
-            public void run() {
-              initDefault();
-            }
-          });
-
-        }
+      public void onUnzipSuccess(DefaultGifEmoji[] defaultGifEmojis) {
+        initDefault(defaultGifEmojis);
       }
-    }).start();
-  }
+    });
 
 
   }
@@ -85,10 +68,10 @@ public class EmojiconMenu extends EmojiconMenuBase {
     tabBar.setSendBtnListener(sendBtnListener);
   }
 
-  private void initDefault() {
+  private void initDefault(DefaultGifEmoji[] defaultGifEmojis) {
     emojiconGroupList = new ArrayList<>();
     emojiconGroupList.add(new EmojiconGroupEntity(R.drawable.common_emoj_smile,
-        Arrays.asList(EmojiManager.getInstance().createData(getContext()))));
+        Arrays.asList(defaultGifEmojis)));
     for (EmojiconGroupEntity groupEntity : emojiconGroupList) {
       tabBar.addTab(groupEntity.getIcon());
     }

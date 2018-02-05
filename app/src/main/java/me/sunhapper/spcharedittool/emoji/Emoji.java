@@ -1,5 +1,6 @@
 package me.sunhapper.spcharedittool.emoji;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 /**
@@ -8,10 +9,9 @@ import android.graphics.drawable.Drawable;
 
 public interface Emoji {
 
-  Drawable getDrawable();
+  Drawable getDrawable(Context context);
 
   CharSequence getEmojiText();
-
 
   Object getRes();
 
@@ -20,5 +20,7 @@ public interface Emoji {
   boolean isDeleteIcon();
 
   int getDefaultResId();
+
+  Object getCacheKey();
 
 }

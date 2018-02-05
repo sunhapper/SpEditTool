@@ -1,37 +1,29 @@
 package me.sunhapper.spcharedittool.emoji;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
-import java.io.File;
 import me.sunhapper.spcharedittool.R;
 
 public class DeleteEmoji implements Emoji {
 
-  private String emojiText;
-  private File pngFile;
 
   public DeleteEmoji() {
 
   }
 
 
-  public DeleteEmoji(File iconPng, String emojiText) {
-    this.pngFile = iconPng;
-    this.emojiText = emojiText;
-  }
-
-
   @Override
-  public Drawable getDrawable() {
-    return null;
+  public Drawable getDrawable(Context context) {
+    return context.getResources().getDrawable(getDefaultResId());
   }
 
   public CharSequence getEmojiText() {
-    return emojiText;
+    return "";
   }
 
   @Override
   public Object getRes() {
-    return pngFile;
+    return R.drawable.common_emoj_delete_expression;
   }
 
   @Override
@@ -46,6 +38,11 @@ public class DeleteEmoji implements Emoji {
 
   @Override
   public int getDefaultResId() {
+    return R.drawable.common_emoj_delete_expression;
+  }
+
+  @Override
+  public Object getCacheKey() {
     return R.drawable.common_emoj_delete_expression;
   }
 

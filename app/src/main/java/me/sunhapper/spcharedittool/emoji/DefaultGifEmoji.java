@@ -1,8 +1,11 @@
 package me.sunhapper.spcharedittool.emoji;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import java.io.File;
+import java.io.IOException;
 import me.sunhapper.spcharedittool.R;
+import pl.droidsonroids.gif.GifDrawable;
 
 public class DefaultGifEmoji implements Emoji {
 
@@ -16,8 +19,13 @@ public class DefaultGifEmoji implements Emoji {
 
 
   @Override
-  public Drawable getDrawable() {
-    return null;
+  public Drawable getDrawable(Context context) {
+    try {
+      return new GifDrawable(emojiconFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return context.getResources().getDrawable(getDefaultResId());
   }
 
   public CharSequence getEmojiText() {
@@ -43,6 +51,15 @@ public class DefaultGifEmoji implements Emoji {
   @Override
   public int getDefaultResId() {
     return R.drawable.common_emoj_smile_default;
+  }
+
+  @Override
+  public Object getCacheKey() {
+    if (emojiconFile.exists()) {
+      return emojiconFile.getAbsolutePath();
+    } else {
+      return R.drawable.common_emoj_smile_default;
+    }
   }
 
 
