@@ -5,6 +5,7 @@
 ## 截图
 
 <img src="artworks/fullSp.gif" width = "240" height = "400" alt="ScreenShot"  />
+<img src="artworks/emojiSp.gif" width = "240" height = "400" alt="ScreenShot"  />
 
 # 使用说明  
 
