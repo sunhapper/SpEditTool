@@ -188,7 +188,7 @@ addTextChangedListener(new TextWatcher() {
           if (count == 1 && !TextUtils.isEmpty(charSequence)) {
             char mentionChar = charSequence.toString().charAt(start);
             if (character.equals(mentionChar) && mKeyReactListener != null) {
-              mKeyReactListener.onKeyReact(character.toString());//在EditText内部，所以用回调的方式通知外部有特殊的字符被输入
+             handKeyReactEvent(character);//在EditText内部，所以用回调的方式通知外部有特殊的字符被输入
               return;
             }
           }
@@ -201,6 +201,24 @@ addTextChangedListener(new TextWatcher() {
       }
     })；
 ```
+```
+  private void handKeyReactEvent(final Character character) {
+    post(new Runnable() {
+      @Override
+      public void run() {
+        mKeyReactListener.onKeyReact(character.toString());
+      }
+    });
+  }
+```
+
+#### Tips:post(Runnable runnabe)
+
+在`onTextChanged`中使用`post(Runnable runnabe)`去调用外部回调,是因为在onTextChanged执行时,最初插入的@等字符的`onSelectionChanged`回调还没走
+
+假设输入了`@`,不使用`post(Runnable runnabe)`,直接调用`onKeyReact`,在回调中插入`@sunhapper`字符串并设置光标位置,onSelectionChanged调用顺序为`onSelectionChanged(10,10)`-->`onSelectionChanged(1,1)`导致光标位置位于插入字符串前面而不是后面,不符合预期
+
+使用post(Runnable runnabe)可以让当前线程的代码执行完再去调用`onKeyReact`,onSelectionChanged调用顺序为`onSelectionChanged(1,1)`-->`onSelectionChanged(10,10)`,光标位置符合预期
 
 ## 总结
 
