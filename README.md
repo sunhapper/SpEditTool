@@ -102,4 +102,9 @@ SpData[] spDatas = spEditText.getSpDatas();
 
 ```
 
+# 彩蛋
+
+`GifTextUtil.setText(TextView textView,CharSequence text)`
+[一行代码让TextView中ImageSpan支持Gif](http://www.jianshu.com/p/3ae513115c17)
+
 > 欢迎star，提PR、issue
