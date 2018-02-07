@@ -27,7 +27,7 @@ import me.sunhapper.spcharedittool.emoji.EmojiManager.OnUnzipSuccessListener;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenu;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenuBase.EmojiconMenuListener;
 import me.sunhapper.spcharedittool.glide.DrawableTarget;
-import me.sunhapper.spcharedittool.glide.PreDrawable;
+import me.sunhapper.spcharedittool.glide.GlidePreDrawable;
 import me.sunhapper.spcharedittool.span.EqualHeightSpan;
 import me.sunhapper.spcharedittool.util.DrawableUtil;
 import pl.droidsonroids.gif.GifDrawable;
@@ -133,13 +133,13 @@ public class MainActivity extends AppCompatActivity {
   public void setGif(View view) {
     try {
       GifDrawable gifDrawable = new RefreshGifDrawable(getResources(), R.drawable.a);
-      PreDrawable preDrawable = new PreDrawable();
+      GlidePreDrawable glidePreDrawable = new GlidePreDrawable();
       GlideApp.with(this)
           .load(
               "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37.gif")
           .placeholder(gifDrawable)
-          .into(new DrawableTarget(preDrawable));
-      CharSequence charSequence = DrawableUtil.getDrawableText("[c]", preDrawable);
+          .into(new DrawableTarget(glidePreDrawable));
+      CharSequence charSequence = DrawableUtil.getDrawableText("[c]", glidePreDrawable);
       spEditText.insertSpecialStr(charSequence, false, charSequence, null);
     } catch (IOException e) {
       e.printStackTrace();

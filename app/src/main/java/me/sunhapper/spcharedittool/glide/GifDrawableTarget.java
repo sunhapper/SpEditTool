@@ -15,58 +15,58 @@ import com.bumptech.glide.request.transition.Transition;
 public class GifDrawableTarget extends SimpleTarget<GifDrawable> {
 
   private static final String TAG = "GifTarget";
-  private PreDrawable preDrawable;
+  private GlidePreDrawable glidePreDrawable;
 
   @Override
   public void onResourceReady(@NonNull GifDrawable resource,
       @Nullable Transition<? super GifDrawable> transition) {
     Log.i(TAG, "onResourceReady: " + resource);
-    preDrawable.setDrawable(resource);
+    glidePreDrawable.setDrawable(resource);
     resource.setLoopCount(GifDrawable.LOOP_FOREVER);
     resource.start();
-    preDrawable.invalidateSelf();
+    glidePreDrawable.invalidateSelf();
   }
 
-  public GifDrawableTarget(PreDrawable preDrawable) {
-    this.preDrawable = preDrawable;
+  public GifDrawableTarget(GlidePreDrawable glidePreDrawable) {
+    this.glidePreDrawable = glidePreDrawable;
   }
 
 
   @Override
   public void onLoadCleared(@Nullable Drawable placeholder) {
     Log.i(TAG, "onLoadCleared: " + placeholder);
-    if (preDrawable.getDrawable() != null) {
+    if (glidePreDrawable.getDrawable() != null) {
       return;
     }
-    preDrawable.setDrawable(placeholder);
+    glidePreDrawable.setDrawable(placeholder);
     if (placeholder instanceof GifDrawable) {
       ((GifDrawable) placeholder).setLoopCount(GifDrawable.LOOP_FOREVER);
       ((GifDrawable) placeholder).start();
     }
-    preDrawable.invalidateSelf();
+    glidePreDrawable.invalidateSelf();
 
   }
 
   @Override
   public void onLoadStarted(@Nullable Drawable placeholder) {
     Log.i(TAG, "onLoadCleared: " + placeholder);
-    preDrawable.setDrawable(placeholder);
+    glidePreDrawable.setDrawable(placeholder);
     if (placeholder instanceof GifDrawable) {
       ((GifDrawable) placeholder).setLoopCount(GifDrawable.LOOP_FOREVER);
       ((GifDrawable) placeholder).start();
     }
-    preDrawable.invalidateSelf();
+    glidePreDrawable.invalidateSelf();
   }
 
   @Override
   public void onLoadFailed(@Nullable Drawable errorDrawable) {
     Log.i(TAG, "onLoadFailed: " + errorDrawable);
-    preDrawable.setDrawable(errorDrawable);
+    glidePreDrawable.setDrawable(errorDrawable);
     if (errorDrawable instanceof GifDrawable) {
       ((GifDrawable) errorDrawable).setLoopCount(GifDrawable.LOOP_FOREVER);
       ((GifDrawable) errorDrawable).start();
     }
-    preDrawable.invalidateSelf();
+    glidePreDrawable.invalidateSelf();
   }
 
 }

@@ -16,7 +16,7 @@ import me.sunhapper.spcharedittool.Measurable;
  * Created by sunha on 2018/1/23 0023.
  */
 
-public class PreDrawable extends Drawable implements RefreshableDrawable, Drawable.Callback,
+public class GlideReusePreDrawable extends Drawable implements RefreshableDrawable, Drawable.Callback,
     Measurable {
 
   private List<TextView> hosts;
@@ -171,7 +171,7 @@ public class PreDrawable extends Drawable implements RefreshableDrawable, Drawab
     }
   }
 
-  class CallBack implements Drawable.Callback {
+  class CallBack implements Callback {
 
     @Override
     public void invalidateDrawable(@NonNull Drawable who) {
