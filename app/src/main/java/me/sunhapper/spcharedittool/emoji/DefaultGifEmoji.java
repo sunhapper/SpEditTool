@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 import java.io.File;
 import java.io.IOException;
 import me.sunhapper.spcharedittool.R;
-import pl.droidsonroids.gif.GifDrawable;
+import me.sunhapper.spcharedittool.drawable.RefreshGifDrawable;
 
 public class DefaultGifEmoji implements Emoji {
 
@@ -21,7 +21,7 @@ public class DefaultGifEmoji implements Emoji {
   @Override
   public Drawable getDrawable(Context context) {
     try {
-      return new GifDrawable(emojiconFile);
+      return new RefreshGifDrawable(emojiconFile);
     } catch (IOException e) {
       e.printStackTrace();
     }

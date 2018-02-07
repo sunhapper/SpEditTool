@@ -1,5 +1,6 @@
 package me.sunhapper.spcharedittool.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -146,4 +147,9 @@ public class MainActivity extends AppCompatActivity {
 
   }
 
+  public void openGifRecycler(View view) {
+    Intent intent = new Intent(this, RecyclerDemoActivity.class);
+    startActivity(intent);
+
+  }
 }

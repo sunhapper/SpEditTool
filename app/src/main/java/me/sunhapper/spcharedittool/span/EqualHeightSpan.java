@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import me.sunhapper.spcharedittool.Measurable;
 
 public class EqualHeightSpan extends ImageSpan {
@@ -69,7 +68,6 @@ public class EqualHeightSpan extends ImageSpan {
       int bottom, Paint paint) {
     final String s = text.toString();
     String subS = s.substring(start, end);
-    Log.i(TAG, "draw: ");
     if (ELLIPSIS_NORMAL[0] == subS.charAt(0)
         || ELLIPSIS_TWO_DOTS[0] == subS.charAt(0)) {
       canvas.save();

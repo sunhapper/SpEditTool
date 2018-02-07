@@ -17,6 +17,8 @@ import com.sunhapper.spedittool.drawable.RefreshableDrawable;
 
 public class GifTextUtil {
 
+  private static final String TAG = "GifTextUtil";
+
   public static void setText(final TextView textView, final CharSequence text) {
     //需要SPANNABLE，保证textView中取出来的是SpannableString
     setText(textView, text, BufferType.SPANNABLE);
@@ -30,18 +32,18 @@ public class GifTextUtil {
 
   public static void setTextWithReuseDrawable(final TextView textView, final CharSequence nText,
       final BufferType type) {
-    CharSequence oldText="";
+    CharSequence oldText = "";
     try {
       //EditText第一次获取到的是个空字符串，会强转成Editable，出现ClassCastException
-      oldText= textView.getText();
-    }catch (ClassCastException e){
+      oldText = textView.getText();
+    } catch (ClassCastException e) {
       e.fillInStackTrace();
     }
-    if (oldText instanceof Spannable){
+    if (oldText instanceof Spannable) {
       ImageSpan[] gifSpans = ((Spannable) oldText).getSpans(0, oldText.length(), ImageSpan.class);
       for (ImageSpan gifSpan : gifSpans) {
         Drawable drawable = gifSpan.getDrawable();
-        if (drawable != null&&drawable instanceof RefreshableDrawable) {
+        if (drawable != null && drawable instanceof RefreshableDrawable) {
           ((RefreshableDrawable) drawable).removeHost(textView);
         }
       }
@@ -51,25 +53,24 @@ public class GifTextUtil {
     CharSequence text = textView.getText();
 
     if (text instanceof Spannable) {
-      RefreshableDrawable temp=null;
-      int tempInterval=0;
+      RefreshableDrawable temp = null;
+      int tempInterval = 0;
       ImageSpan[] gifSpans = ((Spannable) text).getSpans(0, text.length(), ImageSpan.class);
       for (ImageSpan gifSpan : gifSpans) {
         Drawable drawable = gifSpan.getDrawable();
-        if (drawable != null&&drawable instanceof RefreshableDrawable) {
-          if (((RefreshableDrawable) drawable).canRefresh()){
-            if (tempInterval<((RefreshableDrawable) drawable).getInterval()){
-              temp= (RefreshableDrawable) drawable;
+        if (drawable != null && drawable instanceof RefreshableDrawable) {
+          if (((RefreshableDrawable) drawable).canRefresh()) {
+            if (tempInterval < ((RefreshableDrawable) drawable).getInterval()) {
+              temp = (RefreshableDrawable) drawable;
             }
           }
         }
       }
-      if (temp!=null){
+      if (temp != null) {
         temp.addHost(textView);
       }
     }
     textView.invalidate();
-
   }
 
 
