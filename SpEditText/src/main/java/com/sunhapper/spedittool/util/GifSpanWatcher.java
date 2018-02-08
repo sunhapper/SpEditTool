@@ -1,4 +1,4 @@
-package com.sunhapper.spedittool.span;
+package com.sunhapper.spedittool.util;
 
 import android.graphics.drawable.Drawable;
 import android.text.SpanWatcher;

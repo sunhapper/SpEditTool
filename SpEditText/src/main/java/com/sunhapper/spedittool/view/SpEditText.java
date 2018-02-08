@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 import com.sunhapper.spedittool.R;
-import com.sunhapper.spedittool.span.GifTextUtil;
+import com.sunhapper.spedittool.util.GifTextUtil;
 
 public class SpEditText extends AppCompatEditText {
 
