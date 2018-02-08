@@ -13,7 +13,6 @@ import me.sunhapper.spcharedittool.Measurable;
 public class EqualHeightSpan extends ImageSpan {
 
   private boolean resized = false;
-  private static final String TAG = "GifAlignCenterSpan";
   private static final char[] ELLIPSIS_NORMAL = {'\u2026'}; // this is "..."
   private static final char[] ELLIPSIS_TWO_DOTS = {'\u2025'}; // this is ".."
   private int drawableHeight = 0;

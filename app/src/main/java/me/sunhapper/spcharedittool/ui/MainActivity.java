@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
@@ -29,6 +32,7 @@ import me.sunhapper.spcharedittool.emoji.EmojiconMenuBase.EmojiconMenuListener;
 import me.sunhapper.spcharedittool.glide.DrawableTarget;
 import me.sunhapper.spcharedittool.glide.GlidePreDrawable;
 import me.sunhapper.spcharedittool.span.EqualHeightSpan;
+import me.sunhapper.spcharedittool.span.VerticalCenterSpan;
 import me.sunhapper.spcharedittool.util.DrawableUtil;
 import pl.droidsonroids.gif.GifDrawable;
 
@@ -151,5 +155,36 @@ public class MainActivity extends AppCompatActivity {
     Intent intent = new Intent(this, RecyclerDemoActivity.class);
     startActivity(intent);
 
+  }
+
+  public void testSpan(View view) {
+    Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher_round);
+    VerticalCenterSpan testSpan = new VerticalCenterSpan(drawable);
+    VerticalCenterSpan testSpan1 = new VerticalCenterSpan(drawable);
+    VerticalCenterSpan testSpan2 = new VerticalCenterSpan(drawable);
+    VerticalCenterSpan testSpan3 = new VerticalCenterSpan(drawable);
+    SpannableString spannableString = new SpannableString("[test]");
+    SpannableString spannableString1 = new SpannableString("[test]");
+    SpannableString spannableString2 = new SpannableString("[test]");
+    SpannableString spannableString3 = new SpannableString("[test]");
+    spannableString
+        .setSpan(testSpan, 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    spannableString1
+        .setSpan(testSpan1, 0, spannableString1.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    spannableString2
+        .setSpan(testSpan2, 0, spannableString2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    spannableString3
+        .setSpan(testSpan3, 0, spannableString3.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder()
+        .append("ssssssssssssssssssssssssssssssgl")
+        .append(spannableString)
+        .append("sssssssssssssssssssssssssssss").append("ssssssssssssssssssssssssssssssgl")
+        .append(spannableString1)
+        .append("sssssssssssssssssssssssssssss").append("ssssssssssssssssssssssssssssssgl")
+        .append(spannableString2)
+        .append("sssssssssssssssssssssssssssss").append("ssssssssssssssssssssssssssssssgl")
+        .append(spannableString3)
+        .append("sssssssssssssssssssssssssssss");
+    spEditText.setText(spannableStringBuilder);
   }
 }

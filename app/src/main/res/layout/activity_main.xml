@@ -78,10 +78,13 @@
     android:id="@+id/button5"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:visibility="gone"
+    android:onClick="testSpan"
+    android:text="testSpan"
+    android:visibility="visible"
     app:layout_constraintEnd_toStartOf="@+id/button7"
     app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toEndOf="@+id/button6" />
+    app:layout_constraintStart_toEndOf="@+id/button6"
+    app:layout_constraintTop_toBottomOf="@id/button4" />
   <Button
     android:id="@+id/button7"
     android:layout_width="wrap_content"
