@@ -255,6 +255,14 @@ public class SpEditText extends AppCompatEditText {
     return hasChange;
   }
 
+  public void insertNormalStr(CharSequence showContent) {
+    insertNormalStr(showContent, false);
+  }
+
+  public void insertNormalStr(CharSequence showContent, boolean rollBack) {
+    insertSpecialStr(showContent, rollBack, false, null, null);
+  }
+
 
   /**
    * 插入特殊字符串
@@ -266,19 +274,28 @@ public class SpEditText extends AppCompatEditText {
    */
   public void insertSpecialStr(CharSequence showContent, boolean rollBack, Object customData,
       Object customSpan) {
+    insertSpecialStr(showContent, rollBack, true, customData, customSpan);
+  }
+
+
+  public void insertSpecialStr(CharSequence showContent, boolean needSpSpan, boolean rollBack,
+      Object customData,
+      Object customSpan) {
     if (TextUtils.isEmpty(showContent)) {
       return;
     }
     int index = getSelectionStart();
     Editable editable = getText();
     SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(editable);
-    SpData spData = new SpData();
-    spData.setShowContent(showContent);
-    spData.setCustomData(customData);
     SpannableString spannableString = new SpannableString(showContent);
-    spannableString
-        .setSpan(spData, 0, spannableString.length(),
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+    if (needSpSpan) {
+      SpData spData = new SpData();
+      spData.setShowContent(showContent);
+      spData.setCustomData(customData);
+      spannableString
+          .setSpan(spData, 0, spannableString.length(),
+              SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
     if (customSpan != null) {
       spannableString
           .setSpan(customSpan, 0, spannableString.length(),

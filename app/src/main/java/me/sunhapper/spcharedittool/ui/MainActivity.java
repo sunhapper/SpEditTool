@@ -117,19 +117,22 @@ public class MainActivity extends AppCompatActivity {
     EmojiManager.getInstance().getDefaultEmojiData(new OnUnzipSuccessListener() {
       @Override
       public void onUnzipSuccess(DefaultGifEmoji[] defaultGifEmojis) {
-        for (DefaultGifEmoji defaultGifEmoji : defaultGifEmojis) {
-          insertEmoji(defaultGifEmoji);
-        }
-
-//        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
 //        for (DefaultGifEmoji defaultGifEmoji : defaultGifEmojis) {
-//          Drawable gifDrawable = EmojiManager.getInstance()
-//              .getDrawableByEmoji(MainActivity.this, defaultGifEmoji);
-//          ImageSpan imageSpan = new GifAlignCenterSpan(gifDrawable);
-//          spannableStringBuilder
-//              .append(defaultGifEmoji.getEmojiText(), imageSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//          insertEmoji(defaultGifEmoji);
 //        }
-//        spEditText.insertSpecialStr(spannableStringBuilder, false, spannableStringBuilder, null);
+
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+        for (DefaultGifEmoji defaultGifEmoji : defaultGifEmojis) {
+          Drawable gifDrawable = EmojiManager.getInstance()
+              .getDrawableByEmoji(MainActivity.this, defaultGifEmoji);
+          ImageSpan imageSpan = new EqualHeightSpan(gifDrawable);
+          spannableStringBuilder
+              .append(defaultGifEmoji.getEmojiText())
+              .setSpan(imageSpan,
+                  spannableStringBuilder.length() - defaultGifEmoji.getEmojiText().length(),
+                  spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        spEditText.insertNormalStr(spannableStringBuilder);
       }
     });
   }
