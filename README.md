@@ -24,7 +24,7 @@
 
 ```
 dependencies {
-	        compile 'com.github.sunhapper:SpEditTool:0.1.5'
+	        compile 'com.github.sunhapper:SpEditTool:0.1.6'
 	}
 ```
 
