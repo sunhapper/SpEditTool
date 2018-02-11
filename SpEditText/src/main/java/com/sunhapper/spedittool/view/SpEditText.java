@@ -9,6 +9,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import com.sunhapper.spedittool.R;
@@ -19,6 +20,8 @@ public class SpEditText extends AppCompatEditText {
   private static String TAG = "SpEditText";
   private KeyReactListener mKeyReactListener;
   private char[] reactKeys;
+  private int tempIndex = 0;
+  private boolean useTemp;
 
   public SpEditText(Context context) {
     super(context);
@@ -49,10 +52,12 @@ public class SpEditText extends AppCompatEditText {
     addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        Log.i(TAG, "beforeTextChanged: ");
       }
 
       @Override
       public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+        Log.i(TAG, "onTextChanged: ");
         if (reactKeys == null) {
           return;
         }
@@ -69,7 +74,7 @@ public class SpEditText extends AppCompatEditText {
 
       @Override
       public void afterTextChanged(Editable s) {
-
+        Log.i(TAG, "afterTextChanged: ");
       }
     });
 
@@ -132,20 +137,24 @@ public class SpEditText extends AppCompatEditText {
 
   private boolean onDeleteEvent() {
     int selectionStart = getSelectionStart();
-    int selectionEnd = getSelectionEnd();
+    final int selectionEnd = getSelectionEnd();
     if (selectionEnd != selectionStart) {
       return false;
     }
     SpData[] spDatas = getSpDatas();
     for (int i = 0; i < spDatas.length; i++) {
       SpData spData = spDatas[i];
-      int rangeStart = spData.start;
+      final int rangeStart = spData.start;
       if (selectionStart == spData.end) {
         Editable editable = getText();
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(editable);
-        spannableStringBuilder.delete(rangeStart, selectionEnd);
-        GifTextUtil.setText(this, spannableStringBuilder);
-        setSelection(rangeStart);
+        if ((editable.length() - spData.end) > 15) {
+          SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(editable);
+          spannableStringBuilder.delete(rangeStart, selectionEnd);
+          GifTextUtil.setText(SpEditText.this, spannableStringBuilder);
+          setSelection(rangeStart);
+        } else {
+          editable.delete(spData.start, spData.end);
+        }
         return true;
       }
 
@@ -274,7 +283,7 @@ public class SpEditText extends AppCompatEditText {
    */
   public void insertSpecialStr(CharSequence showContent, boolean rollBack, Object customData,
       Object customSpan) {
-    insertSpecialStr(showContent, rollBack, true, customData, customSpan);
+    insertSpecialStr(showContent, true, rollBack, customData, customSpan);
   }
 
 
