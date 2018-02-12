@@ -48,7 +48,7 @@ public class SpEditText extends AppCompatEditText {
    * 设置删除事件监听
    */
   private void init() {
-
+    setEditableFactory(ImageEditableFactory.getInstance());
     addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -147,14 +147,15 @@ public class SpEditText extends AppCompatEditText {
       final int rangeStart = spData.start;
       if (selectionStart == spData.end) {
         Editable editable = getText();
-        if ((editable.length() - spData.end) > 15) {
-          SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(editable);
-          spannableStringBuilder.delete(rangeStart, selectionEnd);
-          GifTextUtil.setText(SpEditText.this, spannableStringBuilder);
-          setSelection(rangeStart);
-        } else {
-          editable.delete(spData.start, spData.end);
-        }
+//        if ((editable.length() - spData.end) > 15) {
+//          SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(editable);
+//          spannableStringBuilder.delete(rangeStart, selectionEnd);
+//          GifTextUtil.setText(SpEditText.this, spannableStringBuilder);
+//          setSelection(rangeStart);
+//        } else {
+//          editable.delete(spData.start, spData.end);
+//        }
+        editable.delete(spData.start, spData.end);
         return true;
       }
 
