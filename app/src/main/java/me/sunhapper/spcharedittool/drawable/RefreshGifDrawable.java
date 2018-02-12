@@ -10,15 +10,14 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.TextView;
 import com.sunhapper.spedittool.drawable.RefreshableDrawable;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifOptions;
@@ -28,9 +27,13 @@ import pl.droidsonroids.gif.InputSource;
  * Created by sunhapper on 2018/1/28.
  */
 
-public class RefreshGifDrawable extends GifDrawable implements RefreshableDrawable,Drawable.Callback {
-  private List< TextView> hosts;
+public class RefreshGifDrawable extends GifDrawable implements RefreshableDrawable,
+    Drawable.Callback {
+
+  private CallBack callBack = new CallBack();
+  private HashMap<Callback, Integer> callbackWeakHashMap;
   private static final String TAG = "RefreshGifDrawable";
+
   public RefreshGifDrawable(@NonNull Resources res,
       int id) throws NotFoundException, IOException {
     super(res, id);
@@ -90,36 +93,63 @@ public class RefreshGifDrawable extends GifDrawable implements RefreshableDrawab
 
   @Override
   public int getInterval() {
-    Log.i(TAG, "getInterval: "+getDuration());
-    Log.i(TAG, "getInterval: "+getNumberOfFrames());
-    return getDuration() /getNumberOfFrames();
+    return getDuration() / getNumberOfFrames();
+  }
+
+
+  @Override
+  public void addHost(Drawable.Callback currentCallback) {
+    if (callbackWeakHashMap == null) {
+      callbackWeakHashMap = new HashMap<>();
+      setCallback(callBack);
+    }
+    if (!containsCallback(currentCallback)) {
+      Log.i(TAG, "addHost: ");
+      callbackWeakHashMap.put(currentCallback, 1);
+    } else {
+      int count = callbackWeakHashMap.get(currentCallback);
+      callbackWeakHashMap.put(currentCallback, ++count);
+    }
   }
 
   @Override
-  public void addHost(TextView tv) {
-    if (hosts==null){
-      hosts=new ArrayList<>();
-      setCallback(this);
+  public void removeHost(Callback currentCallback) {
+    if (callbackWeakHashMap == null) {
+      return;
     }
-    if (!hosts.contains(tv)){
-      hosts.add(tv);
+    if (containsCallback(currentCallback)) {
+      int count = callbackWeakHashMap.get(currentCallback);
+      if (count <= 1) {
+        callbackWeakHashMap.remove(currentCallback);
+      } else {
+        callbackWeakHashMap.put(currentCallback, --count);
+      }
     }
   }
 
-  @Override
-  public void removeHost(TextView tv) {
-    if (hosts!=null&&hosts.contains(tv)){
-      hosts.remove(tv);
-    }
+  private boolean containsCallback(Callback currentCallback) {
+    return callbackWeakHashMap != null && callbackWeakHashMap.containsKey(currentCallback);
   }
+
 
   @Override
   public void invalidateDrawable(@NonNull Drawable who) {
-    if (hosts!=null){
-      for (TextView tv : hosts) {
-        tv.invalidate();
+    Log.i(TAG, "invalidateDrawable: " + who.hashCode());
+    if (callbackWeakHashMap != null) {
+      Log.i(TAG, "invalidateDrawable: " + who.hashCode());
+      Set<Callback> set = callbackWeakHashMap.keySet();
+      for (Callback callback : set) {
+        callback.invalidateDrawable(who);
+
       }
     }
+  }
+
+  @Override
+  public void invalidateSelf() {
+    super.invalidateSelf();
+    Callback callback = getCallback();
+    Log.i(TAG, "invalidateSelf: " + callback);
   }
 
   @Override
@@ -131,4 +161,29 @@ public class RefreshGifDrawable extends GifDrawable implements RefreshableDrawab
   public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
 
   }
+
+  class CallBack implements Callback {
+
+    @Override
+    public void invalidateDrawable(@NonNull Drawable who) {
+      if (callbackWeakHashMap != null) {
+        Set<Callback> set = callbackWeakHashMap.keySet();
+        for (Callback callback : set) {
+          callback.invalidateDrawable(who);
+
+        }
+      }
+    }
+
+    @Override
+    public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
+
+    }
+
+    @Override
+    public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
+
+    }
+  }
+
 }

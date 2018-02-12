@@ -1,23 +1,16 @@
 package com.sunhapper.spedittool.util;
 
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Drawable.Callback;
 import android.text.SpanWatcher;
 import android.text.Spannable;
 import android.text.style.ImageSpan;
-import com.sunhapper.spedittool.drawable.RefreshableDrawable;
 
 /**
  * Created by sunha on 2018/1/25 0025.
  */
 
-class GifSpanWatcher implements SpanWatcher {
+class UnreuseSpanWatcher implements SpanWatcher {
 
-  private Drawable.Callback callback;
-
-  public GifSpanWatcher(Callback callback) {
-    this.callback = callback;
-  }
 
   private static final String TAG = "GifSpanWatcher";
 
@@ -31,9 +24,7 @@ class GifSpanWatcher implements SpanWatcher {
     if (what instanceof ImageSpan) {
       ImageSpan imageSpan = (ImageSpan) what;
       Drawable drawable = imageSpan.getDrawable();
-      if (drawable instanceof RefreshableDrawable) {
-        ((RefreshableDrawable) drawable).removeHost(callback);
-      } else if (drawable != null) {
+      if (drawable != null) {
         drawable.setCallback(null);
       }
     }

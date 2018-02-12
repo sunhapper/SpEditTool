@@ -1,14 +1,19 @@
 package com.sunhapper.spedittool.drawable;
 
-import android.widget.TextView;
+import android.graphics.drawable.Drawable;
 
 /**
  * Created by sunhapper on 2018/1/28.
  */
 
 public interface RefreshableDrawable {
+
   boolean canRefresh();
+
   int getInterval();
-  void addHost(TextView tv);
-  void removeHost(TextView tv);
+
+  void addHost(Drawable.Callback callback);
+
+  void removeHost(Drawable.Callback callback);
+
 }

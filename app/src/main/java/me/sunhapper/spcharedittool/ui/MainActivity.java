@@ -31,6 +31,7 @@ import me.sunhapper.spcharedittool.emoji.EmojiconMenu;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenuBase.EmojiconMenuListener;
 import me.sunhapper.spcharedittool.glide.DrawableTarget;
 import me.sunhapper.spcharedittool.glide.GlidePreDrawable;
+import me.sunhapper.spcharedittool.glide.GlideReusePreDrawable;
 import me.sunhapper.spcharedittool.span.EqualHeightSpan;
 import me.sunhapper.spcharedittool.span.VerticalCenterSpan;
 import me.sunhapper.spcharedittool.util.DrawableUtil;
@@ -137,10 +138,10 @@ public class MainActivity extends AppCompatActivity {
     });
   }
 
-  public void setGif(View view) {
+  public void setGlideGif(View view) {
     try {
       GifDrawable gifDrawable = new RefreshGifDrawable(getResources(), R.drawable.a);
-      GlidePreDrawable glidePreDrawable = new GlidePreDrawable();
+      GlidePreDrawable glidePreDrawable = new GlideReusePreDrawable();
       GlideApp.with(this)
           .load(
               "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37.gif")

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.TextView.BufferType;
 import com.sunhapper.spedittool.util.GifTextUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,10 @@ public class RecyclerDemoActivity extends AppCompatActivity {
     public void onBindViewHolder(ViewHolder holder, int position) {
       CharSequence charSequence = charSequences.get(position);
       Log.i(TAG, "onBindViewHolder:start" + position);
-      GifTextUtil.setTextWithReuseDrawable(holder.textView, charSequence);
+      if (position == 8) {
+        Log.i(TAG, "onBindViewHolder: ");
+      }
+      GifTextUtil.setTextWithReuseDrawable(holder.textView, charSequence, false);
       Log.i(TAG, "onBindViewHolder:  end" + position);
     }
 

@@ -316,7 +316,7 @@ public class SpEditText extends AppCompatEditText {
       index--;
     }
     spannableStringBuilder.insert(index, spannableString);
-    GifTextUtil.setText(this, spannableStringBuilder);
+    GifTextUtil.setTextWithReuseDrawable(this, spannableStringBuilder, false);
     setSelection(index + spannableString.length());
   }
 

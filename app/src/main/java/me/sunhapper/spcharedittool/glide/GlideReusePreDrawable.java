@@ -2,10 +2,9 @@ package me.sunhapper.spcharedittool.glide;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.widget.TextView;
 import com.sunhapper.spedittool.drawable.RefreshableDrawable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.WeakHashMap;
 import me.sunhapper.spcharedittool.Measurable;
 
 /**
@@ -15,7 +14,7 @@ import me.sunhapper.spcharedittool.Measurable;
 public class GlideReusePreDrawable extends GlidePreDrawable implements RefreshableDrawable,
     Measurable {
 
-  private List<TextView> hosts;
+  private WeakHashMap<Callback, Integer> callbackWeakHashMap;
   private CallBack callBack = new CallBack();
 
   @Override
@@ -28,33 +27,51 @@ public class GlideReusePreDrawable extends GlidePreDrawable implements Refreshab
     return 60;
   }
 
+
   @Override
-  public void addHost(TextView tv) {
-    if (hosts == null) {
-      hosts = new ArrayList<>();
+  public void addHost(Drawable.Callback currentCallback) {
+    if (callbackWeakHashMap == null) {
+      callbackWeakHashMap = new WeakHashMap<>();
       //Glide的GifDrawable的findCallback会一直去找不为Drawable的Callback
       // 所以不能直接implements Drawable.Callback
       setCallback(callBack);
     }
-    if (!hosts.contains(tv)) {
-      hosts.add(tv);
+    if (!containsCallback(currentCallback)) {
+      callbackWeakHashMap.put(currentCallback, 1);
+    } else {
+      int count = callbackWeakHashMap.get(currentCallback);
+      callbackWeakHashMap.put(currentCallback, ++count);
     }
   }
 
   @Override
-  public void removeHost(TextView tv) {
-    if (hosts != null && hosts.contains(tv)) {
-      hosts.remove(tv);
+  public void removeHost(Callback currentCallback) {
+    if (callbackWeakHashMap == null) {
+      return;
     }
+    if (containsCallback(currentCallback)) {
+      int count = callbackWeakHashMap.get(currentCallback);
+      if (count <= 1) {
+        callbackWeakHashMap.remove(currentCallback);
+      } else {
+        callbackWeakHashMap.put(currentCallback, --count);
+      }
+    }
+  }
+
+  private boolean containsCallback(Callback currentCallback) {
+    return callbackWeakHashMap != null && callbackWeakHashMap.containsKey(currentCallback);
   }
 
   class CallBack implements Callback {
 
     @Override
     public void invalidateDrawable(@NonNull Drawable who) {
-      if (hosts != null) {
-        for (TextView tv : hosts) {
-          tv.invalidate();
+      if (callbackWeakHashMap != null) {
+        Set<Callback> set = callbackWeakHashMap.keySet();
+        for (Callback callback : set) {
+          callback.invalidateDrawable(who);
+
         }
       }
     }
