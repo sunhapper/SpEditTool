@@ -2,6 +2,7 @@ package me.sunhapper.spcharedittool.emoji;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import java.io.File;
 import java.io.IOException;
 import me.sunhapper.spcharedittool.R;
@@ -25,7 +26,7 @@ public class DefaultGifEmoji implements Emoji {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return context.getResources().getDrawable(getDefaultResId());
+    return ContextCompat.getDrawable(context,getDefaultResId());
   }
 
   public CharSequence getEmojiText() {

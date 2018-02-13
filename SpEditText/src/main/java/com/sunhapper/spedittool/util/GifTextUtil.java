@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import com.sunhapper.spedittool.R;
@@ -87,9 +86,9 @@ public class GifTextUtil {
     }
     Object cachedCallback = textView
         .getTag(R.id.drawable_callback_tag);
-    Callback callback;
+    CallbackForTextView callback;
     if (cachedCallback != null && cachedCallback instanceof CallbackForTextView) {
-      callback = (Callback) cachedCallback;
+      callback = (CallbackForTextView) cachedCallback;
       if (oldText instanceof Spannable) {
         ImageSpan[] gifSpans = ((Spannable) oldText).getSpans(0, oldText.length(), ImageSpan.class);
         for (ImageSpan gifSpan : gifSpans) {
@@ -123,6 +122,7 @@ public class GifTextUtil {
             }
           }
         }
+        callback.setNeedInterval(imageSpans.length > 5);
       } else {
         for (ImageSpan gifSpan : imageSpans) {
           Drawable drawable = gifSpan.getDrawable();
@@ -137,7 +137,6 @@ public class GifTextUtil {
           }
         }
         if (temp != null) {
-          Log.i(TAG, "setTextWithReuseDrawable: " + temp.hashCode());
           temp.addHost(callback);
         }
       }
@@ -163,6 +162,7 @@ public class GifTextUtil {
   public static class CallbackForTextView implements Callback {
 
     private boolean enable = true;
+    private boolean needInterval = false;
     private long lastInvalidateTime;
     private WeakReference<TextView> textViewWeakReference;
 
@@ -179,10 +179,15 @@ public class GifTextUtil {
       if (textView == null) {
         return;
       }
-      if (System.currentTimeMillis() - lastInvalidateTime > 40) {
-        lastInvalidateTime = System.currentTimeMillis();
+      if (needInterval) {
+        if (System.currentTimeMillis() - lastInvalidateTime > 40) {
+          lastInvalidateTime = System.currentTimeMillis();
+          textView.invalidate();
+        }
+      } else {
         textView.invalidate();
       }
+
     }
 
     @Override
@@ -197,6 +202,10 @@ public class GifTextUtil {
 
     public void disable() {
       this.enable = false;
+    }
+
+    public void setNeedInterval(boolean needInterval) {
+      this.needInterval = needInterval;
     }
   }
 

@@ -1,7 +1,7 @@
 package me.sunhapper.spcharedittool.emoji;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,9 +98,9 @@ public class EmojiconScrollTabBar extends RelativeLayout {
     scrollTo(position);
     for (int i = 0; i < tabList.size(); i++) {
       if (position == i) {
-        tabList.get(i).setBackgroundColor(getResources().getColor(R.color.emojicon_tab_selected));
+        tabList.get(i).setBackgroundColor(ContextCompat.getColor(context,R.color.emojicon_tab_selected));
       } else {
-        tabList.get(i).setBackgroundColor(getResources().getColor(R.color.emojicon_tab_nomal));
+        tabList.get(i).setBackgroundColor(ContextCompat.getColor(context,R.color.emojicon_tab_nomal));
       }
     }
   }
@@ -112,14 +112,14 @@ public class EmojiconScrollTabBar extends RelativeLayout {
         @Override
         public void run() {
           int mScrollX = tabContainer.getScrollX();
-          int childX = (int) ViewCompat.getX(tabContainer.getChildAt(position));
+          int childX = (int)tabContainer.getChildAt(position).getX();
 
           if (childX < mScrollX) {
             scrollView.scrollTo(childX, 0);
             return;
           }
 
-          int childWidth = (int) tabContainer.getChildAt(position).getWidth();
+          int childWidth = tabContainer.getChildAt(position).getWidth();
           int hsvWidth = scrollView.getWidth();
           int childRight = childX + childWidth;
           int scrollRight = mScrollX + hsvWidth;

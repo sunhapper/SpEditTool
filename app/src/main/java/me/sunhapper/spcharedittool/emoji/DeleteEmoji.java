@@ -2,6 +2,7 @@ package me.sunhapper.spcharedittool.emoji;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import me.sunhapper.spcharedittool.R;
 
 public class DeleteEmoji implements Emoji {
@@ -14,7 +15,7 @@ public class DeleteEmoji implements Emoji {
 
   @Override
   public Drawable getDrawable(Context context) {
-    return context.getResources().getDrawable(getDefaultResId());
+    return ContextCompat.getDrawable(context,getDefaultResId());
   }
 
   public CharSequence getEmojiText() {

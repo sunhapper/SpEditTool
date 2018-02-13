@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void testSpan(View view) {
-    Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher_round);
+    Drawable drawable = ContextCompat.getDrawable(this,R.mipmap.ic_launcher_round);
     VerticalCenterSpan testSpan = new VerticalCenterSpan(drawable);
     VerticalCenterSpan testSpan1 = new VerticalCenterSpan(drawable);
     VerticalCenterSpan testSpan2 = new VerticalCenterSpan(drawable);
