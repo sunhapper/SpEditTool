@@ -20,11 +20,10 @@
 		}
 	}
 ```
-* dependency
-
+* dependency[![](https://jitpack.io/v/sunhapper/SpEditTool.svg)](https://jitpack.io/#sunhapper/SpEditTool)
 ```
 dependencies {
-	        compile 'com.github.sunhapper:SpEditTool:0.1.6'
+	        compile 'com.github.sunhapper:SpEditTool:{last vesion}'
 	}
 ```
 
