@@ -112,17 +112,19 @@ public class GifTextUtil {
       int tempInterval = 0;
       ImageSpan[] imageSpans = ((Spannable) text).getSpans(0, text.length(), ImageSpan.class);
       if (needAllCallback) {
+        int refreshDrawableCount=0;
         for (ImageSpan gifSpan : imageSpans) {
           Drawable drawable = gifSpan.getDrawable();
           if (drawable != null) {
             if (drawable instanceof RefreshableDrawable) {
               ((RefreshableDrawable) drawable).addHost(callback);
+              refreshDrawableCount++;
             } else {
               drawable.setCallback(callback);
             }
           }
         }
-        callback.setNeedInterval(imageSpans.length > 5);
+        callback.setNeedInterval(refreshDrawableCount > 5);
       } else {
         for (ImageSpan gifSpan : imageSpans) {
           Drawable drawable = gifSpan.getDrawable();
