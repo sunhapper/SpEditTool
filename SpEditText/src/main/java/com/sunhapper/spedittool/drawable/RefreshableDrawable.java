@@ -12,8 +12,8 @@ public interface RefreshableDrawable {
 
   int getInterval();
 
-  void addHost(Drawable.Callback callback);
+  void addCallback(Drawable.Callback callback);
 
-  void removeHost(Drawable.Callback callback);
+  void removeCallback(Drawable.Callback callback);
 
 }

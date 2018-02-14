@@ -20,8 +20,6 @@ public class SpEditText extends AppCompatEditText {
   private static String TAG = "SpEditText";
   private KeyReactListener mKeyReactListener;
   private char[] reactKeys;
-  private int tempIndex = 0;
-  private boolean useTemp;
 
   public SpEditText(Context context) {
     super(context);

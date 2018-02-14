@@ -32,7 +32,7 @@ class GifSpanWatcher implements SpanWatcher {
       ImageSpan imageSpan = (ImageSpan) what;
       Drawable drawable = imageSpan.getDrawable();
       if (drawable instanceof RefreshableDrawable) {
-        ((RefreshableDrawable) drawable).removeHost(callback);
+        ((RefreshableDrawable) drawable).removeCallback(callback);
       } else if (drawable != null) {
         drawable.setCallback(null);
       }

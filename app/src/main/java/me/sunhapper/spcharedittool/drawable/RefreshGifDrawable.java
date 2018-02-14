@@ -9,15 +9,14 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import com.sunhapper.spedittool.drawable.RefreshableDrawable;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifOptions;
@@ -31,8 +30,7 @@ public class RefreshGifDrawable extends GifDrawable implements RefreshableDrawab
     Drawable.Callback {
 
   private CallBack callBack = new CallBack();
-  private HashMap<Callback, Integer> callbackWeakHashMap;
-  private static final String TAG = "RefreshGifDrawable";
+  private WeakHashMap<Callback, Integer> callbackWeakHashMap;
 
   public RefreshGifDrawable(@NonNull Resources res,
       int id) throws NotFoundException, IOException {
@@ -98,13 +96,12 @@ public class RefreshGifDrawable extends GifDrawable implements RefreshableDrawab
 
 
   @Override
-  public void addHost(Drawable.Callback currentCallback) {
+  public void addCallback(Drawable.Callback currentCallback) {
     if (callbackWeakHashMap == null) {
-      callbackWeakHashMap = new HashMap<>();
+      callbackWeakHashMap = new WeakHashMap<>();
       setCallback(callBack);
     }
     if (!containsCallback(currentCallback)) {
-      Log.i(TAG, "addHost: ");
       callbackWeakHashMap.put(currentCallback, 1);
     } else {
       int count = callbackWeakHashMap.get(currentCallback);
@@ -113,7 +110,7 @@ public class RefreshGifDrawable extends GifDrawable implements RefreshableDrawab
   }
 
   @Override
-  public void removeHost(Callback currentCallback) {
+  public void removeCallback(Callback currentCallback) {
     if (callbackWeakHashMap == null) {
       return;
     }
@@ -134,9 +131,7 @@ public class RefreshGifDrawable extends GifDrawable implements RefreshableDrawab
 
   @Override
   public void invalidateDrawable(@NonNull Drawable who) {
-    Log.i(TAG, "invalidateDrawable: " + who.hashCode());
     if (callbackWeakHashMap != null) {
-      Log.i(TAG, "invalidateDrawable: " + who.hashCode());
       Set<Callback> set = callbackWeakHashMap.keySet();
       for (Callback callback : set) {
         callback.invalidateDrawable(who);
@@ -149,7 +144,6 @@ public class RefreshGifDrawable extends GifDrawable implements RefreshableDrawab
   public void invalidateSelf() {
     super.invalidateSelf();
     Callback callback = getCallback();
-    Log.i(TAG, "invalidateSelf: " + callback);
   }
 
   @Override

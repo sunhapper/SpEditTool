@@ -94,7 +94,7 @@ public class GifTextUtil {
         for (ImageSpan gifSpan : gifSpans) {
           Drawable drawable = gifSpan.getDrawable();
           if (drawable != null && drawable instanceof RefreshableDrawable) {
-            ((RefreshableDrawable) drawable).removeHost(callback);
+            ((RefreshableDrawable) drawable).removeCallback(callback);
           }
         }
       }
@@ -117,7 +117,7 @@ public class GifTextUtil {
           Drawable drawable = gifSpan.getDrawable();
           if (drawable != null) {
             if (drawable instanceof RefreshableDrawable) {
-              ((RefreshableDrawable) drawable).addHost(callback);
+              ((RefreshableDrawable) drawable).addCallback(callback);
               refreshDrawableCount++;
             } else {
               drawable.setCallback(callback);
@@ -139,7 +139,7 @@ public class GifTextUtil {
           }
         }
         if (temp != null) {
-          temp.addHost(callback);
+          temp.addCallback(callback);
         }
       }
 

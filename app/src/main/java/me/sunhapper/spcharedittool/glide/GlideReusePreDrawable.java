@@ -29,7 +29,7 @@ public class GlideReusePreDrawable extends GlidePreDrawable implements Refreshab
 
 
   @Override
-  public void addHost(Drawable.Callback currentCallback) {
+  public void addCallback(Drawable.Callback currentCallback) {
     if (callbackWeakHashMap == null) {
       callbackWeakHashMap = new WeakHashMap<>();
       //Glide的GifDrawable的findCallback会一直去找不为Drawable的Callback
@@ -45,7 +45,7 @@ public class GlideReusePreDrawable extends GlidePreDrawable implements Refreshab
   }
 
   @Override
-  public void removeHost(Callback currentCallback) {
+  public void removeCallback(Callback currentCallback) {
     if (callbackWeakHashMap == null) {
       return;
     }
