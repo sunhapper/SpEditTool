@@ -124,6 +124,12 @@ GifTextUtil.setTextWithReuseDrawable(textView, charSequence, false);
 
 ```
 
+## proguard
+
+```
+-keep class com.sunhapper.spedittool.**{*;}
+```
+
 more detail info and guidance，please see the demo
 
 [中文文档](./README_CN.md)

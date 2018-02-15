@@ -129,5 +129,11 @@ public interface RefreshableDrawable {
 GifTextUtil.setTextWithReuseDrawable(textView, charSequence, false);
 ```
 
+## proguard
+
+```
+-keep class com.sunhapper.spedittool.**{*;}
+```
+
 更多详细信息请看demo或者本人简书[https://www.jianshu.com/u/e173cf3c1f1c](https://www.jianshu.com/u/e173cf3c1f1c)
 > 欢迎star，提PR、issue
