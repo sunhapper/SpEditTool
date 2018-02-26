@@ -9,7 +9,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import com.sunhapper.spedittool.R;
@@ -50,12 +49,10 @@ public class SpEditText extends AppCompatEditText {
     addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        Log.i(TAG, "beforeTextChanged: ");
       }
 
       @Override
       public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-        Log.i(TAG, "onTextChanged: ");
         if (reactKeys == null) {
           return;
         }
@@ -72,7 +69,6 @@ public class SpEditText extends AppCompatEditText {
 
       @Override
       public void afterTextChanged(Editable s) {
-        Log.i(TAG, "afterTextChanged: ");
       }
     });
 
@@ -142,7 +138,6 @@ public class SpEditText extends AppCompatEditText {
     SpData[] spDatas = getSpDatas();
     for (int i = 0; i < spDatas.length; i++) {
       SpData spData = spDatas[i];
-      final int rangeStart = spData.start;
       if (selectionStart == spData.end) {
         Editable editable = getText();
 //        if ((editable.length() - spData.end) > 15) {
