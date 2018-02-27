@@ -10,7 +10,9 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
-import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
+import android.view.inputmethod.InputConnectionWrapper;
 import com.sunhapper.spedittool.R;
 import com.sunhapper.spedittool.util.GifTextUtil;
 
@@ -23,7 +25,6 @@ public class SpEditText extends AppCompatEditText {
   public SpEditText(Context context) {
     super(context);
     readAttrs(context, null);
-    init();
   }
 
   public SpEditText(Context context, AttributeSet attrs) {
@@ -32,7 +33,6 @@ public class SpEditText extends AppCompatEditText {
       return;
     }
     readAttrs(context, attrs);
-    init();
   }
 
 
@@ -43,8 +43,7 @@ public class SpEditText extends AppCompatEditText {
   /**
    * 设置文本变化监听
    * 设置删除事件监听
-   */
-  private void init() {
+   */ {
     setEditableFactory(ImageEditableFactory.getInstance());
     addTextChangedListener(new TextWatcher() {
       @Override
@@ -69,20 +68,6 @@ public class SpEditText extends AppCompatEditText {
 
       @Override
       public void afterTextChanged(Editable s) {
-      }
-    });
-
-    setOnKeyListener(new OnKeyListener() {
-      @Override
-      public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
-          return onDeleteEvent();
-        }
-        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && event.getAction() == KeyEvent.ACTION_DOWN) {
-          return onDpadRightEvent();
-        }
-
-        return false;
       }
     });
   }
@@ -324,6 +309,12 @@ public class SpEditText extends AppCompatEditText {
     this.mKeyReactListener = keyReactListener;
   }
 
+
+  @Override
+  public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+    return new SpInputConnectionWrapper(super.onCreateInputConnection(outAttrs), true);
+  }
+
   public class SpData {
 
     /**
@@ -381,5 +372,48 @@ public class SpEditText extends AppCompatEditText {
     }
   }
 
+
+  private class SpInputConnectionWrapper extends InputConnectionWrapper {
+
+
+    /**
+     * Initializes a wrapper.
+     *
+     * <p><b>Caveat:</b> Although the system can accept {@code (InputConnection) null} in some
+     * places, you cannot emulate such a behavior by non-null {@link InputConnectionWrapper} that
+     * has {@code null} in {@code target}.</p>
+     *
+     * @param target the {@link InputConnection} to be proxied.
+     * @param mutable set {@code true} to protect this object from being reconfigured to target
+     * another {@link InputConnection}.  Note that this is ignored while the target is {@code
+     * null}.
+     */
+    public SpInputConnectionWrapper(InputConnection target, boolean mutable) {
+      super(target, mutable);
+    }
+
+
+    @Override
+    public boolean deleteSurroundingText(int beforeLength, int afterLength) {
+      if (beforeLength == 1 && afterLength == 0) {
+        return sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
+            && sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
+      }
+      return super.deleteSurroundingText(beforeLength, afterLength);
+    }
+
+    @Override
+    public boolean sendKeyEvent(KeyEvent event) {
+      if (event.getKeyCode() == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+        return onDeleteEvent();
+      }
+      if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT
+          && event.getAction() == KeyEvent.ACTION_DOWN) {
+        return onDpadRightEvent();
+      }
+
+      return super.sendKeyEvent(event);
+    }
+  }
 
 }
