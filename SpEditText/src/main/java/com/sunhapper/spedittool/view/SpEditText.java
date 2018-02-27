@@ -395,24 +395,26 @@ public class SpEditText extends AppCompatEditText {
 
     @Override
     public boolean deleteSurroundingText(int beforeLength, int afterLength) {
+      boolean result = false;
       if (beforeLength == 1 && afterLength == 0) {
-        return sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
+        result = sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
             && sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
       }
-      return super.deleteSurroundingText(beforeLength, afterLength);
+      return result || super.deleteSurroundingText(beforeLength, afterLength);
     }
 
     @Override
     public boolean sendKeyEvent(KeyEvent event) {
+      boolean result = false;
       if (event.getKeyCode() == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
-        return onDeleteEvent();
+        result = onDeleteEvent();
       }
       if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT
           && event.getAction() == KeyEvent.ACTION_DOWN) {
-        return onDpadRightEvent();
+        result = onDpadRightEvent();
       }
+      return result || super.sendKeyEvent(event);
 
-      return super.sendKeyEvent(event);
     }
   }
 
