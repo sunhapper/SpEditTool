@@ -9,7 +9,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -49,11 +48,24 @@ public class SpEditText extends AppCompatEditText {
     addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        //如果SpData字符串完整性被破坏，移除Spdata和对应的样式
+        if (count == 1 && after == 0) {
+          SpData[] spDatas = getSpDatas();
+          for (SpData spData : spDatas) {
+            if (start < spData.end && start >= spData.start) {
+              Editable editable = getEditableText();
+              editable.removeSpan(spData);
+              if (spData.customSpan != null) {
+                editable.removeSpan(spData.customSpan);
+              }
+            }
+          }
+        }
       }
 
       @Override
       public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-        Log.i(TAG, "onTextChanged: " + charSequence + "  " + start + "  " + before + "  " + count);
+
         if (reactKeys == null) {
           return;
         }
@@ -250,7 +262,7 @@ public class SpEditText extends AppCompatEditText {
   }
 
   public void insertNormalStr(CharSequence showContent, boolean rollBack) {
-    insertSpecialStr(showContent, rollBack, false, null, null);
+    insertSpecialStr(showContent, false, rollBack, null, null);
   }
 
 
@@ -285,6 +297,9 @@ public class SpEditText extends AppCompatEditText {
       spannableString
           .setSpan(spData, 0, spannableString.length(),
               SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+      if (customSpan != null) {
+        spData.setCustomSpan(customSpan);
+      }
     }
     if (customSpan != null) {
       spannableString
@@ -327,9 +342,18 @@ public class SpEditText extends AppCompatEditText {
      * 特殊内容的数据结构
      */
     private Object customData;
+    private Object customSpan;
     private int start;
     private int end;
 
+
+    public Object getCustomSpan() {
+      return customSpan;
+    }
+
+    private void setCustomSpan(Object customSpan) {
+      this.customSpan = customSpan;
+    }
 
     public int getStart() {
       return start;
