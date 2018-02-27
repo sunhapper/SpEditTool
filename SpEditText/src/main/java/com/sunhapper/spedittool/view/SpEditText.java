@@ -9,6 +9,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -52,6 +53,7 @@ public class SpEditText extends AppCompatEditText {
 
       @Override
       public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+        Log.i(TAG, "onTextChanged: " + charSequence + "  " + start + "  " + before + "  " + count);
         if (reactKeys == null) {
           return;
         }
@@ -397,8 +399,7 @@ public class SpEditText extends AppCompatEditText {
     public boolean deleteSurroundingText(int beforeLength, int afterLength) {
       boolean result = false;
       if (beforeLength == 1 && afterLength == 0) {
-        result = sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
-            && sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
+        result = onDeleteEvent();
       }
       return result || super.deleteSurroundingText(beforeLength, afterLength);
     }
