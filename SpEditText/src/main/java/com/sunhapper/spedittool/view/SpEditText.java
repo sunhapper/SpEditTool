@@ -21,6 +21,7 @@ public class SpEditText extends AppCompatEditText {
   private static String TAG = "SpEditText";
   private KeyReactListener mKeyReactListener;
   private char[] reactKeys;
+  private int spMode;
 
   public SpEditText(Context context) {
     super(context);
@@ -94,6 +95,7 @@ public class SpEditText extends AppCompatEditText {
         if (!TextUtils.isEmpty(reactKeyStr)) {
           reactKeys = reactKeyStr.toCharArray();
         }
+        spMode = ta.getInteger(R.styleable.SpEditText_sp_mode, 0);
         ta.recycle();
       }
 
@@ -102,6 +104,9 @@ public class SpEditText extends AppCompatEditText {
   }
 
   private boolean onDpadRightEvent() {
+    if (spMode == 1) {
+      return false;
+    }
     int selectionStart = getSelectionStart();
     int selectionEnd = getSelectionEnd();
     if (selectionEnd != selectionStart) {
@@ -129,6 +134,9 @@ public class SpEditText extends AppCompatEditText {
   }
 
   private boolean onDeleteEvent() {
+    if (spMode == 1) {
+      return false;
+    }
     int selectionStart = getSelectionStart();
     final int selectionEnd = getSelectionEnd();
     if (selectionEnd != selectionStart) {
@@ -207,6 +215,9 @@ public class SpEditText extends AppCompatEditText {
   @Override
   protected void onSelectionChanged(int selStart, int selEnd) {
     super.onSelectionChanged(selStart, selEnd);
+    if (spMode == 1) {
+      return;
+    }
     SpData[] spDatas = getSpDatas();
     for (int i = 0; i < spDatas.length; i++) {
       SpData spData = spDatas[i];

@@ -15,7 +15,8 @@
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:react_keys="#*%@" />
+    app:react_keys="#*%@"
+    app:sp_mode="breakable" />
 
 
   <Button

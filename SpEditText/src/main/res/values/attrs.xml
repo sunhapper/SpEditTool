@@ -2,5 +2,9 @@
 <resources>
   <declare-styleable name="SpEditText">
     <attr format="string" name="react_keys" />
+    <attr format="enum" name="sp_mode">
+      <enum name="integrated" value="0" />
+      <enum name="breakable" value="1" />
+    </attr>
   </declare-styleable>
 </resources>
