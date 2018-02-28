@@ -35,13 +35,17 @@ dependencies {
 ## xml
 
 ```
-<!--react_keys属性指定要响应的字符列表,也可以在java代码中用setReactKeys设置-->
 <com.sunhapper.spedittool.view.SpEditText
     android:id="@+id/spEdt"
     app:react_keys="#*%@"
+    app:sp_mode="breakable"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
 ```
+* app:react_keys--要响应的字符列表,也可以在java代码中用setReactKeys设置
+* app:sp_mode
+  * "integrated"表示完整删除
+  * "breakable"普通删除，当完整性被破坏，对应的数据和样式会被移除
 
 ## java  
 

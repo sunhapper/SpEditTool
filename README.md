@@ -36,9 +36,14 @@ dependencies {
 <com.sunhapper.spedittool.view.SpEditText
     android:id="@+id/spEdt"
     app:react_keys="#*%@"
+    app:sp_mode="breakable"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
 ```
+* app:react_keys--characters will be reacted
+* app:sp_mode
+  * "integrated"means overall deleting
+  * "breakable"means normal deleting,data and style will be removed when integrity break
 
 ## java
 
