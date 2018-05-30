@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
+import com.sunhapper.spedittool.util.GifTextUtil;
 import com.sunhapper.spedittool.view.SpEditText;
 import com.sunhapper.spedittool.view.SpEditText.KeyReactListener;
 import com.sunhapper.spedittool.view.SpEditText.SpData;
@@ -163,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void testSpan(View view) {
-    Drawable drawable = ContextCompat.getDrawable(this,R.mipmap.ic_launcher_round);
+    Drawable drawable = ContextCompat.getDrawable(this, R.mipmap.ic_launcher_round);
     VerticalCenterSpan testSpan = new VerticalCenterSpan(drawable);
     VerticalCenterSpan testSpan1 = new VerticalCenterSpan(drawable);
     VerticalCenterSpan testSpan2 = new VerticalCenterSpan(drawable);
@@ -191,5 +193,11 @@ public class MainActivity extends AppCompatActivity {
         .append(spannableString3)
         .append("sssssssssssssssssssssssssssss");
     spEditText.setText(spannableStringBuilder);
+  }
+
+  public void regText(View view) {
+    String regText = "[大兵]  [奋斗]";
+    Spannable spannable = EmojiManager.getInstance().getSpannableByPattern(this, regText);
+    GifTextUtil.setTextWithReuseDrawable(spEditText, spannable, false);
   }
 }
