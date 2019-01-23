@@ -37,7 +37,7 @@ public class GifTextUtil {
       //将之前的Callback disable
       Object oldCallback = textView
           .getTag(R.id.drawable_callback_tag);
-      if (oldCallback != null && oldCallback instanceof CallbackForTextView) {
+      if (oldCallback instanceof CallbackForTextView) {
         ((CallbackForTextView) oldCallback).disable();
       }
       Callback callback = new CallbackForTextView(textView);
@@ -50,7 +50,7 @@ public class GifTextUtil {
           drawable.setCallback(callback);
         }
       }
-      //gifSpanWatcher是SpanWatcher,继承自NoCopySpan
+      //unreuseSpanWatcher是SpanWatcher,继承自NoCopySpan
       //只有setText之后设置SpanWatcher才能成功
       ((Spannable) text).setSpan(unreuseSpanWatcher, 0, text.length(),
           Spanned.SPAN_INCLUSIVE_INCLUSIVE | Spanned.SPAN_PRIORITY);
@@ -87,13 +87,13 @@ public class GifTextUtil {
     Object cachedCallback = textView
         .getTag(R.id.drawable_callback_tag);
     CallbackForTextView callback;
-    if (cachedCallback != null && cachedCallback instanceof CallbackForTextView) {
+    if (cachedCallback instanceof CallbackForTextView) {
       callback = (CallbackForTextView) cachedCallback;
       if (oldText instanceof Spannable) {
         ImageSpan[] gifSpans = ((Spannable) oldText).getSpans(0, oldText.length(), ImageSpan.class);
         for (ImageSpan gifSpan : gifSpans) {
           Drawable drawable = gifSpan.getDrawable();
-          if (drawable != null && drawable instanceof RefreshableDrawable) {
+          if (drawable instanceof RefreshableDrawable) {
             ((RefreshableDrawable) drawable).removeCallback(callback);
           }
         }
@@ -128,7 +128,7 @@ public class GifTextUtil {
       } else {
         for (ImageSpan gifSpan : imageSpans) {
           Drawable drawable = gifSpan.getDrawable();
-          if (drawable != null && drawable instanceof RefreshableDrawable) {
+          if (drawable instanceof RefreshableDrawable) {
             if (((RefreshableDrawable) drawable).canRefresh()) {
               if (tempInterval == 0 || tempInterval > ((RefreshableDrawable) drawable)
                   .getInterval()) {
@@ -147,7 +147,7 @@ public class GifTextUtil {
       //只有setText之后设置SpanWatcher才能成功
       GifSpanWatcher cacheSpanWatcher;
       Object object = textView.getTag(R.id.span_watcher_tag);
-      if (object != null && object instanceof GifSpanWatcher) {
+      if (object instanceof GifSpanWatcher) {
         cacheSpanWatcher = (GifSpanWatcher) object;
       } else {
         cacheSpanWatcher = new GifSpanWatcher(callback);
