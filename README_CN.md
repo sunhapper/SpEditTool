@@ -59,7 +59,7 @@ spEditText.setKeyReactListener(new KeyReactListener() {
       @Override
       public void onKeyReact(String key) {
         //key被响应的字符,长度为1
-        //todo 处理自己的逻辑
+        //处理自己的逻辑
       }
     });
 ```
