@@ -219,8 +219,7 @@ public class SpEditText extends AppCompatEditText {
       return;
     }
     SpData[] spDatas = getSpDatas();
-    for (int i = 0; i < spDatas.length; i++) {
-      SpData spData = spDatas[i];
+    for (SpData spData : spDatas) {
       int startPosition = spData.start;
       int endPosition = spData.end;
       if (changeSelection(selStart, selEnd, startPosition, endPosition, false)) {
@@ -410,6 +409,9 @@ public class SpEditText extends AppCompatEditText {
   }
 
 
+    /**
+     * 解决google输入法删除不走OnKeyListener()回调问题
+     */
   private class SpInputConnectionWrapper extends InputConnectionWrapper {
 
 
