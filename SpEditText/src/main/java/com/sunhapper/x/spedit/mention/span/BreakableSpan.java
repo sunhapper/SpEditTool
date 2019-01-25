@@ -5,4 +5,6 @@ package com.sunhapper.x.spedit.mention.span;
  * 标记可以被从中间删除的span
  */
 public interface BreakableSpan extends MarkSpan {
+
+    boolean isBreak();
 }
