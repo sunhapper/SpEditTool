@@ -118,10 +118,6 @@ public class GlidePreDrawable extends Drawable implements Drawable.Callback, Mea
     return 0;
   }
 
-  @Override
-  public boolean canMeasure() {
-    return mDrawable != null;
-  }
 
   @Override
   public boolean needResize() {

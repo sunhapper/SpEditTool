@@ -10,7 +10,5 @@ public interface Measurable {
 
   int getHeight();
 
-  boolean canMeasure();
-
   boolean needResize();
 }
