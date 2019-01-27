@@ -1,4 +1,4 @@
-package com.sunhapper.x.spedit.gif.span;
+package com.sunhapper.glide.span;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,18 +9,26 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.style.ImageSpan;
 
-public abstract class IsoheightImageSpan extends ImageSpan implements RefreshSpan {
+import com.sunhapper.x.spedit.gif.drawable.InvalidateDrawable;
+import com.sunhapper.x.spedit.gif.drawable.ResizeDrawable;
+import com.sunhapper.x.spedit.gif.span.RefreshSpan;
+
+
+public class GlideIsoheightSpan extends ImageSpan implements RefreshSpan {
+
     private boolean resized = false;
     private static final char[] ELLIPSIS_NORMAL = {'\u2026'}; // this is "..."
     private static final char[] ELLIPSIS_TWO_DOTS = {'\u2025'}; // this is ".."
     private int drawableHeight = 0;
     private FontMetricsInt fm;
 
-    public IsoheightImageSpan(Drawable d) {
+
+    public GlideIsoheightSpan(Drawable d) {
         super(d);
     }
 
-    public IsoheightImageSpan(Context context, Uri uri) {
+
+    public GlideIsoheightSpan(Context context, Uri uri) {
         super(context, uri);
     }
 
@@ -36,12 +44,20 @@ public abstract class IsoheightImageSpan extends ImageSpan implements RefreshSpa
         return bounds.right;
     }
 
-    protected Drawable getResizedDrawable() {
+    private Drawable getResizedDrawable() {
         Drawable d = getDrawable();
         if (drawableHeight == 0) {
             return d;
         }
-        if (!resized) {
+        if (d instanceof ResizeDrawable) {
+            ResizeDrawable resizeDrawable = (ResizeDrawable) d;
+            if (resizeDrawable.needResize() || !resized) {
+                resized = true;
+                d.setBounds(new Rect(0, 0,
+                        (int) (1f * drawableHeight * resizeDrawable.getWidth() / resizeDrawable.getHeight()),
+                        drawableHeight));
+            }
+        } else if (!resized) {
             resized = true;
             d.setBounds(new Rect(0, 0,
                     (int) (1f * drawableHeight * d.getIntrinsicWidth() / d.getIntrinsicWidth()),
@@ -73,4 +89,13 @@ public abstract class IsoheightImageSpan extends ImageSpan implements RefreshSpa
     }
 
 
+    @Override
+    public InvalidateDrawable getInvalidateDrawable() {
+        Drawable drawable = getResizedDrawable();
+        if (drawable instanceof InvalidateDrawable) {
+            return (InvalidateDrawable) drawable;
+        } else {
+            return null;
+        }
+    }
 }

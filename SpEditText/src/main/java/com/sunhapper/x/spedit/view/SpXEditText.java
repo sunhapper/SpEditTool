@@ -1,17 +1,24 @@
 package com.sunhapper.x.spedit.view;
 
 import android.content.Context;
+import android.text.NoCopySpan;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputConnectionWrapper;
 
+import com.sunhapper.x.spedit.gif.watcher.GifWatcher;
+import com.sunhapper.x.spedit.mention.watcher.SpanChangedWatcher;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by sunhapper on 2019/1/25 .
  */
-public class SpXEditText extends android.support.v7.widget.AppCompatTextView {
-    private KeyEventProxy mKeyEventProxy = new DefaultKeyEventProxy();
+public class SpXEditText extends android.support.v7.widget.AppCompatEditText {
+    private KeyEventProxy mKeyEventProxy = new DefaultDeleteKeyEventProxy();
 
     public SpXEditText(Context context) {
         super(context);
@@ -23,6 +30,13 @@ public class SpXEditText extends android.support.v7.widget.AppCompatTextView {
 
     public SpXEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    {
+        List<NoCopySpan> watchers = new ArrayList<>();
+        watchers.add(new SpanChangedWatcher());
+        watchers.add(new GifWatcher(this));
+        setEditableFactory(new SpXFactory(watchers));
     }
 
     @Override
@@ -56,7 +70,8 @@ public class SpXEditText extends android.support.v7.widget.AppCompatTextView {
 
         @Override
         public boolean sendKeyEvent(KeyEvent event) {
-            return (mKeyEventProxy != null && mKeyEventProxy.onKeyEvent(event, getText())) || super.sendKeyEvent(event);
+            return (mKeyEventProxy != null && mKeyEventProxy.onKeyEvent(event, getText()))
+                    || super.sendKeyEvent(event);
         }
     }
 

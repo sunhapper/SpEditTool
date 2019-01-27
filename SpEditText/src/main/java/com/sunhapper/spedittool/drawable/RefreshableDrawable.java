@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 /**
  * Created by sunhapper on 2018/1/28.
  */
-
+@Deprecated
 public interface RefreshableDrawable {
 
   boolean canRefresh();

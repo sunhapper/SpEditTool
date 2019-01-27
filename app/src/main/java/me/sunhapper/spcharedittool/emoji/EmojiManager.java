@@ -24,8 +24,7 @@ import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.widget.ImageView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +33,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import me.sunhapper.spcharedittool.span.EqualHeightSpan;
 import me.sunhapper.spcharedittool.util.FileUtil;
 import me.sunhapper.spcharedittool.util.PreferenceUtil;
@@ -245,10 +245,10 @@ public class EmojiManager {
   }
 
   public void displayImage(ImageView imageView, Emoji emoji) {
-    Glide.with(imageView)
-        .load(emoji.getRes())
-        .apply(new RequestOptions().placeholder(emoji.getDefaultResId()))
-        .into(imageView);
+//    Glide.with(imageView)
+//        .load(emoji.getRes())
+//        .apply(new RequestOptions().placeholder(emoji.getDefaultResId()))
+//        .into(imageView);
   }
 
 

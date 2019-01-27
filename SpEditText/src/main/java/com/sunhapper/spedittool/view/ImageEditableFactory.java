@@ -10,7 +10,7 @@ import android.text.Editable.Factory;
 /**
  * Created by sunha on 2018/2/12 0012.
  */
-
+@Deprecated
 final class ImageEditableFactory extends Factory {
 
   private static final Object sInstanceLock = new Object();

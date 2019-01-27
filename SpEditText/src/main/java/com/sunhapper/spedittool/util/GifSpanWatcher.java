@@ -10,7 +10,7 @@ import com.sunhapper.spedittool.drawable.RefreshableDrawable;
 /**
  * Created by sunha on 2018/1/25 0025.
  */
-
+@Deprecated
 class GifSpanWatcher implements SpanWatcher {
 
   private Drawable.Callback callback;

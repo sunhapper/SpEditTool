@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by sunhapper on 2018/1/21.
  */
-
+@Deprecated
 public class GifTextUtil {
 
   private static final String TAG = "GifTextUtil";

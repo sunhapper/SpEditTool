@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by sunha on 2018/2/12 0012.
  */
-
+@Deprecated
 public class SpannableBuilder extends SpannableStringBuilder {
 
   /**

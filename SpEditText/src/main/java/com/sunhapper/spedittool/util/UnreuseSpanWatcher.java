@@ -8,7 +8,7 @@ import android.text.style.ImageSpan;
 /**
  * Created by sunha on 2018/1/25 0025.
  */
-
+@Deprecated
 class UnreuseSpanWatcher implements SpanWatcher {
 
 

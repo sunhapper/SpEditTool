@@ -1,5 +1,6 @@
 package com.sunhapper.x.spedit.view;
 
+import android.text.Spannable;
 import android.view.KeyEvent;
 
 /**
@@ -7,5 +8,5 @@ import android.view.KeyEvent;
  */
 public interface KeyEventProxy {
 
-    boolean onKeyEvent(KeyEvent keyEvent, CharSequence text);
+    boolean onKeyEvent(KeyEvent keyEvent, Spannable text);
 }
