@@ -16,7 +16,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.sunhapper.glide.drawable.DrawableTarget;
-import com.sunhapper.glide.drawable.PlaceHolderDrawable;
+import com.sunhapper.glide.drawable.GlideProxyDrawable;
 import com.sunhapper.spedittool.util.GifTextUtil;
 import com.sunhapper.x.spedit.mention.span.IntegratedSpan;
 import com.sunhapper.x.spedit.view.SpXEditText;
@@ -147,13 +147,13 @@ public class MainActivity extends AppCompatActivity {
     public void setGlideGif(View view) {
         try {
             GifDrawable gifDrawable = new RefreshGifDrawable(getResources(), R.drawable.a);
-            PlaceHolderDrawable holderDrawable = new PlaceHolderDrawable();
+            GlideProxyDrawable proxyDrawable = new GlideProxyDrawable();
             GlideApp.with(this)
                     .load(
                             "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37.gif")
                     .placeholder(gifDrawable)
-                    .into(new DrawableTarget(holderDrawable));
-            CharSequence charSequence = DrawableUtil.getDrawableText("[c]", holderDrawable);
+                    .into(new DrawableTarget(proxyDrawable));
+            CharSequence charSequence = DrawableUtil.getDrawableText("[c]", proxyDrawable);
             Editable editable = spEditText.getText();
             editable.append(charSequence);
         } catch (IOException e) {

@@ -1,4 +1,4 @@
-package me.sunhapper.spcharedittool.drawable;
+package com.sunhapper.gifdrawable.drawable;
 
 import android.content.ContentResolver;
 import android.content.res.AssetFileDescriptor;
@@ -33,56 +33,56 @@ import pl.droidsonroids.gif.InputSource;
  * Created by sunha on 2018/1/23 0023.
  */
 
-public class GifPlaceHolderDrawable extends GifDrawable implements Drawable.Callback, InvalidateDrawable {
+public class GifProxyDrawable extends GifDrawable implements Drawable.Callback, InvalidateDrawable {
 
     private Drawable mDrawable;
     private List<RefreshListener> mRefreshListeners = new ArrayList<>();
     private Callback mCallback = new CallBack();
 
-    public GifPlaceHolderDrawable(@NonNull Resources res, int id)
+    public GifProxyDrawable(@NonNull Resources res, int id)
             throws Resources.NotFoundException, IOException {
         super(res, id);
     }
 
-    public GifPlaceHolderDrawable(@NonNull AssetManager assets, @NonNull String assetName)
+    public GifProxyDrawable(@NonNull AssetManager assets, @NonNull String assetName)
             throws IOException {
         super(assets, assetName);
     }
 
-    public GifPlaceHolderDrawable(@NonNull String filePath) throws IOException {
+    public GifProxyDrawable(@NonNull String filePath) throws IOException {
         super(filePath);
     }
 
-    public GifPlaceHolderDrawable(@NonNull File file) throws IOException {
+    public GifProxyDrawable(@NonNull File file) throws IOException {
         super(file);
     }
 
-    public GifPlaceHolderDrawable(@NonNull InputStream stream) throws IOException {
+    public GifProxyDrawable(@NonNull InputStream stream) throws IOException {
         super(stream);
     }
 
-    public GifPlaceHolderDrawable(@NonNull AssetFileDescriptor afd) throws IOException {
+    public GifProxyDrawable(@NonNull AssetFileDescriptor afd) throws IOException {
         super(afd);
     }
 
-    public GifPlaceHolderDrawable(@NonNull FileDescriptor fd) throws IOException {
+    public GifProxyDrawable(@NonNull FileDescriptor fd) throws IOException {
         super(fd);
     }
 
-    public GifPlaceHolderDrawable(@NonNull byte[] bytes) throws IOException {
+    public GifProxyDrawable(@NonNull byte[] bytes) throws IOException {
         super(bytes);
     }
 
-    public GifPlaceHolderDrawable(@NonNull ByteBuffer buffer) throws IOException {
+    public GifProxyDrawable(@NonNull ByteBuffer buffer) throws IOException {
         super(buffer);
     }
 
-    public GifPlaceHolderDrawable(@Nullable ContentResolver resolver,
+    public GifProxyDrawable(@Nullable ContentResolver resolver,
             @NonNull Uri uri) throws IOException {
         super(resolver, uri);
     }
 
-    protected GifPlaceHolderDrawable(@NonNull InputSource inputSource,
+    protected GifProxyDrawable(@NonNull InputSource inputSource,
             @Nullable GifDrawable oldDrawable, @Nullable ScheduledThreadPoolExecutor executor,
             boolean isRenderingTriggeredOnDraw, @NonNull GifOptions options) throws IOException {
         super(inputSource, oldDrawable, executor, isRenderingTriggeredOnDraw, options);

@@ -16,7 +16,7 @@ import java.util.List;
  * Created by sunha on 2018/1/23 0023.
  */
 
-public class PlaceHolderDrawable extends Drawable implements Drawable.Callback, GlideDrawable {
+public class GlideProxyDrawable extends Drawable implements Drawable.Callback, GlideDrawable {
 
     private static final String TAG = "PreDrawable";
     private Drawable mDrawable;

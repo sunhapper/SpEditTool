@@ -1,1 +1,1 @@
-include ':app', ':SpEditText', ':SpGlideDrawable'
+include ':app', ':SpEditText', ':SpGlideDrawable', ':SpGifDrawable'

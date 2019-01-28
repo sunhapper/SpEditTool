@@ -25,6 +25,9 @@ import android.text.style.ImageSpan;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -245,10 +248,10 @@ public class EmojiManager {
   }
 
   public void displayImage(ImageView imageView, Emoji emoji) {
-//    Glide.with(imageView)
-//        .load(emoji.getRes())
-//        .apply(new RequestOptions().placeholder(emoji.getDefaultResId()))
-//        .into(imageView);
+    Glide.with(imageView)
+        .load(emoji.getRes())
+        .apply(new RequestOptions().placeholder(emoji.getDefaultResId()))
+        .into(imageView);
   }
 
 

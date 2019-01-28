@@ -16,60 +16,60 @@ import com.bumptech.glide.request.transition.Transition;
 public class DrawableTarget extends SimpleTarget<Drawable> {
 
   private static final String TAG = "GifTarget";
-  private PlaceHolderDrawable mPlaceHolderDrawable;
+  private GlideProxyDrawable mGlideProxyDrawable;
 
   @Override
   public void onResourceReady(@NonNull Drawable resource,
       @Nullable Transition<? super Drawable> transition) {
     Log.i(TAG, "onResourceReady: " + resource);
-    mPlaceHolderDrawable.setDrawable(resource);
+    mGlideProxyDrawable.setDrawable(resource);
     if (resource instanceof GifDrawable) {
       ((GifDrawable) resource).setLoopCount(GifDrawable.LOOP_FOREVER);
       ((GifDrawable) resource).start();
     }
-    mPlaceHolderDrawable.invalidateSelf();
+    mGlideProxyDrawable.invalidateSelf();
   }
 
-  public DrawableTarget(PlaceHolderDrawable mPlaceHolderDrawable) {
-    this.mPlaceHolderDrawable = mPlaceHolderDrawable;
+  public DrawableTarget(GlideProxyDrawable mGlideProxyDrawable) {
+    this.mGlideProxyDrawable = mGlideProxyDrawable;
   }
 
 
   @Override
   public void onLoadCleared(@Nullable Drawable placeholder) {
     Log.i(TAG, "onLoadCleared: " + placeholder);
-    if (mPlaceHolderDrawable.getDrawable() != null) {
+    if (mGlideProxyDrawable.getDrawable() != null) {
       return;
     }
-    mPlaceHolderDrawable.setDrawable(placeholder);
+    mGlideProxyDrawable.setDrawable(placeholder);
     if (placeholder instanceof GifDrawable) {
       ((GifDrawable) placeholder).setLoopCount(GifDrawable.LOOP_FOREVER);
       ((GifDrawable) placeholder).start();
     }
-    mPlaceHolderDrawable.invalidateSelf();
+    mGlideProxyDrawable.invalidateSelf();
 
   }
 
   @Override
   public void onLoadStarted(@Nullable Drawable placeholder) {
     Log.i(TAG, "onLoadCleared: " + placeholder);
-    mPlaceHolderDrawable.setDrawable(placeholder);
+    mGlideProxyDrawable.setDrawable(placeholder);
     if (placeholder instanceof GifDrawable) {
       ((GifDrawable) placeholder).setLoopCount(GifDrawable.LOOP_FOREVER);
       ((GifDrawable) placeholder).start();
     }
-    mPlaceHolderDrawable.invalidateSelf();
+    mGlideProxyDrawable.invalidateSelf();
   }
 
   @Override
   public void onLoadFailed(@Nullable Drawable errorDrawable) {
     Log.i(TAG, "onLoadFailed: " + errorDrawable);
-    mPlaceHolderDrawable.setDrawable(errorDrawable);
+    mGlideProxyDrawable.setDrawable(errorDrawable);
     if (errorDrawable instanceof GifDrawable) {
       ((GifDrawable) errorDrawable).setLoopCount(GifDrawable.LOOP_FOREVER);
       ((GifDrawable) errorDrawable).start();
     }
-    mPlaceHolderDrawable.invalidateSelf();
+    mGlideProxyDrawable.invalidateSelf();
   }
 
 }
