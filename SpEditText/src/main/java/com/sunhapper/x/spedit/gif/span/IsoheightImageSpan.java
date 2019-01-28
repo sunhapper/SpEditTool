@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.style.ImageSpan;
 
-public abstract class IsoheightImageSpan extends ImageSpan implements RefreshSpan {
+public  class IsoheightImageSpan extends ImageSpan  {
     private boolean resized = false;
     private static final char[] ELLIPSIS_NORMAL = {'\u2026'}; // this is "..."
     private static final char[] ELLIPSIS_TWO_DOTS = {'\u2025'}; // this is ".."
@@ -71,6 +71,5 @@ public abstract class IsoheightImageSpan extends ImageSpan implements RefreshSpa
             canvas.restore();
         }
     }
-
 
 }

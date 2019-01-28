@@ -27,6 +27,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.sunhapper.x.spedit.gif.span.GifIsoheightImageSpan;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,7 +38,6 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import me.sunhapper.spcharedittool.span.EqualHeightSpan;
 import me.sunhapper.spcharedittool.util.FileUtil;
 import me.sunhapper.spcharedittool.util.PreferenceUtil;
 
@@ -163,11 +163,11 @@ public class EmojiManager {
     if (drawableCacheMap.containsKey(emoji.getCacheKey())) {
       drawable = drawableCacheMap
           .get(emoji.getCacheKey());
-      imageSpan = new EqualHeightSpan(drawable);
+      imageSpan = new GifIsoheightImageSpan(drawable);
     } else {
 
       drawable = emoji.getDrawable(context);
-      imageSpan = new EqualHeightSpan(drawable);
+      imageSpan = new GifIsoheightImageSpan(drawable);
       drawableCacheMap
           .put(emoji.getCacheKey(), drawable);
 
@@ -227,10 +227,10 @@ public class EmojiManager {
     Drawable gifDrawable;
     if (drawableCacheMap.containsKey(emoji.getCacheKey())) {
       gifDrawable = drawableCacheMap.get(emoji.getCacheKey());
-      imageSpan = new EqualHeightSpan(gifDrawable);
+      imageSpan = new GifIsoheightImageSpan(gifDrawable);
     } else {
       gifDrawable = emoji.getDrawable(context);
-      imageSpan = new EqualHeightSpan(gifDrawable);
+      imageSpan = new GifIsoheightImageSpan(gifDrawable);
       drawableCacheMap
           .put(emoji.getCacheKey(), gifDrawable);
 

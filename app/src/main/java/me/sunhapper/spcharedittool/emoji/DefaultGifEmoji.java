@@ -3,10 +3,13 @@ package me.sunhapper.spcharedittool.emoji;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+
+import com.sunhapper.gifdrawable.drawable.GifProxyDrawable;
+
 import java.io.File;
 import java.io.IOException;
+
 import me.sunhapper.spcharedittool.R;
-import me.sunhapper.spcharedittool.drawable.RefreshGifDrawable;
 
 public class DefaultGifEmoji implements Emoji {
 
@@ -22,7 +25,7 @@ public class DefaultGifEmoji implements Emoji {
   @Override
   public Drawable getDrawable(Context context) {
     try {
-      return new RefreshGifDrawable(emojiconFile);
+      return new GifProxyDrawable(emojiconFile);
     } catch (IOException e) {
       e.printStackTrace();
     }

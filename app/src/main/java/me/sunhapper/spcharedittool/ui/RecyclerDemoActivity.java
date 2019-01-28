@@ -17,13 +17,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import com.sunhapper.spedittool.util.GifTextUtil;
+import com.sunhapper.x.spedit.gif.span.GifIsoheightImageSpan;
+
 import java.util.ArrayList;
 import java.util.List;
 import me.sunhapper.spcharedittool.R;
 import me.sunhapper.spcharedittool.emoji.DefaultGifEmoji;
 import me.sunhapper.spcharedittool.emoji.EmojiManager;
 import me.sunhapper.spcharedittool.emoji.EmojiManager.OnUnzipSuccessListener;
-import me.sunhapper.spcharedittool.span.EqualHeightSpan;
 
 /**
  * Created by sunha on 2018/2/7 0007.
@@ -51,7 +52,7 @@ public class RecyclerDemoActivity extends AppCompatActivity {
         for (DefaultGifEmoji defaultGifEmoji : defaultGifEmojis) {
           Drawable gifDrawable = EmojiManager.getInstance()
               .getDrawableByEmoji(RecyclerDemoActivity.this, defaultGifEmoji);
-          ImageSpan imageSpan = new EqualHeightSpan(gifDrawable);
+          ImageSpan imageSpan = new GifIsoheightImageSpan(gifDrawable);
           spannableStringBuilder
               .append(defaultGifEmoji.getEmojiText(), imageSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
           charSequences.add(new SpannableString(spannableStringBuilder));

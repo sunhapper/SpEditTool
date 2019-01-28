@@ -15,9 +15,11 @@ import android.text.style.ImageSpan;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.sunhapper.gifdrawable.drawable.GifProxyDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
 import com.sunhapper.glide.drawable.GlideProxyDrawable;
 import com.sunhapper.spedittool.util.GifTextUtil;
+import com.sunhapper.x.spedit.gif.span.GifIsoheightImageSpan;
 import com.sunhapper.x.spedit.mention.span.IntegratedSpan;
 import com.sunhapper.x.spedit.view.SpXEditText;
 
@@ -25,7 +27,6 @@ import java.io.IOException;
 
 import me.sunhapper.spcharedittool.GlideApp;
 import me.sunhapper.spcharedittool.R;
-import me.sunhapper.spcharedittool.drawable.RefreshGifDrawable;
 import me.sunhapper.spcharedittool.emoji.DefaultGifEmoji;
 import me.sunhapper.spcharedittool.emoji.DeleteEmoji;
 import me.sunhapper.spcharedittool.emoji.Emoji;
@@ -33,7 +34,6 @@ import me.sunhapper.spcharedittool.emoji.EmojiManager;
 import me.sunhapper.spcharedittool.emoji.EmojiManager.OnUnzipSuccessListener;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenu;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenuBase.EmojiconMenuListener;
-import me.sunhapper.spcharedittool.span.EqualHeightSpan;
 import me.sunhapper.spcharedittool.span.VerticalCenterSpan;
 import me.sunhapper.spcharedittool.util.DrawableUtil;
 import pl.droidsonroids.gif.GifDrawable;
@@ -93,8 +93,13 @@ public class MainActivity extends AppCompatActivity {
     private void insertEmoji(Emoji emoji) {
         Drawable gifDrawable = EmojiManager.getInstance()
                 .getDrawableByEmoji(this, emoji);
-        ImageSpan imageSpan = new EqualHeightSpan(gifDrawable);
-//    spEditText.insertSpecialStr(emoji.getEmojiText(), false, emoji.getEmojiText(), imageSpan);
+        ImageSpan imageSpan = new GifIsoheightImageSpan(gifDrawable);
+        Spannable spannable = new SpannableString(emoji.getEmojiText());
+        spannable.setSpan(imageSpan,
+                0, spannable.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Editable editable = spEditText.getText();
+        editable.append(spannable);
     }
 
     public void insertSp(View view) {
@@ -146,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setGlideGif(View view) {
         try {
-            GifDrawable gifDrawable = new RefreshGifDrawable(getResources(), R.drawable.a);
+            GifDrawable gifDrawable = new GifProxyDrawable(getResources(), R.drawable.a);
             GlideProxyDrawable proxyDrawable = new GlideProxyDrawable();
             GlideApp.with(this)
                     .load(
