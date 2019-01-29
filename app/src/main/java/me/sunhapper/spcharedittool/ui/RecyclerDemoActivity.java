@@ -80,7 +80,8 @@ public class RecyclerDemoActivity extends AppCompatActivity {
       if (position == 8) {
         Log.i(TAG, "onBindViewHolder: ");
       }
-      GifTextUtil.setTextWithReuseDrawable(holder.textView, charSequence, false);
+      holder.textView.setText(charSequence);
+//      GifTextUtil.setTextWithReuseDrawable(holder.textView, charSequence, false);
       Log.i(TAG, "onBindViewHolder:  end" + position);
     }
 
