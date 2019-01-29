@@ -29,6 +29,11 @@ public class SpXTextView extends android.support.v7.widget.AppCompatTextView {
     {
         List<NoCopySpan> watchers = new ArrayList<>();
         watchers.add(new GifWatcher(this));
-        setEditableFactory(new SpXFactory(watchers));
+        setSpannableFactory(new SpXSpannableFactory(watchers));
     }
+
+    public void setText(CharSequence text, BufferType type) {
+        super.setText(text, BufferType.SPANNABLE);
+    }
+
 }
