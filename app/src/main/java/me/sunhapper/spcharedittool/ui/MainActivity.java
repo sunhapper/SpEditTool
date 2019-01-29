@@ -15,9 +15,9 @@ import android.text.style.ImageSpan;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.sunhapper.gifdrawable.drawable.GifProxyDrawable;
+import com.sunhapper.gifdrawable.drawable.GifTextDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
-import com.sunhapper.glide.drawable.GlideProxyDrawable;
+import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
 import com.sunhapper.spedittool.util.GifTextUtil;
 import com.sunhapper.x.spedit.gif.span.GifIsoheightImageSpan;
 import com.sunhapper.x.spedit.mention.span.IntegratedSpan;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         spEditText = findViewById(R.id.spEdt);
         emojiInputView = findViewById(R.id.emojiInputView);
-        spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//        spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 //    spEditText.setReactKeys("@#%*");
         emojiInputView.setEmojiconMenuListener(new EmojiconMenuListener() {
             @Override
@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void setGlideGif(View view) {
         try {
-            GifDrawable gifDrawable = new GifProxyDrawable(getResources(), R.drawable.a);
-            GlideProxyDrawable proxyDrawable = new GlideProxyDrawable();
+            GifDrawable gifDrawable = new GifTextDrawable(getResources(), R.drawable.a);
+            ProxyDrawable proxyDrawable = new ProxyDrawable();
             GlideApp.with(this)
                     .load(
                             "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37.gif")

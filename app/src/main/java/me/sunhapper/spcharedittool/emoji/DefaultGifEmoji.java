@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 
-import com.sunhapper.gifdrawable.drawable.GifProxyDrawable;
+import com.sunhapper.gifdrawable.drawable.GifTextDrawable;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class DefaultGifEmoji implements Emoji {
   @Override
   public Drawable getDrawable(Context context) {
     try {
-      return new GifProxyDrawable(emojiconFile);
+      return new GifTextDrawable(emojiconFile);
     } catch (IOException e) {
       e.printStackTrace();
     }

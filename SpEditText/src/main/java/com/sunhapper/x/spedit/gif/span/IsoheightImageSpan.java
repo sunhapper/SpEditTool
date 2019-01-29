@@ -1,27 +1,74 @@
 package com.sunhapper.x.spedit.gif.span;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.style.ImageSpan;
 
-public  class IsoheightImageSpan extends ImageSpan  {
-    private boolean resized = false;
+public class IsoheightImageSpan extends ImageSpan {
+    protected boolean resized = false;
     private static final char[] ELLIPSIS_NORMAL = {'\u2026'}; // this is "..."
     private static final char[] ELLIPSIS_TWO_DOTS = {'\u2025'}; // this is ".."
-    private int drawableHeight = 0;
+    protected int drawableHeight = 0;
     private FontMetricsInt fm;
 
     public IsoheightImageSpan(Drawable d) {
         super(d);
     }
 
+    public IsoheightImageSpan(@NonNull Drawable d, int verticalAlignment) {
+        super(d, verticalAlignment);
+    }
+
+    public IsoheightImageSpan(@NonNull Drawable d,
+            @NonNull String source) {
+        super(d, source);
+    }
+
+    public IsoheightImageSpan(@NonNull Drawable d,
+            @NonNull String source, int verticalAlignment) {
+        super(d, source, verticalAlignment);
+    }
+
     public IsoheightImageSpan(Context context, Uri uri) {
         super(context, uri);
+    }
+
+    public IsoheightImageSpan(@NonNull Context context,
+            @NonNull Uri uri, int verticalAlignment) {
+        super(context, uri, verticalAlignment);
+    }
+
+    public IsoheightImageSpan(@NonNull Context context, int resourceId) {
+        super(context, resourceId);
+    }
+
+    public IsoheightImageSpan(@NonNull Context context, int resourceId, int verticalAlignment) {
+        super(context, resourceId, verticalAlignment);
+    }
+
+    public IsoheightImageSpan(@NonNull Bitmap b) {
+        super(b);
+    }
+
+    public IsoheightImageSpan(@NonNull Bitmap b, int verticalAlignment) {
+        super(b, verticalAlignment);
+    }
+
+    public IsoheightImageSpan(@NonNull Context context,
+            @NonNull Bitmap b) {
+        super(context, b);
+    }
+
+    public IsoheightImageSpan(@NonNull Context context,
+            @NonNull Bitmap b, int verticalAlignment) {
+        super(context, b, verticalAlignment);
     }
 
     @Override

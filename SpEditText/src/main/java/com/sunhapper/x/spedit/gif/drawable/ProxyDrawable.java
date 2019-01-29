@@ -1,92 +1,28 @@
-package com.sunhapper.gifdrawable.drawable;
+package com.sunhapper.x.spedit.gif.drawable;
 
-import android.content.ContentResolver;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.sunhapper.x.spedit.gif.drawable.InvalidateDrawable;
 import com.sunhapper.x.spedit.gif.listener.RefreshListener;
 
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
-import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.GifOptions;
-import pl.droidsonroids.gif.InputSource;
 
 /**
  * Created by sunha on 2018/1/23 0023.
  */
 
-public class GifProxyDrawable extends GifDrawable implements Drawable.Callback, InvalidateDrawable {
+public class ProxyDrawable extends Drawable implements Drawable.Callback, ResizeDrawable, InvalidateDrawable {
 
+    private static final String TAG = "PreDrawable";
     private Drawable mDrawable;
+    private boolean needResize;
     private List<RefreshListener> mRefreshListeners = new ArrayList<>();
     private Callback mCallback = new CallBack();
-
-    public GifProxyDrawable(@NonNull Resources res, int id)
-            throws Resources.NotFoundException, IOException {
-        super(res, id);
-    }
-
-    public GifProxyDrawable(@NonNull AssetManager assets, @NonNull String assetName)
-            throws IOException {
-        super(assets, assetName);
-    }
-
-    public GifProxyDrawable(@NonNull String filePath) throws IOException {
-        super(filePath);
-    }
-
-    public GifProxyDrawable(@NonNull File file) throws IOException {
-        super(file);
-    }
-
-    public GifProxyDrawable(@NonNull InputStream stream) throws IOException {
-        super(stream);
-    }
-
-    public GifProxyDrawable(@NonNull AssetFileDescriptor afd) throws IOException {
-        super(afd);
-    }
-
-    public GifProxyDrawable(@NonNull FileDescriptor fd) throws IOException {
-        super(fd);
-    }
-
-    public GifProxyDrawable(@NonNull byte[] bytes) throws IOException {
-        super(bytes);
-    }
-
-    public GifProxyDrawable(@NonNull ByteBuffer buffer) throws IOException {
-        super(buffer);
-    }
-
-    public GifProxyDrawable(@Nullable ContentResolver resolver,
-            @NonNull Uri uri) throws IOException {
-        super(resolver, uri);
-    }
-
-    protected GifProxyDrawable(@NonNull InputSource inputSource,
-            @Nullable GifDrawable oldDrawable, @Nullable ScheduledThreadPoolExecutor executor,
-            boolean isRenderingTriggeredOnDraw, @NonNull GifOptions options) throws IOException {
-        super(inputSource, oldDrawable, executor, isRenderingTriggeredOnDraw, options);
-    }
 
     @Override
     public void draw(Canvas canvas) {
@@ -123,6 +59,7 @@ public class GifProxyDrawable extends GifDrawable implements Drawable.Callback, 
         }
         drawable.setCallback(mCallback);
         this.mDrawable = drawable;
+        needResize = true;
         if (getCallback() != null) {
             getCallback().invalidateDrawable(this);
         }
@@ -131,6 +68,7 @@ public class GifProxyDrawable extends GifDrawable implements Drawable.Callback, 
     @Override
     protected void onBoundsChange(Rect bounds) {
         super.onBoundsChange(bounds);
+        needResize = false;
     }
 
     @Override
@@ -170,6 +108,27 @@ public class GifProxyDrawable extends GifDrawable implements Drawable.Callback, 
         }
     }
 
+    @Override
+    public int getWidth() {
+        if (mDrawable != null) {
+            return mDrawable.getIntrinsicWidth();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getHeight() {
+        if (mDrawable != null) {
+            return mDrawable.getIntrinsicHeight();
+        }
+        return 0;
+    }
+
+
+    @Override
+    public boolean needResize() {
+        return mDrawable != null && needResize;
+    }
 
     public Drawable getDrawable() {
         return mDrawable;
