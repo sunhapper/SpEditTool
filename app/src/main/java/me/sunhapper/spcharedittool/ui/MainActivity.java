@@ -1,25 +1,23 @@
 package me.sunhapper.spcharedittool.ui;
 
+import static com.sunhapper.x.spedit.SpUtil.insertSpannableString;
+
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.sunhapper.gifdrawable.drawable.GifTextDrawable;
+import com.sunhapper.gifdrawable.drawable.TextGifDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
+import com.sunhapper.x.spedit.SpUtil;
 import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
-import com.sunhapper.x.spedit.gif.span.GifIsoheightImageSpan;
 import com.sunhapper.x.spedit.mention.span.IntegratedSpan;
 import com.sunhapper.x.spedit.view.SpXEditText;
 
@@ -34,8 +32,6 @@ import me.sunhapper.spcharedittool.emoji.EmojiManager;
 import me.sunhapper.spcharedittool.emoji.EmojiManager.OnUnzipSuccessListener;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenu;
 import me.sunhapper.spcharedittool.emoji.EmojiconMenuBase.EmojiconMenuListener;
-import me.sunhapper.spcharedittool.span.VerticalCenterSpan;
-import me.sunhapper.spcharedittool.util.DrawableUtil;
 import pl.droidsonroids.gif.GifDrawable;
 
 public class MainActivity extends AppCompatActivity {
@@ -91,17 +87,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertEmoji(Emoji emoji) {
+        //使用EmojiManager中缓存的drawable
         Drawable gifDrawable = EmojiManager.getInstance()
                 .getDrawableByEmoji(this, emoji);
-        ImageSpan imageSpan = new GifIsoheightImageSpan(gifDrawable);
-        Spannable spannable = new SpannableString(emoji.getEmojiText());
-        spannable.setSpan(imageSpan,
-                0, spannable.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        Editable editable = spEditText.getText();
-        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable), spannable);
-
+        Spannable spannable = SpUtil.createGifDrawableSpan(gifDrawable, emoji.getEmojiText());
+        insertSpannableString(spEditText.getText(), spannable);
     }
+
 
     public void insertSp(View view) {
         Editable editable = spEditText.getText();
@@ -127,46 +119,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void insertAllGif(View view) throws IOException {
+    public void insertAllGif(View view) {
         EmojiManager.getInstance().getDefaultEmojiData(new OnUnzipSuccessListener() {
             @Override
             public void onUnzipSuccess(DefaultGifEmoji[] defaultGifEmojis) {
                 for (DefaultGifEmoji defaultGifEmoji : defaultGifEmojis) {
                     insertEmoji(defaultGifEmoji);
                 }
-
-//        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
-//        for (DefaultGifEmoji defaultGifEmoji : defaultGifEmojis) {
-//          Drawable gifDrawable = EmojiManager.getInstance()
-//              .getDrawableByEmoji(MainActivity.this, defaultGifEmoji);
-//          ImageSpan imageSpan = new EqualHeightSpan(gifDrawable);
-//          spannableStringBuilder
-//              .append(defaultGifEmoji.getEmojiText())
-//              .setSpan(imageSpan,
-//                  spannableStringBuilder.length() - defaultGifEmoji.getEmojiText().length(),
-//                  spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        }
-//        spEditText.insertNormalStr(spannableStringBuilder);
             }
         });
     }
 
     public void setGlideGif(View view) {
         try {
-            GifDrawable gifDrawable = new GifTextDrawable(getResources(), R.drawable.a);
-            ProxyDrawable proxyDrawable = new ProxyDrawable();
-            GlideApp.with(this)
-                    .load(
-                            "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37.gif")
-                    .placeholder(gifDrawable)
-                    .into(new DrawableTarget(proxyDrawable));
-            CharSequence charSequence = DrawableUtil.getDrawableText("[c]", proxyDrawable);
-            Editable editable = spEditText.getText();
-            editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable), charSequence);
+            CharSequence charSequence = createGlideText();
+            SpUtil.insertSpannableString(spEditText.getText(), charSequence);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private  CharSequence createGlideText() throws IOException {
+        GifDrawable gifDrawable = new TextGifDrawable(getResources(), R.drawable.a);
+        ProxyDrawable proxyDrawable = new ProxyDrawable();
+        GlideApp.with(this)
+                .load(
+                        "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37.gif")
+                .placeholder(gifDrawable)
+                .into(new DrawableTarget(proxyDrawable));
+        return SpUtil.createResizeGifDrawableSpan(proxyDrawable, "[c]");
     }
 
     public void openGifRecycler(View view) {
@@ -175,43 +157,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void testSpan(View view) {
-        Drawable drawable = ContextCompat.getDrawable(this, R.mipmap.ic_launcher_round);
-        VerticalCenterSpan testSpan = new VerticalCenterSpan(drawable);
-        VerticalCenterSpan testSpan1 = new VerticalCenterSpan(drawable);
-        VerticalCenterSpan testSpan2 = new VerticalCenterSpan(drawable);
-        VerticalCenterSpan testSpan3 = new VerticalCenterSpan(drawable);
-        SpannableString spannableString = new SpannableString("[test]");
-        SpannableString spannableString1 = new SpannableString("[test]");
-        SpannableString spannableString2 = new SpannableString("[test]");
-        SpannableString spannableString3 = new SpannableString("[test]");
-        spannableString
-                .setSpan(testSpan, 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannableString1
-                .setSpan(testSpan1, 0, spannableString1.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannableString2
-                .setSpan(testSpan2, 0, spannableString2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannableString3
-                .setSpan(testSpan3, 0, spannableString3.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder()
-                .append("ssssssssssssssssssssssssssssssgl")
-                .append(spannableString)
-                .append("sssssssssssssssssssssssssssss").append("ssssssssssssssssssssssssssssssgl")
-                .append(spannableString1)
-                .append("sssssssssssssssssssssssssssss").append("ssssssssssssssssssssssssssssssgl")
-                .append(spannableString2)
-                .append("sssssssssssssssssssssssssssss").append("ssssssssssssssssssssssssssssssgl")
-                .append(spannableString3)
-                .append("sssssssssssssssssssssssssssss");
-        spEditText.setText(spannableStringBuilder);
-    }
-
     public void regText(View view) {
         String regText = "[大兵]  [奋斗]";
         Spannable spannable = EmojiManager.getInstance().getSpannableByPattern(this, regText);
-        Editable editable = spEditText.getText();
-        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable), spannable);
-
-//        GifTextUtil.setTextWithReuseDrawable(spEditText, spannable, false);
+        SpUtil.insertSpannableString(spEditText.getText(), spannable);
     }
+
+
 }

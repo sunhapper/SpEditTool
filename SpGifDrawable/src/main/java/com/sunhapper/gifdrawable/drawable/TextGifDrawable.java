@@ -29,56 +29,56 @@ import pl.droidsonroids.gif.InputSource;
  * Created by sunha on 2018/1/23 0023.
  */
 
-public class GifTextDrawable extends GifDrawable implements InvalidateDrawable {
+public class TextGifDrawable extends GifDrawable implements InvalidateDrawable {
 
     private List<RefreshListener> mRefreshListeners = new ArrayList<>();
     private CallBack mCallBack = new CallBack();
 
-    public GifTextDrawable(@NonNull Resources res,
+    public TextGifDrawable(@NonNull Resources res,
             int id) throws Resources.NotFoundException, IOException {
         super(res, id);
     }
 
-    public GifTextDrawable(@NonNull AssetManager assets,
+    public TextGifDrawable(@NonNull AssetManager assets,
             @NonNull String assetName) throws IOException {
         super(assets, assetName);
     }
 
-    public GifTextDrawable(@NonNull String filePath) throws IOException {
+    public TextGifDrawable(@NonNull String filePath) throws IOException {
         super(filePath);
     }
 
-    public GifTextDrawable(@NonNull File file) throws IOException {
+    public TextGifDrawable(@NonNull File file) throws IOException {
         super(file);
     }
 
-    public GifTextDrawable(@NonNull InputStream stream) throws IOException {
+    public TextGifDrawable(@NonNull InputStream stream) throws IOException {
         super(stream);
     }
 
-    public GifTextDrawable(@NonNull AssetFileDescriptor afd) throws IOException {
+    public TextGifDrawable(@NonNull AssetFileDescriptor afd) throws IOException {
         super(afd);
     }
 
-    public GifTextDrawable(@NonNull FileDescriptor fd) throws IOException {
+    public TextGifDrawable(@NonNull FileDescriptor fd) throws IOException {
         super(fd);
     }
 
-    public GifTextDrawable(@NonNull byte[] bytes) throws IOException {
+    public TextGifDrawable(@NonNull byte[] bytes) throws IOException {
         super(bytes);
     }
 
-    public GifTextDrawable(@NonNull ByteBuffer buffer) throws IOException {
+    public TextGifDrawable(@NonNull ByteBuffer buffer) throws IOException {
         super(buffer);
     }
 
-    public GifTextDrawable(
+    public TextGifDrawable(
             @Nullable ContentResolver resolver,
             @NonNull Uri uri) throws IOException {
         super(resolver, uri);
     }
 
-    protected GifTextDrawable(@NonNull InputSource inputSource,
+    protected TextGifDrawable(@NonNull InputSource inputSource,
             @Nullable GifDrawable oldDrawable,
             @Nullable ScheduledThreadPoolExecutor executor,
             boolean isRenderingTriggeredOnDraw, @NonNull GifOptions options)
@@ -125,12 +125,5 @@ public class GifTextDrawable extends GifDrawable implements InvalidateDrawable {
         public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
 
         }
-    }
-
-    @Nullable
-    @Override
-    public Callback getCallback() {
-        Callback callBack = super.getCallback();
-        return callBack;
     }
 }
