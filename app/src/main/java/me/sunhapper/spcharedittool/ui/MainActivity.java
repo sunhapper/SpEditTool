@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -18,7 +19,6 @@ import android.view.View;
 import com.sunhapper.gifdrawable.drawable.GifTextDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
 import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
-import com.sunhapper.spedittool.util.GifTextUtil;
 import com.sunhapper.x.spedit.gif.span.GifIsoheightImageSpan;
 import com.sunhapper.x.spedit.mention.span.IntegratedSpan;
 import com.sunhapper.x.spedit.view.SpXEditText;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         spEditText = findViewById(R.id.spEdt);
         emojiInputView = findViewById(R.id.emojiInputView);
-//        spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 //    spEditText.setReactKeys("@#%*");
         emojiInputView.setEmojiconMenuListener(new EmojiconMenuListener() {
             @Override
@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
                 0, spannable.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         Editable editable = spEditText.getText();
-        editable.append(spannable);
+        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable), spannable);
+
     }
 
     public void insertSp(View view) {
@@ -108,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
         spannable.setSpan(new IntegratedSpan() {
 
         }, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        editable.append(spannable);
+        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable), spannable);
+
     }
 
     public void getData(View view) {
@@ -160,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     .into(new DrawableTarget(proxyDrawable));
             CharSequence charSequence = DrawableUtil.getDrawableText("[c]", proxyDrawable);
             Editable editable = spEditText.getText();
-            editable.append(charSequence);
+            editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable), charSequence);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -207,6 +209,9 @@ public class MainActivity extends AppCompatActivity {
     public void regText(View view) {
         String regText = "[大兵]  [奋斗]";
         Spannable spannable = EmojiManager.getInstance().getSpannableByPattern(this, regText);
-        GifTextUtil.setTextWithReuseDrawable(spEditText, spannable, false);
+        Editable editable = spEditText.getText();
+        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable), spannable);
+
+//        GifTextUtil.setTextWithReuseDrawable(spEditText, spannable, false);
     }
 }

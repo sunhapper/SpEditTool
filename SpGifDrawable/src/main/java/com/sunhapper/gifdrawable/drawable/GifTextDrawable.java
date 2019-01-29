@@ -127,15 +127,10 @@ public class GifTextDrawable extends GifDrawable implements InvalidateDrawable {
         }
     }
 
-    @Override
-    public void invalidateSelf() {
-        super.invalidateSelf();
-    }
-
     @Nullable
     @Override
     public Callback getCallback() {
-        Callback callback = super.getCallback();
-        return callback;
+        Callback callBack = super.getCallback();
+        return callBack;
     }
 }

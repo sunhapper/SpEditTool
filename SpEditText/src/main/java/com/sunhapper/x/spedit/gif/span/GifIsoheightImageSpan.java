@@ -11,7 +11,7 @@ import com.sunhapper.x.spedit.gif.drawable.InvalidateDrawable;
 /**
  * Created by sunhapper on 2019/1/28 .
  */
-public class GifIsoheightImageSpan extends IsoheightImageSpan implements RefreshSpan{
+public class GifIsoheightImageSpan extends IsoheightImageSpan implements RefreshSpan {
     public GifIsoheightImageSpan(Drawable d) {
         super(d);
     }
@@ -68,12 +68,11 @@ public class GifIsoheightImageSpan extends IsoheightImageSpan implements Refresh
 
     @Override
     public InvalidateDrawable getInvalidateDrawable() {
-        Drawable d= getResizedDrawable();
-        if (d instanceof InvalidateDrawable){
+        Drawable d = getResizedDrawable();
+        if (d instanceof InvalidateDrawable) {
             return (InvalidateDrawable) d;
-        }else{
+        } else {
             return null;
         }
     }
-
 }

@@ -60,6 +60,7 @@ public class ProxyDrawable extends Drawable implements Drawable.Callback, Resize
         drawable.setCallback(mCallback);
         this.mDrawable = drawable;
         needResize = true;
+        mCallback.invalidateDrawable(this);
         if (getCallback() != null) {
             getCallback().invalidateDrawable(this);
         }
