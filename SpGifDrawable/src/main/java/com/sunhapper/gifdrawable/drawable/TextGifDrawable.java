@@ -102,11 +102,6 @@ public class TextGifDrawable extends GifDrawable implements InvalidateDrawable {
     }
 
 
-    @Override
-    public int intervalTime() {
-        return getDuration() / getNumberOfFrames();
-    }
-
     private class CallBack implements Callback {
 
         @Override

@@ -9,6 +9,4 @@ public interface InvalidateDrawable {
     void addRefreshListener(RefreshListener callback);
 
     void removeRefreshListener(RefreshListener callback);
-
-    int intervalTime();
 }

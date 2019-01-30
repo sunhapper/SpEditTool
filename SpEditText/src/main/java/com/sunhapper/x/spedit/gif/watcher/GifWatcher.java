@@ -2,7 +2,6 @@ package com.sunhapper.x.spedit.gif.watcher;
 
 import android.text.SpanWatcher;
 import android.text.Spannable;
-import android.util.Log;
 import android.view.View;
 
 import com.sunhapper.x.spedit.gif.drawable.InvalidateDrawable;
@@ -13,7 +12,8 @@ import com.sunhapper.x.spedit.gif.span.RefreshSpan;
  * Created by sunhapper on 2019/1/25 .
  */
 public class GifWatcher implements SpanWatcher, RefreshListener {
-    private static final String TAG = "GifWatcher";
+    private long mLastTime;
+    private static final int REFRESH_INTERVAL = 60;
     private View mView;
 
     public GifWatcher(View view) {
@@ -47,7 +47,10 @@ public class GifWatcher implements SpanWatcher, RefreshListener {
 
     @Override
     public void onRefresh() {
-        Log.i(TAG, "onRefresh: ");
-        mView.invalidate();
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - mLastTime > REFRESH_INTERVAL) {
+            mLastTime = currentTime;
+            mView.invalidate();
+        }
     }
 }

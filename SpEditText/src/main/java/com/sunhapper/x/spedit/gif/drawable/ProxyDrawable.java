@@ -145,11 +145,6 @@ public class ProxyDrawable extends Drawable implements Drawable.Callback, Resize
         mRefreshListeners.remove(callback);
     }
 
-    @Override
-    public int intervalTime() {
-        return 60;
-    }
-
     class CallBack implements Callback {
 
         @Override
