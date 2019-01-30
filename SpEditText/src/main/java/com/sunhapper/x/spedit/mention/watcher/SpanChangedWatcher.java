@@ -43,7 +43,7 @@ public class SpanChangedWatcher implements SpanWatcher {
                 Selection.setSelection(text, index, Selection.getSelectionEnd(text));
             }
         }
-        if (what instanceof BreakableSpan && ((BreakableSpan) what).isBreak()) {
+        if (what instanceof BreakableSpan && ((BreakableSpan) what).isBreak(text)) {
             text.removeSpan(what);
         }
     }

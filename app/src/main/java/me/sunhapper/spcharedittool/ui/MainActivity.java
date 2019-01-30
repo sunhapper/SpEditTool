@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,13 +17,14 @@ import com.sunhapper.gifdrawable.drawable.TextGifDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
 import com.sunhapper.x.spedit.SpUtil;
 import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
-import com.sunhapper.x.spedit.mention.span.IntegratedSpan;
 import com.sunhapper.x.spedit.view.SpXEditText;
 
 import java.io.IOException;
 
 import me.sunhapper.spcharedittool.GlideApp;
 import me.sunhapper.spcharedittool.R;
+import me.sunhapper.spcharedittool.data.MentionUser;
+import me.sunhapper.spcharedittool.data.Topic;
 import me.sunhapper.spcharedittool.emoji.DefaultGifEmoji;
 import me.sunhapper.spcharedittool.emoji.DeleteEmoji;
 import me.sunhapper.spcharedittool.emoji.Emoji;
@@ -95,13 +95,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void insertSp(View view) {
+    public void insertTopic(View view) {
         Editable editable = spEditText.getText();
-        Spannable spannable = new SpannableString(" 这是插入的字符串 ");
-        spannable.setSpan(new IntegratedSpan() {
+        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable),
+                new Topic().getSpanableString());
+    }
 
-        }, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable), spannable);
+    public void insertMention(View view) {
+        Editable editable = spEditText.getText();
+        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable),
+                new MentionUser().getSpanableString());
 
     }
 
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private  CharSequence createGlideText() throws IOException {
+    private CharSequence createGlideText() throws IOException {
         GifDrawable gifDrawable = new TextGifDrawable(getResources(), R.drawable.a);
         ProxyDrawable proxyDrawable = new ProxyDrawable();
         GlideApp.with(this)
