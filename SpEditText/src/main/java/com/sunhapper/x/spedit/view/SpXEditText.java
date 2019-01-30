@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.NoCopySpan;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputConnectionWrapper;
@@ -37,6 +38,12 @@ public class SpXEditText extends android.support.v7.widget.AppCompatEditText {
         watchers.add(new SpanChangedWatcher());
         watchers.add(new GifWatcher(this));
         setEditableFactory(new SpXFactory(watchers));
+        setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                return (mKeyEventProxy != null && mKeyEventProxy.onKeyEvent(event, getText()));
+            }
+        });
     }
 
     @Override
