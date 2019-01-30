@@ -69,6 +69,17 @@ public class SpXEditText extends android.support.v7.widget.AppCompatEditText {
 
 
         @Override
+        public boolean deleteSurroundingText(int beforeLength, int afterLength) {
+            if (beforeLength == 1 && afterLength == 0) {
+                return sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_DEL))
+                        && sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_DEL));
+            }
+            return super.deleteSurroundingText(beforeLength, afterLength);
+        }
+
+        @Override
         public boolean sendKeyEvent(KeyEvent event) {
             return (mKeyEventProxy != null && mKeyEventProxy.onKeyEvent(event, getText()))
                     || super.sendKeyEvent(event);
