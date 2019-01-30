@@ -13,14 +13,16 @@ import com.sunhapper.x.spedit.mention.span.BreakableSpan;
  */
 public class Topic implements BreakableSpan {
     private String text = "topic";
+    private Object styleSpan;
 
     public String getDisplayText() {
         return "#" + text + "#";
     }
 
     public Spannable getSpanableString() {
+        styleSpan = new ForegroundColorSpan(Color.BLUE);
         SpannableString spannableString = new SpannableString(getDisplayText());
-        spannableString.setSpan(new ForegroundColorSpan(Color.BLUE), 0, spannableString.length(),
+        spannableString.setSpan(styleSpan, 0, spannableString.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(this, 0, spannableString.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -33,7 +35,12 @@ public class Topic implements BreakableSpan {
     public boolean isBreak(Spannable text) {
         int spanStart = text.getSpanStart(this);
         int spanEnd = text.getSpanEnd(this);
-        return spanStart >= 0 && spanEnd >= 0 && text.subSequence(spanStart, spanEnd) != getDisplayText();
+        boolean isBreak = spanStart >= 0 && spanEnd >= 0 && text.subSequence(spanStart, spanEnd) != getDisplayText();
+        if (isBreak && styleSpan != null) {
+            text.removeSpan(styleSpan);
+            styleSpan = null;
+        }
+        return isBreak;
     }
 
     @Override
