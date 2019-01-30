@@ -11,7 +11,7 @@ import com.sunhapper.x.spedit.mention.span.BreakableSpan;
 /**
  * Created by sunhapper on 2019/1/30 .
  */
-public class Topic implements BreakableSpan {
+public class Topic implements BreakableSpan, DataSpan {
     private String text = "topic";
     private Object styleSpan;
 
@@ -35,7 +35,8 @@ public class Topic implements BreakableSpan {
     public boolean isBreak(Spannable text) {
         int spanStart = text.getSpanStart(this);
         int spanEnd = text.getSpanEnd(this);
-        boolean isBreak = spanStart >= 0 && spanEnd >= 0 && text.subSequence(spanStart, spanEnd) != getDisplayText();
+        boolean isBreak = spanStart >= 0 && spanEnd >= 0 && !text.subSequence(spanStart, spanEnd).toString().equals(
+                getDisplayText());
         if (isBreak && styleSpan != null) {
             text.removeSpan(styleSpan);
             styleSpan = null;

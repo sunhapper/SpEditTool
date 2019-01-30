@@ -10,13 +10,16 @@ import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.sunhapper.gifdrawable.drawable.TextGifDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
 import com.sunhapper.x.spedit.SpUtil;
 import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
+import me.sunhapper.spcharedittool.data.DataSpan;
 import com.sunhapper.x.spedit.view.SpXEditText;
 
 import java.io.IOException;
@@ -109,16 +112,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getData(View view) {
-//    SpData[] spDatas = spEditText.getSpDatas();
-//    StringBuilder stringBuilder = new StringBuilder();
-//    stringBuilder.append("完整字符串：").append(spEditText.getText())
-//        .append("\n").append("特殊字符串：\n");
-//    for (SpData spData : spDatas) {
-//      stringBuilder.append(spData.toString())
-//          .append("\n");
-//    }
-//    Log.i(TAG, "getData: " + stringBuilder);
-//    Toast.makeText(this, stringBuilder, Toast.LENGTH_SHORT).show();
+        DataSpan[] dataSpans = spEditText.getText().getSpans(0, spEditText.length(), DataSpan.class);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("完整字符串：").append(spEditText.getText())
+                .append("\n").append("特殊字符串：\n");
+        for (DataSpan dataSpan : dataSpans) {
+            stringBuilder.append(dataSpan.toString())
+                    .append("\n");
+        }
+        Log.i(TAG, "getData: " + stringBuilder);
+        Toast.makeText(this, stringBuilder, Toast.LENGTH_SHORT).show();
     }
 
 

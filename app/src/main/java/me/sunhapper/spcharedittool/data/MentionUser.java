@@ -11,7 +11,7 @@ import com.sunhapper.x.spedit.mention.span.IntegratedSpan;
 /**
  * Created by sunhapper on 2019/1/30 .
  */
-public class MentionUser implements IntegratedSpan {
+public class MentionUser implements IntegratedSpan, DataSpan {
     public String name;
     public long id;
 
