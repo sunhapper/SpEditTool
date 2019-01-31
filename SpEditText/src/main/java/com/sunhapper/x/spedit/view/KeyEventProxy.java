@@ -1,6 +1,6 @@
 package com.sunhapper.x.spedit.view;
 
-import android.text.Spannable;
+import android.text.Editable;
 import android.view.KeyEvent;
 
 /**
@@ -8,5 +8,5 @@ import android.view.KeyEvent;
  */
 public interface KeyEventProxy {
 
-    boolean onKeyEvent(KeyEvent keyEvent, Spannable text);
+    boolean onKeyEvent(KeyEvent keyEvent, Editable text);
 }

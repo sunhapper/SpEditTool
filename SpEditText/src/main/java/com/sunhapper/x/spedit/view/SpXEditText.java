@@ -19,7 +19,7 @@ import java.util.List;
  * Created by sunhapper on 2019/1/25 .
  */
 public class SpXEditText extends android.support.v7.widget.AppCompatEditText {
-    private KeyEventProxy mKeyEventProxy = new DefaultDeleteKeyEventProxy();
+    private KeyEventProxy mKeyEventProxy = new DefaultKeyEventProxy();
 
     public SpXEditText(Context context) {
         super(context);
