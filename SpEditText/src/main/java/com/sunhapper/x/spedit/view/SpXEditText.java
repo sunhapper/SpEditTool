@@ -41,9 +41,13 @@ public class SpXEditText extends android.support.v7.widget.AppCompatEditText {
         setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                return (mKeyEventProxy != null && mKeyEventProxy.onKeyEvent(event, getText()));
+                return handleKeyEvent(event);
             }
         });
+    }
+
+    private boolean handleKeyEvent(KeyEvent event) {
+        return mKeyEventProxy != null && mKeyEventProxy.onKeyEvent(event, getText());
     }
 
     @Override
@@ -88,7 +92,7 @@ public class SpXEditText extends android.support.v7.widget.AppCompatEditText {
 
         @Override
         public boolean sendKeyEvent(KeyEvent event) {
-            return (mKeyEventProxy != null && mKeyEventProxy.onKeyEvent(event, getText()))
+            return (handleKeyEvent(event))
                     || super.sendKeyEvent(event);
         }
     }
