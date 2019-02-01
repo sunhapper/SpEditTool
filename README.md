@@ -1,12 +1,31 @@
 # Description
 
-* `SpEditText`--An EditText for mentioning user and showing topic with highlight and overall deleting
-* `GifTextUtil`--A tool for show gif on graph-text mixed TextView/EditText efficiently
+An efficient and scaleable library for display gif and @mention on graph-text mixed TextView/EditText
 
 ## ScreenShot
 
 <img src="artworks/fullSp.gif" width = "240" height = "400" alt="ScreenShot"  /><img src="artworks/emojiSp.gif" width = "240" height = "400" alt="ScreenShot"  />
 
+## feature
+
+- [x] fully removed special content
+- [x] part removed special content
+- [x] custom style 
+- [x] show gif on text
+- [x] load gif with AndroidGifDrawable
+- [x] load gif with Gidle
+
+## todo 
+
+- [ ] load gif with Fresco
+- [ ] more styles of ImageSpan
+
+## change log  
+
+* 1.0.0 
+    * use more elegant implementation of @mention（special thanks to [iYaoy](https://github.com/iYaoy/easy_at)）
+    * clearer package structure 
+    * library for supporting  Glide/AndroidGifDrawable 
 # Usage
 
 ## Gradle  
@@ -26,116 +45,108 @@
 [![](https://jitpack.io/v/sunhapper/SpEditTool.svg)](https://jitpack.io/#sunhapper/SpEditTool)
 ```
 dependencies {
-	        compile 'com.github.sunhapper:SpEditTool:{last version}'
+	        implementation 'com.github.sunhapper:SpEditTool:SpEditText:{last version}'
+	        //help to create gif drawable use Glide
+	        implementation 'com.github.sunhapper:SpEditTool:SpGlideDrawable:{last version}'
+	        //help to create gif drawable use AndroidGifDrawable
+	        implementation 'com.github.sunhapper:SpEditTool:SpGifDrawable:{last version}'
 	}
 ```
 
 ## xml
 
+EditText
+* CustomInputConnectionWrapper to accept keyEvent，because setOnKeyListener  may not react KeyEvent when use Google input method
+* SpanChangedWatcher to handle @mention content
+* GifWatcher to display gif on text
 ```
-<com.sunhapper.spedittool.view.SpEditText
-    android:id="@+id/spEdt"
-    app:react_keys="#*%@"
-    app:sp_mode="breakable"
+<com.sunhapper.x.spedit.view.SpXEditText
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
 ```
-* app:react_keys--characters will be reacted
-* app:sp_mode
-  * "integrated"means overall deleting
-  * "breakable"means normal deleting,data and style will be removed when integrity break
+TextView
+```
+<com.sunhapper.x.spedit.view.SpXTextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+```
 
 ## java
 
-### SpEditText
-
-* react the character input
+* create @mention Spannable
 ```
-spEditText.setReactKeys("@#%*");
-spEditText.setKeyReactListener(new KeyReactListener() {
-      @Override
-      public void onKeyReact(String key) {
+//IntegratedSpan will be fully removed
+public class MentionUser implements IntegratedSpan {
+    public String name;
+    public long id;
 
-      }
-    });
-```
-
-* insert special content
-```
-spEditText.insertSpecialStr(" @sunhapper ", true, 0, new ForegroundColorSpan(Color.RED));
-```
-
-```
-  /**
-   *
-   * @param showContent special text content
-   * @param rollBack true is need to delete on char forward
-   * @param customData special text`s extra data
-   * @param customSpan special text`s style
-   */
-  public void insertSpecialStr(String showContent, boolean rollBack, Object customData,
-      Object customSpan)
-```
-
-* get data from SpEditText
-
-```
-SpData[] spDatas = spEditText.getSpDatas(); 
-```
-
-```
-  public class SpData {
-
-    /**
-     * special text content
-     */
-    private String showContent;
-    /**
-     * special text`s extra data
-     */
-    private Object customData;
-    /**
-     * special text`s start on EditText
-     */
-    private int start;
-    /**
-     * special text`s end on EditText
-     */
-    private int end;
-  }
-
-```
-
-### GifTextUtil
-
-define a custom gifDrawable extend Drawable and implements RefreshableDrawable
-```
-public interface RefreshableDrawable {
-
-  boolean canRefresh();
-
-  int getInterval();
-
-  void addCallback(Drawable.Callback callback);
-
-  void removeCallback(Drawable.Callback callback);
-
+    public Spannable getSpanableString() {
+        SpannableString spannableString = new SpannableString(getDisplayText());
+        spannableString.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0, spannableString.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(this, 0, spannableString.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+        return stringBuilder.append(spannableString).append(" ");
+    }
 }
 ```
 
-bind spannable with gifDrawable to textView
-```
-GifTextUtil.setTextWithReuseDrawable(textView, charSequence, false);
 
+* delete style span when BreakableSpan was broken  
 ```
+//BreakableSpan can be  part removed
+public class Topic implements BreakableSpan {
+
+    ...
+    /**
+     * @return true the BreakableSpan will be removed
+     * you can remove custom style span when content broken
+     */
+    @Override
+    public boolean isBreak(Spannable text) {
+        int spanStart = text.getSpanStart(this);
+        int spanEnd = text.getSpanEnd(this);
+        boolean isBreak = spanStart >= 0 && spanEnd >= 0 && !text.subSequence(spanStart, spanEnd).toString().equals(
+                getDisplayText());
+        if (isBreak && styleSpan != null) {
+            text.removeSpan(styleSpan);
+            styleSpan = null;
+        }
+        return isBreak;
+    }
+}
+```
+
+* load gif with AndroidGifDrawable  
+```
+Drawable drawable = new TextGifDrawable(emojiconFile);
+Spannable spannable = SpUtil.createGifDrawableSpan(gifDrawable,"text");
+```
+
+* load gif with Glide
+```
+//placeholder drawable
+GifDrawable gifDrawable = new TextGifDrawable(getResources(), R.drawable.a);
+ProxyDrawable proxyDrawable = new ProxyDrawable();
+GlideApp.with(this)
+        .load(gifurl)
+        .placeholder(gifDrawable)
+        .into(new DrawableTarget(proxyDrawable));
+return SpUtil.createResizeGifDrawableSpan(proxyDrawable, "text");
+```
+
+* custom Factory  
+    * you can create your own SpanWatcher and Spannable.Factory/Editable.Factory 
+    * use`setSpannableFactory/setEditableFactory`instead of using SpXTextView or SpXEditText
 
 ## proguard
 
 ```
--keep class com.sunhapper.spedittool.**{*;}
+-keep class com.sunhapper.x.spedit.**{*;}
 ```
 
-more detail info and guidance，please see the demo
+more detail info and guidance，please see the app demo
 
 [中文文档](./README_CN.md)
 
