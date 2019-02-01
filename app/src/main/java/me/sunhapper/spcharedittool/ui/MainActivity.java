@@ -19,13 +19,13 @@ import com.sunhapper.gifdrawable.drawable.TextGifDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
 import com.sunhapper.x.spedit.SpUtil;
 import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
-import me.sunhapper.spcharedittool.data.DataSpan;
 import com.sunhapper.x.spedit.view.SpXEditText;
 
 import java.io.IOException;
 
 import me.sunhapper.spcharedittool.GlideApp;
 import me.sunhapper.spcharedittool.R;
+import me.sunhapper.spcharedittool.data.DataSpan;
 import me.sunhapper.spcharedittool.data.MentionUser;
 import me.sunhapper.spcharedittool.data.Topic;
 import me.sunhapper.spcharedittool.emoji.DefaultGifEmoji;
@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         spEditText = findViewById(R.id.spEdt);
         emojiInputView = findViewById(R.id.emojiInputView);
         spEditText.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-//    spEditText.setReactKeys("@#%*");
         emojiInputView.setEmojiconMenuListener(new EmojiconMenuListener() {
             @Override
             public void onExpressionClicked(Emoji emoji) {
@@ -65,28 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-//    spEditText.setKeyReactListener(new KeyReactListener() {
-//      @Override
-//      public void onKeyReact(String key) {
-//        switch (key) {
-//          case "@":
-//            spEditText
-//                .insertSpecialStr(" @sunhapper ", true, 0, new ForegroundColorSpan(Color.RED));
-//            break;
-//          case "#":
-//            spEditText.insertSpecialStr(" #这是一个话题# ", true, 1, new ForegroundColorSpan(Color.RED));
-//            break;
-//          case "%":
-//            spEditText.insertSpecialStr(" 100% ", true, 2, new ForegroundColorSpan(Color.RED));
-//            break;
-//          case "*":
-//            spEditText.insertSpecialStr(" ******* ", true, 3, new ForegroundColorSpan(Color.RED));
-//            break;
-//        }
-//
-//
-//      }
-//    });
     }
 
     private void insertEmoji(Emoji emoji) {

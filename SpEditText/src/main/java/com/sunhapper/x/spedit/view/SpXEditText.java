@@ -37,7 +37,7 @@ public class SpXEditText extends android.support.v7.widget.AppCompatEditText {
         List<NoCopySpan> watchers = new ArrayList<>();
         watchers.add(new SpanChangedWatcher());
         watchers.add(new GifWatcher(this));
-        setEditableFactory(new SpXFactory(watchers));
+        setEditableFactory(new SpXEditableFactory(watchers));
         setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {

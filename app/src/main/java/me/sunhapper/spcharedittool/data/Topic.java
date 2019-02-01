@@ -30,7 +30,10 @@ public class Topic implements BreakableSpan, DataSpan {
         return stringBuilder.append(" ").append(spannableString).append(" ");
     }
 
-
+    /**
+     * @return true the BreakableSpan will be removed
+     * you can remove custom style span when content broken
+     */
     @Override
     public boolean isBreak(Spannable text) {
         int spanStart = text.getSpanStart(this);

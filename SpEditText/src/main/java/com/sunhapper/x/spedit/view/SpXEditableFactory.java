@@ -14,14 +14,14 @@ import java.util.List;
 /**
  * Created by sunhapper on 2019/1/25 .
  */
-public class SpXFactory extends Factory {
+public class SpXEditableFactory extends Factory {
     private List<NoCopySpan> mNoCopySpans;
     @Nullable
     private static Class<?> sWatcherClass;
 
 
     @SuppressLint("PrivateApi")
-    public SpXFactory(List<NoCopySpan> watchers) {
+    public SpXEditableFactory(List<NoCopySpan> watchers) {
         mNoCopySpans = watchers;
         try {
             String className = "android.text.DynamicLayout$ChangeWatcher";
