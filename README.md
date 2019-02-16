@@ -22,6 +22,9 @@ An efficient and scaleable library for display gif and @mention on graph-text mi
 
 ## change log  
 
+* 1.0.1
+    * fix bug
+
 * 1.0.0 
     * use more elegant implementation of @mention（special thanks to [iYaoy](https://github.com/iYaoy/easy_at)）
     * clearer package structure 

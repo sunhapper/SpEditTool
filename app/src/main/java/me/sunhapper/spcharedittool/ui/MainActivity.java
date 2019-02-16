@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -76,16 +75,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void insertTopic(View view) {
-        Editable editable = spEditText.getText();
-        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable),
-                new Topic().getSpanableString());
+        replace(new Topic().getSpanableString());
     }
 
-    public void insertMention(View view) {
-        Editable editable = spEditText.getText();
-        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable),
-                new MentionUser().getSpanableString());
 
+    public void insertMention(View view) {
+        replace(new MentionUser().getSpanableString());
     }
 
     public void getData(View view) {
@@ -146,5 +141,9 @@ public class MainActivity extends AppCompatActivity {
         SpUtil.insertSpannableString(spEditText.getText(), spannable);
     }
 
+    private void replace(CharSequence charSequence) {
+        Editable editable = spEditText.getText();
+        insertSpannableString(editable, charSequence);
+    }
 
 }

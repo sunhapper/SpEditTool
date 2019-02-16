@@ -23,6 +23,9 @@
 
 ## change log  
 
+* 1.0.1
+    * 修复bug
+
 * 1.0.0 
     * @mention功能使用更优雅的实现方式 （特别感谢 [iYaoy](https://github.com/iYaoy/easy_at)的思路）
     * 更清晰的包结构

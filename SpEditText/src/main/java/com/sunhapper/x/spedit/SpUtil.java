@@ -33,6 +33,13 @@ public final class SpUtil {
     }
 
     public static void insertSpannableString(Editable editable, CharSequence text) {
-        editable.replace(Selection.getSelectionStart(editable), Selection.getSelectionEnd(editable), text);
+        int start = Selection.getSelectionStart(editable);
+        int end = Selection.getSelectionEnd(editable);
+        if (end < start) {
+            int temp = start;
+            start = end;
+            end = temp;
+        }
+        editable.replace(start, end, text);
     }
 }
