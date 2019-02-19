@@ -7,12 +7,10 @@
     android:layout_height="match_parent"
     tools:context="me.sunhapper.spcharedittool.ui.MainActivity">
 
-    <!--react_keys属性指定要响应的字符列表-->
     <com.sunhapper.x.spedit.view.SpXEditText
         android:id="@+id/spEdt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="输入@ # * %"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
