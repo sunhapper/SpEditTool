@@ -1,6 +1,6 @@
 # Description
 
-一个高效可扩展，在TextView/EditText中显示gif和@mention等图文混排内容的库
+一个高效可扩展，在TextView/EditText中输入和显示gif和@mention等图文混排内容的库
 
 
 ## ScreenShot
@@ -23,8 +23,8 @@
 
 ## change log  
 
-* 1.0.1
-    * 修复bug
+* 1.0.1/1.0.2
+    * 修复bug 
 
 * 1.0.0 
     * @mention功能使用更优雅的实现方式 （特别感谢 [iYaoy](https://github.com/iYaoy/easy_at)的思路）

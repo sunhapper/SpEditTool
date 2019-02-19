@@ -1,6 +1,6 @@
 # Description
 
-An efficient and scaleable library for display gif and @mention on graph-text mixed TextView/EditText
+An efficient and scalable library for inputing and displaying gif or @mention on graph-text mixed TextView/EditText
 
 ## ScreenShot
 
@@ -22,7 +22,7 @@ An efficient and scaleable library for display gif and @mention on graph-text mi
 
 ## change log  
 
-* 1.0.1
+* 1.0.1/1.0.2
     * fix bug
 
 * 1.0.0 
