@@ -11,7 +11,14 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.style.ImageSpan;
 
-public class IsoheightImageSpan extends ImageSpan {
+import com.sunhapper.x.spedit.mention.span.IntegratedSpan;
+
+/**
+ * 和文字等高的ImageSpan
+ * 在选择模式下，光标的index可能在Span对应的文字内部，标记为IntegratedSpan可以防止光标
+ * 在内部，在replace其他文字时可以正常删除该span
+ */
+public class IsoheightImageSpan extends ImageSpan implements IntegratedSpan {
     protected boolean resized = false;
     private static final char[] ELLIPSIS_NORMAL = {'\u2026'}; // this is "..."
     private static final char[] ELLIPSIS_TWO_DOTS = {'\u2025'}; // this is ".."
