@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -106,8 +107,13 @@ public class TextGifDrawable extends GifDrawable implements InvalidateDrawable {
 
         @Override
         public void invalidateDrawable(@NonNull Drawable who) {
-            for (RefreshListener listener : mRefreshListeners) {
-                listener.onRefresh();
+            Iterator<RefreshListener> it = mRefreshListeners.iterator();
+            while (it.hasNext()) {
+                RefreshListener listener = it.next();
+                boolean valid = listener.onRefresh();
+                if (!valid) {
+                    it.remove();
+                }
             }
         }
 

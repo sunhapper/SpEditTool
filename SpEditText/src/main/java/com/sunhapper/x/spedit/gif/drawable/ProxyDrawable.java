@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import com.sunhapper.x.spedit.gif.listener.RefreshListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -149,8 +150,13 @@ public class ProxyDrawable extends Drawable implements Drawable.Callback, Resize
 
         @Override
         public void invalidateDrawable(@NonNull Drawable who) {
-            for (RefreshListener listener : mRefreshListeners) {
-                listener.onRefresh();
+            Iterator<RefreshListener> it = mRefreshListeners.iterator();
+            while (it.hasNext()) {
+                RefreshListener listener = it.next();
+                boolean valid = listener.onRefresh();
+                if (!valid) {
+                    it.remove();
+                }
             }
         }
 
