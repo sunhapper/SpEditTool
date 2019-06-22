@@ -135,6 +135,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void openGlideRecycler(View view) {
+        Intent intent = new Intent(this, RecyclerGlideDemoActivity.class);
+        startActivity(intent);
+    }
+
     public void regText(View view) {
         String regText = "[大兵]  [奋斗]";
         Spannable spannable = EmojiManager.getInstance().getSpannableByPattern(this, regText);
@@ -145,5 +150,6 @@ public class MainActivity extends AppCompatActivity {
         Editable editable = spEditText.getText();
         insertSpannableString(editable, charSequence);
     }
+
 
 }
