@@ -73,9 +73,21 @@
         android:onClick="openGifRecycler"
         android:text="recycler"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/button7"
+        app:layout_constraintEnd_toStartOf="@+id/btn_glide_recycler"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mention"/>
+
+    <Button
+        android:id="@+id/btn_glide_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="openGlideRecycler"
+        android:text="recyclerGlide"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toStartOf="@+id/button6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button7"
         app:layout_constraintTop_toBottomOf="@id/mention"/>
 
     <Button

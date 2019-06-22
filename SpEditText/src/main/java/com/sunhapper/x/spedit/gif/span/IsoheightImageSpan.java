@@ -23,7 +23,6 @@ public class IsoheightImageSpan extends ImageSpan implements IntegratedSpan {
     private static final char[] ELLIPSIS_NORMAL = {'\u2026'}; // this is "..."
     private static final char[] ELLIPSIS_TWO_DOTS = {'\u2025'}; // this is ".."
     protected int drawableHeight = 0;
-    private FontMetricsInt fm;
 
     public IsoheightImageSpan(Drawable d) {
         super(d);
@@ -81,9 +80,11 @@ public class IsoheightImageSpan extends ImageSpan implements IntegratedSpan {
     @Override
     public int getSize(Paint paint, CharSequence text,
             int start, int end, FontMetricsInt fm) {
-        if (fm != null) {
-            this.fm = fm;
-            drawableHeight = fm.descent - fm.ascent;
+        if (fm != null && paint.getFontMetricsInt() != null) {
+            //paint.getFontMetricsInt() 和 参数中FontMetricsInt不是同一个对象，数据不同
+            // FontMetricsInt会变化，paint.getFontMetricsInt()会和TextView的文字大小保持一致
+            FontMetricsInt paintFontMetricsInt = paint.getFontMetricsInt();
+            drawableHeight = paintFontMetricsInt.descent - paintFontMetricsInt.ascent;
         }
         Drawable drawable = getResizedDrawable();
         Rect bounds = drawable.getBounds();
@@ -91,6 +92,7 @@ public class IsoheightImageSpan extends ImageSpan implements IntegratedSpan {
     }
 
     protected Drawable getResizedDrawable() {
+
         Drawable d = getDrawable();
         if (drawableHeight == 0) {
             return d;
@@ -98,7 +100,7 @@ public class IsoheightImageSpan extends ImageSpan implements IntegratedSpan {
         if (!resized) {
             resized = true;
             d.setBounds(new Rect(0, 0,
-                    (int) (1f * drawableHeight * d.getIntrinsicWidth() / d.getIntrinsicWidth()),
+                    (int) (1f * drawableHeight * d.getIntrinsicWidth() / d.getIntrinsicHeight()),
                     drawableHeight));
         }
         return d;
@@ -118,7 +120,7 @@ public class IsoheightImageSpan extends ImageSpan implements IntegratedSpan {
             Drawable d = getResizedDrawable();
             canvas.save();
             int transY;
-            fm = paint.getFontMetricsInt();
+            FontMetricsInt fm = paint.getFontMetricsInt();
             transY = y + fm.ascent;
             canvas.translate(x, transY);
             d.draw(canvas);
