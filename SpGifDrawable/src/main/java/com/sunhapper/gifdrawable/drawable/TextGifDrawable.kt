@@ -16,7 +16,6 @@ import java.io.FileDescriptor
 import java.io.IOException
 import java.io.InputStream
 import java.nio.ByteBuffer
-import java.util.*
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
 /**
@@ -25,7 +24,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 
 class TextGifDrawable : GifDrawable, InvalidateDrawable {
 
-    private val mRefreshListeners = ArrayList<RefreshListener>()
+    private var mRefreshListeners = mutableListOf<RefreshListener>()
 
     @Throws(Resources.NotFoundException::class, IOException::class)
     constructor(res: Resources, id: Int) : super(res, id)
@@ -82,14 +81,9 @@ class TextGifDrawable : GifDrawable, InvalidateDrawable {
     private inner class CallBack : Callback {
 
         override fun invalidateDrawable(who: Drawable) {
-            val it = mRefreshListeners.iterator()
-            while (it.hasNext()) {
-                val listener = it.next()
-                val valid = listener.onRefresh()
-                if (!valid) {
-                    it.remove()
-                }
-            }
+            mRefreshListeners = mRefreshListeners.filter {
+                it.onRefresh()
+            }.toMutableList()
         }
 
         override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {

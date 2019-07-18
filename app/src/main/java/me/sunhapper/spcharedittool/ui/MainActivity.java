@@ -1,7 +1,5 @@
 package me.sunhapper.spcharedittool.ui;
 
-import static com.sunhapper.x.spedit.SpUtil.insertSpannableString;
-
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,7 +14,7 @@ import android.widget.Toast;
 
 import com.sunhapper.gifdrawable.drawable.TextGifDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
-import com.sunhapper.x.spedit.SpUtil;
+import com.sunhapper.x.spedit.SpUtilKt;
 import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
 import com.sunhapper.x.spedit.view.SpXEditText;
 
@@ -69,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         //使用EmojiManager中缓存的drawable
         Drawable gifDrawable = EmojiManager.getInstance()
                 .getDrawableByEmoji(this, emoji);
-        Spannable spannable = SpUtil.createGifDrawableSpan(gifDrawable, emoji.getEmojiText());
-        insertSpannableString(spEditText.getText(), spannable);
+        Spannable spannable = SpUtilKt.createGifDrawableSpan(gifDrawable, emoji.getEmojiText());
+        SpUtilKt.insertSpannableString(spEditText.getText(), spannable);
     }
 
 
@@ -111,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     public void setGlideGif(View view) {
         try {
             CharSequence charSequence = createGlideText();
-            SpUtil.insertSpannableString(spEditText.getText(), charSequence);
+            SpUtilKt.insertSpannableString(spEditText.getText(), charSequence);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                         "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37.gif")
                 .placeholder(gifDrawable)
                 .into(new DrawableTarget(proxyDrawable));
-        return SpUtil.createResizeGifDrawableSpan(proxyDrawable, "[c]");
+        return SpUtilKt.createResizeGifDrawableSpan(proxyDrawable, "[c]");
     }
 
     public void openGifRecycler(View view) {
@@ -143,12 +141,12 @@ public class MainActivity extends AppCompatActivity {
     public void regText(View view) {
         String regText = "[大兵]  [奋斗]";
         Spannable spannable = EmojiManager.getInstance().getSpannableByPattern(this, regText);
-        SpUtil.insertSpannableString(spEditText.getText(), spannable);
+        SpUtilKt.insertSpannableString(spEditText.getText(), spannable);
     }
 
     private void replace(CharSequence charSequence) {
         Editable editable = spEditText.getText();
-        insertSpannableString(editable, charSequence);
+        SpUtilKt.insertSpannableString(editable, charSequence);
     }
 
 

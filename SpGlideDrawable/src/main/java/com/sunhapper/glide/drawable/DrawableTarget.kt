@@ -68,16 +68,12 @@ class DrawableTarget(private val mProxyDrawable: ProxyDrawable) : Target<Drawabl
         cb.onSizeReady(Int.MIN_VALUE, Int.MIN_VALUE)
     }
 
-    override fun onStop() {
-    }
+    override fun onStop() {}
 
-    override fun removeCallback(cb: SizeReadyCallback) {
-    }
+    override fun removeCallback(cb: SizeReadyCallback) {}
 
-    override fun onStart() {
-    }
+    override fun onStart() {}
 
-    override fun onDestroy() {
-    }
+    override fun onDestroy() {}
 
 }

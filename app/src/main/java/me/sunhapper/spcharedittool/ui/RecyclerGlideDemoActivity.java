@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.sunhapper.gifdrawable.drawable.TextGifDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
-import com.sunhapper.x.spedit.SpUtil;
+import com.sunhapper.x.spedit.SpUtilKt;
 import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
 
 import java.io.IOException;
@@ -46,7 +46,7 @@ public class RecyclerGlideDemoActivity extends AppCompatActivity {
     gifRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     gifRecyclerView.setAdapter(adapter);
     for (int i = 0; i < 100; i++) {
-      GifDrawable gifDrawable = null;
+      GifDrawable gifDrawable;
       try {
         gifDrawable = new TextGifDrawable(getResources(), R.drawable.a);
         ProxyDrawable proxyDrawable = new ProxyDrawable();
@@ -56,7 +56,7 @@ public class RecyclerGlideDemoActivity extends AppCompatActivity {
                 .placeholder(gifDrawable)
                 .into(new DrawableTarget(proxyDrawable));
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
-        Spannable spannable= SpUtil.createResizeGifDrawableSpan(proxyDrawable, "[c]");
+        Spannable spannable= SpUtilKt.createResizeGifDrawableSpan(proxyDrawable, "[c]");
         spannableStringBuilder.append(spannable).append(String.valueOf(i));
         charSequences.add(new SpannableString(spannableStringBuilder));
       } catch (IOException e) {
@@ -97,9 +97,9 @@ public class RecyclerGlideDemoActivity extends AppCompatActivity {
 
   class ViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView textView;
+    TextView textView;
 
-    public ViewHolder(View itemView) {
+    ViewHolder(View itemView) {
       super(itemView);
       textView = itemView.findViewById(R.id.textView);
     }
