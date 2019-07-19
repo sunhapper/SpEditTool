@@ -1,97 +1,56 @@
 package com.sunhapper.gifdrawable.drawable
 
-import android.content.ContentResolver
-import android.content.res.AssetFileDescriptor
-import android.content.res.AssetManager
 import android.content.res.Resources
+import android.graphics.Canvas
+import android.graphics.ColorFilter
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.net.Uri
+import com.sunhapper.x.spedit.gif.drawable.InvalidateDelegate
 import com.sunhapper.x.spedit.gif.drawable.InvalidateDrawable
-import com.sunhapper.x.spedit.gif.listener.RefreshListener
 import pl.droidsonroids.gif.GifDrawable
-import pl.droidsonroids.gif.GifOptions
-import pl.droidsonroids.gif.InputSource
 import java.io.File
-import java.io.FileDescriptor
-import java.io.IOException
-import java.io.InputStream
-import java.nio.ByteBuffer
-import java.util.concurrent.ScheduledThreadPoolExecutor
 
 /**
  * Created by sunha on 2018/1/23 0023.
  */
 
-class TextGifDrawable : GifDrawable, InvalidateDrawable {
-
-    private var mRefreshListeners = mutableListOf<RefreshListener>()
-
-    @Throws(Resources.NotFoundException::class, IOException::class)
-    constructor(res: Resources, id: Int) : super(res, id)
-
-    @Throws(IOException::class)
-    constructor(assets: AssetManager, assetName: String) : super(assets, assetName)
-
-    @Throws(IOException::class)
-    constructor(filePath: String) : super(filePath)
-
-    @Throws(IOException::class)
-    constructor(file: File) : super(file)
-
-    @Throws(IOException::class)
-    constructor(stream: InputStream) : super(stream)
-
-    @Throws(IOException::class)
-    constructor(afd: AssetFileDescriptor) : super(afd)
-
-    @Throws(IOException::class)
-    constructor(fd: FileDescriptor) : super(fd)
-
-    @Throws(IOException::class)
-    constructor(bytes: ByteArray) : super(bytes)
-
-    @Throws(IOException::class)
-    constructor(buffer: ByteBuffer) : super(buffer)
-
-    @Throws(IOException::class)
-    constructor(resolver: ContentResolver?,
-                uri: Uri) : super(resolver, uri)
-
-    @Throws(IOException::class)
-    protected constructor(inputSource: InputSource,
-                          oldDrawable: GifDrawable?,
-                          executor: ScheduledThreadPoolExecutor?,
-                          isRenderingTriggeredOnDraw: Boolean, options: GifOptions) :
-            super(inputSource, oldDrawable, executor, isRenderingTriggeredOnDraw, options)
-
+//@JvmOverloads 为函数默认值重载多个方法供java调用 必须加constructor
+class TextGifDrawable
+@JvmOverloads constructor(private val drawable: Drawable,
+                          private val invalidateDelegate: InvalidateDelegate = InvalidateDelegate())
+    : Drawable(), InvalidateDrawable by invalidateDelegate, Drawable.Callback by invalidateDelegate {
     init {
-        callback = CallBack()
+        drawable.callback = invalidateDelegate
+    }
+
+    override fun draw(canvas: Canvas) {
+        drawable.draw(canvas)
+    }
+
+    override fun setAlpha(alpha: Int) {
+        drawable.alpha = alpha
+    }
+
+    override fun setColorFilter(cf: ColorFilter?) {
+        drawable.colorFilter = cf
+    }
+
+    override fun getOpacity(): Int {
+        return drawable.opacity
+    }
+
+    override fun setBounds(bounds: Rect) {
+        super.setBounds(bounds)
+        drawable.bounds = bounds
+    }
+
+    override fun setBounds(left: Int, top: Int, right: Int, bottom: Int) {
+        super.setBounds(left, top, right, bottom)
+        drawable.setBounds(left, top, right, bottom)
     }
 
 
-    override fun addRefreshListener(refreshListener: RefreshListener) {
-        mRefreshListeners.add(refreshListener)
-    }
-
-    override fun removeRefreshListener(refreshListener: RefreshListener) {
-        mRefreshListeners.remove(refreshListener)
-    }
-
-
-    private inner class CallBack : Callback {
-
-        override fun invalidateDrawable(who: Drawable) {
-            mRefreshListeners = mRefreshListeners.filter {
-                it.onRefresh()
-            }.toMutableList()
-        }
-
-        override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {
-
-        }
-
-        override fun unscheduleDrawable(who: Drawable, what: Runnable) {
-
-        }
-    }
 }
+
+fun TextGifDrawable.create(file: File): TextGifDrawable = TextGifDrawable(GifDrawable(file))
+fun TextGifDrawable.create(res: Resources, id: Int): TextGifDrawable = TextGifDrawable(GifDrawable(res, id))

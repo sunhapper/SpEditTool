@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.sunhapper.gifdrawable.drawable.TextGifDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
 import com.sunhapper.x.spedit.SpUtilKt;
 import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private CharSequence createGlideText() throws IOException {
-        GifDrawable gifDrawable = new TextGifDrawable(getResources(), R.drawable.a);
+        GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.a);
         ProxyDrawable proxyDrawable = new ProxyDrawable();
         GlideApp.with(this)
                 .load(

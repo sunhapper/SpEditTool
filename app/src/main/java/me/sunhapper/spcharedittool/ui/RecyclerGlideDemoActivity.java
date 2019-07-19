@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.sunhapper.gifdrawable.drawable.TextGifDrawable;
 import com.sunhapper.glide.drawable.DrawableTarget;
 import com.sunhapper.x.spedit.SpUtilKt;
 import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
@@ -33,76 +32,77 @@ import pl.droidsonroids.gif.GifDrawable;
 
 public class RecyclerGlideDemoActivity extends AppCompatActivity {
 
-  private static final String TAG = "RecyclerDemoActivity";
-  private RecyclerView gifRecyclerView;
-  private List<CharSequence> charSequences = new ArrayList<>();
-  private Adapter adapter = new Adapter();
-
-  @Override
-  protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_recycler_demo);
-    gifRecyclerView = findViewById(R.id.gif_recyclerView);
-    gifRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    gifRecyclerView.setAdapter(adapter);
-    for (int i = 0; i < 100; i++) {
-      GifDrawable gifDrawable;
-      try {
-        gifDrawable = new TextGifDrawable(getResources(), R.drawable.a);
-        ProxyDrawable proxyDrawable = new ProxyDrawable();
-        GlideApp.with(this)
-                .load(
-                        "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37.gif")
-                .placeholder(gifDrawable)
-                .into(new DrawableTarget(proxyDrawable));
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
-        Spannable spannable= SpUtilKt.createResizeGifDrawableSpan(proxyDrawable, "[c]");
-        spannableStringBuilder.append(spannable).append(String.valueOf(i));
-        charSequences.add(new SpannableString(spannableStringBuilder));
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    adapter.notifyDataSetChanged();
-
-  }
-
-  class Adapter extends RecyclerView.Adapter<ViewHolder> {
+    private static final String TAG = "RecyclerDemoActivity";
+    private RecyclerView gifRecyclerView;
+    private List<CharSequence> charSequences = new ArrayList<>();
+    private Adapter adapter = new Adapter();
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      View view = LayoutInflater.from(parent.getContext())
-          .inflate(R.layout.layout_recycler_glide_demo, parent, false);
-      return new ViewHolder(view);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recycler_demo);
+        gifRecyclerView = findViewById(R.id.gif_recyclerView);
+        gifRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        gifRecyclerView.setAdapter(adapter);
+        for (int i = 0; i < 100; i++) {
+            GifDrawable gifDrawable;
+            try {
+                gifDrawable = new GifDrawable(getResources(), R.drawable.a);
+                ProxyDrawable proxyDrawable = new ProxyDrawable();
+                GlideApp.with(this)
+                        .load(
+                                "http://5b0988e595225.cdn.sohucs.com/images/20170919/1ce5d4c52c24432e9304ef942b764d37"
+                                        + ".gif")
+                        .placeholder(gifDrawable)
+                        .into(new DrawableTarget(proxyDrawable));
+                SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+                Spannable spannable = SpUtilKt.createResizeGifDrawableSpan(proxyDrawable, "[c]");
+                spannableStringBuilder.append(spannable).append(String.valueOf(i));
+                charSequences.add(new SpannableString(spannableStringBuilder));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        adapter.notifyDataSetChanged();
+
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-      CharSequence charSequence = charSequences.get(position);
-      Log.i(TAG, "onBindViewHolder:start" + position);
-      if (position == 8) {
-        Log.i(TAG, "onBindViewHolder: ");
-      }
-      holder.textView.setText(charSequence);
+    class Adapter extends RecyclerView.Adapter<ViewHolder> {
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.layout_recycler_glide_demo, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            CharSequence charSequence = charSequences.get(position);
+            Log.i(TAG, "onBindViewHolder:start" + position);
+            if (position == 8) {
+                Log.i(TAG, "onBindViewHolder: ");
+            }
+            holder.textView.setText(charSequence);
 //      GifTextUtil.setTextWithReuseDrawable(holder.textView, charSequence, false);
-      Log.i(TAG, "onBindViewHolder:  end" + position);
+            Log.i(TAG, "onBindViewHolder:  end" + position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return charSequences.size();
+        }
     }
 
-    @Override
-    public int getItemCount() {
-      return charSequences.size();
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView textView;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.textView);
+        }
     }
-  }
-
-
-  class ViewHolder extends RecyclerView.ViewHolder {
-
-    TextView textView;
-
-    ViewHolder(View itemView) {
-      super(itemView);
-      textView = itemView.findViewById(R.id.textView);
-    }
-  }
 
 }

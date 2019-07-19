@@ -26,34 +26,28 @@ class DrawableTarget(private val mProxyDrawable: ProxyDrawable) : Target<Drawabl
 
 
     override fun onLoadCleared(placeholder: Drawable?) {
-        if (mProxyDrawable.drawable != null) {
-            return
-        }
-        mProxyDrawable.drawable = placeholder
-        if (placeholder is GifDrawable) {
-            placeholder.setLoopCount(GifDrawable.LOOP_FOREVER)
-            placeholder.start()
-        }
-        mProxyDrawable.invalidateSelf()
+        replaceDrawable(placeholder)
+
     }
 
-    override fun onLoadStarted(placeholder: Drawable?) {
-        mProxyDrawable.drawable = placeholder
-        if (placeholder is GifDrawable) {
-            placeholder.setLoopCount(GifDrawable.LOOP_FOREVER)
-            placeholder.start()
-        }
-        mProxyDrawable.invalidateSelf()
 
+    override fun onLoadStarted(placeholder: Drawable?) {
+        replaceDrawable(placeholder)
     }
 
     override fun onLoadFailed(errorDrawable: Drawable?) {
-        mProxyDrawable.drawable = errorDrawable
-        if (errorDrawable is GifDrawable) {
-            errorDrawable.setLoopCount(GifDrawable.LOOP_FOREVER)
-            errorDrawable.start()
+        replaceDrawable(errorDrawable)
+    }
+
+    private fun replaceDrawable(drawable: Drawable?) {
+        drawable?.run {
+            mProxyDrawable.drawable = drawable
+            if (drawable is GifDrawable) {
+                drawable.setLoopCount(GifDrawable.LOOP_FOREVER)
+                drawable.start()
+            }
+            mProxyDrawable.invalidateSelf()
         }
-        mProxyDrawable.invalidateSelf()
     }
 
     override fun setRequest(request: Request?) {
