@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Build;
 import android.text.SpanWatcher;
 import android.text.Spannable;
-import android.util.Log;
 import android.view.View;
 
 import com.sunhapper.x.spedit.gif.drawable.InvalidateDrawable;

@@ -16,9 +16,7 @@ import com.sunhapper.glide.drawable.DrawableTarget;
 import com.sunhapper.x.spedit.SpUtilKt;
 import com.sunhapper.x.spedit.gif.drawable.ProxyDrawable;
 import com.sunhapper.x.spedit.view.SpXEditText;
-
 import java.io.IOException;
-
 import me.sunhapper.spcharedittool.GlideApp;
 import me.sunhapper.spcharedittool.R;
 import me.sunhapper.spcharedittool.data.DataSpan;
@@ -72,12 +70,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void insertTopic(View view) {
-        replace(new Topic().getSpanableString());
+        replace(new Topic().getSpannableString());
     }
 
 
     public void insertMention(View view) {
-        replace(new MentionUser().getSpanableString());
+        replace(new MentionUser().getSpannableString());
     }
 
     public void getData(View view) {
