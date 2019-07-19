@@ -15,8 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.TextView.BufferType;
-import com.sunhapper.spedittool.util.GifTextUtil;
 import com.sunhapper.x.spedit.gif.span.GifIsoheightImageSpan;
 
 import java.util.ArrayList;
