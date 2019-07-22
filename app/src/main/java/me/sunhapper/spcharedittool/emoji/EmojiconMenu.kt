@@ -50,10 +50,6 @@ class EmojiconMenu : EmojiconMenuBase {
     }
 
 
-    fun setSendBtnListener(sendBtnListener: OnClickListener) {
-        tab_bar.setSendBtnListener(sendBtnListener)
-    }
-
     private fun initDefault(defaultGifEmojis: List<DefaultGifEmoji>) {
         emojiconGroupList = ArrayList()
         emojiconGroupList.add(EmojiconGroupEntity(R.drawable.common_emoj_smile,

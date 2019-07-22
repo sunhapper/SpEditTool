@@ -52,7 +52,7 @@ object EmojiManager {
 
     private val emoticons = HashMap<Pattern, Emoji>()
     private val drawableCacheMap = HashMap<Any, Drawable>()
-    private lateinit var defaultGifEmojis: List<DefaultGifEmoji>
+    private var defaultGifEmojis = arrayListOf<DefaultGifEmoji>()
 
     private var defaultEmojiInited = false
     private val handler: Handler = Handler(Callback { msg ->
@@ -103,11 +103,9 @@ object EmojiManager {
                 }
             }
         }
-        for (i in emojiList.indices) {
-            emoticons[Pattern.compile(Pattern.quote(emojiList[i]))] = DefaultGifEmoji(emojiGifs[i], emojiList[i])
-        }
-        defaultGifEmojis = emojiList.mapIndexed { index, s ->
-            DefaultGifEmoji(emojiGifs[index], s)
+        emojiList.forEachIndexed { index, s ->
+            emoticons[Pattern.compile(Pattern.quote(s))] = DefaultGifEmoji(emojiGifs[index], s)
+            defaultGifEmojis.add(DefaultGifEmoji(emojiGifs[index], s))
         }
         defaultEmojiInited = true
         handler.sendEmptyMessage(UNZIP_SUCCESS)
@@ -154,16 +152,6 @@ object EmojiManager {
                 if (emoji is DefaultGifEmoji) {
                     imageSpan = getImageSpanByEmoji(context, emoji)
                 }
-                //        Object value = emoji.getRes();
-                //        if (value instanceof String && !((String) value).startsWith("http")) {
-                //          //本地路径
-                //          File file = new File((String) value);
-                //          if (file.exists() && !file.isDirectory()) {
-                //            imageSpan = new ImageSpan(context, Uri.fromFile(file));
-                //          }
-                //        } else {
-                //          imageSpan = new ImageSpan(context, (Integer) value);
-                //        }
                 if (imageSpan != null) {
                     spannableString.setSpan(imageSpan,
                             matcher.start(), matcher.end(),

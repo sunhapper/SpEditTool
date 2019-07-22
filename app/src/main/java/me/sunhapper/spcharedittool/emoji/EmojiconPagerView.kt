@@ -9,45 +9,39 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.GridView
 import me.sunhapper.spcharedittool.R
 import java.util.*
+import kotlin.math.max
 
 class EmojiconPagerView @JvmOverloads constructor(private val mContext: Context, attrs: AttributeSet? = null) : ViewPager(mContext, attrs) {
-    private var groupEntities: List<EmojiconGroupEntity>? = null
-    private var pagerAdapter: PagerAdapter? = null
+    private lateinit var groupEntities: List<EmojiconGroupEntity>
+    private lateinit var pagerAdapter: PagerAdapter
     private val emojiconRows = 3
     private var emojiconColumns = 7
     private var firstGroupPageSize: Int = 0
     private var maxPageCount: Int = 0
     private var previousPagerPosition: Int = 0
     private var pagerViewListener: EaseEmojiconPagerViewListener? = null
-    private var viewpages: MutableList<View>? = null
+    private lateinit var viewpages: MutableList<View>
 
 
-    fun init(emojiconGroupList: List<EmojiconGroupEntity>?, emijiconColumns: Int) {
-        if (emojiconGroupList == null) {
-            throw RuntimeException("emojiconGroupList is null")
-        }
-
+    fun init(emojiconGroupList: List<EmojiconGroupEntity>, emijiconColumns: Int) {
         this.groupEntities = emojiconGroupList
         this.emojiconColumns = emijiconColumns
 
         viewpages = ArrayList()
-        for (i in groupEntities!!.indices) {
-            val group = groupEntities!![i]
+        for (i in groupEntities.indices) {
+            val group = groupEntities[i]
             val gridViews = getGroupGridViews(group)
             if (i == 0) {
                 firstGroupPageSize = gridViews.size
             }
-            maxPageCount = Math.max(gridViews.size, maxPageCount)
-            viewpages!!.addAll(gridViews)
+            maxPageCount = max(gridViews.size, maxPageCount)
+            viewpages.addAll(gridViews)
         }
 
         pagerAdapter = EmojiconPagerAdapter(viewpages)
         adapter = pagerAdapter
         addOnPageChangeListener(EmojiPagerChangeListener())
-
-        if (pagerViewListener != null) {
-            pagerViewListener!!.onPagerViewInited(maxPageCount, firstGroupPageSize)
-        }
+        pagerViewListener?.onPagerViewInited(maxPageCount, firstGroupPageSize)
     }
 
     fun setPagerViewListener(pagerViewListener: EaseEmojiconPagerViewListener) {
@@ -59,10 +53,10 @@ class EmojiconPagerView @JvmOverloads constructor(private val mContext: Context,
      * 设置当前表情组位置
      */
     fun setGroupPostion(position: Int) {
-        if (adapter != null && position >= 0 && position < groupEntities!!.size) {
+        if (adapter != null && position >= 0 && position < groupEntities.size) {
             var count = 0
             for (i in 0 until position) {
-                count += getPageSize(groupEntities!![i])
+                count += getPageSize(groupEntities[i])
             }
             currentItem = count
         }
@@ -71,7 +65,7 @@ class EmojiconPagerView @JvmOverloads constructor(private val mContext: Context,
     /**
      * 获取表情组的gridview list
      */
-    fun getGroupGridViews(groupEntity: EmojiconGroupEntity): List<View> {
+    private fun getGroupGridViews(groupEntity: EmojiconGroupEntity): List<View> {
         val defaultGifEmojiList = groupEntity.defaultGifEmojiList
         val itemSize = emojiconColumns * emojiconRows - 1
         val totalSize = defaultGifEmojiList.size
@@ -91,11 +85,9 @@ class EmojiconPagerView @JvmOverloads constructor(private val mContext: Context,
             list.add(deleteIcon)
             val gridAdapter = EmojiconGridAdapter(mContext, 1, list)
             gv.adapter = gridAdapter
-            gv.onItemClickListener = OnItemClickListener { parent, _, position, id ->
+            gv.onItemClickListener = OnItemClickListener { _, _, position, _ ->
                 val emoji = gridAdapter.getItem(position)
-                if (pagerViewListener != null) {
-                    pagerViewListener!!.onExpressionClicked(emoji!!)
-                }
+                pagerViewListener?.onExpressionClicked(emoji!!)
             }
 
             views.add(view)
@@ -111,13 +103,11 @@ class EmojiconPagerView @JvmOverloads constructor(private val mContext: Context,
         val pageSize = getPageSize(groupEntity)
         if (pageSize > maxPageCount) {
             maxPageCount = pageSize
-            if (pagerViewListener != null && pagerAdapter != null) {
-                pagerViewListener!!.onGroupMaxPageSizeChanged(maxPageCount)
-            }
+            pagerViewListener?.onGroupMaxPageSizeChanged(maxPageCount)
         }
-        viewpages!!.addAll(getGroupGridViews(groupEntity))
-        if (pagerAdapter != null && notifyDataChange) {
-            pagerAdapter!!.notifyDataSetChanged()
+        viewpages.addAll(getGroupGridViews(groupEntity))
+        if (notifyDataChange) {
+            pagerAdapter.notifyDataSetChanged()
         }
     }
 
@@ -125,12 +115,10 @@ class EmojiconPagerView @JvmOverloads constructor(private val mContext: Context,
      * 移除表情组
      */
     fun removeEmojiconGroup(position: Int) {
-        if (position > groupEntities!!.size - 1) {
+        if (position > groupEntities.size - 1) {
             return
         }
-        if (pagerAdapter != null) {
-            pagerAdapter!!.notifyDataSetChanged()
-        }
+        pagerAdapter.notifyDataSetChanged()
     }
 
 
@@ -141,37 +129,31 @@ class EmojiconPagerView @JvmOverloads constructor(private val mContext: Context,
         return if (totalSize % itemSize == 0) totalSize / itemSize else totalSize / itemSize + 1
     }
 
-    private inner class EmojiPagerChangeListener : ViewPager.OnPageChangeListener {
+    private inner class EmojiPagerChangeListener : OnPageChangeListener {
 
         override fun onPageSelected(position: Int) {
             var endSize = 0
             var groupPosition = 0
-            for (groupEntity in groupEntities!!) {
+            for (groupEntity in groupEntities) {
                 val groupPageSize = getPageSize(groupEntity)
                 //选中的position在当前遍历的group里
                 if (endSize + groupPageSize > position) {
                     //前面的group切换过来的
                     if (previousPagerPosition - endSize < 0) {
-                        if (pagerViewListener != null) {
-                            pagerViewListener!!.onGroupPositionChanged(groupPosition, groupPageSize)
-                            pagerViewListener!!.onGroupPagePostionChangedTo(0)
-                        }
+                        pagerViewListener?.onGroupPositionChanged(groupPosition, groupPageSize)
+                        pagerViewListener?.onGroupPagePostionChangedTo(0)
                         break
                     }
                     //后面的group切换过来的
                     if (previousPagerPosition - endSize >= groupPageSize) {
-                        if (pagerViewListener != null) {
-                            pagerViewListener!!.onGroupPositionChanged(groupPosition, groupPageSize)
-                            pagerViewListener!!.onGroupPagePostionChangedTo(position - endSize)
-                        }
+                        pagerViewListener?.onGroupPositionChanged(groupPosition, groupPageSize)
+                        pagerViewListener?.onGroupPagePostionChangedTo(position - endSize)
                         break
                     }
 
                     //当前group的pager切换
-                    if (pagerViewListener != null) {
-                        pagerViewListener!!.onGroupInnerPagePostionChanged(previousPagerPosition - endSize,
-                                position - endSize)
-                    }
+                    pagerViewListener?.onGroupInnerPagePostionChanged(previousPagerPosition - endSize,
+                            position - endSize)
                     break
 
                 }

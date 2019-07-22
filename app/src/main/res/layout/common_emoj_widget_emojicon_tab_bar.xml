@@ -17,14 +17,4 @@
       android:layout_height="match_parent"
       android:orientation="horizontal"></LinearLayout>
   </HorizontalScrollView>
-  <TextView
-    android:id="@+id/send_btn"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:background="#00b9ff"
-    android:gravity="center"
-    android:text="发送"
-    android:textColor="@android:color/white" />
 </LinearLayout>

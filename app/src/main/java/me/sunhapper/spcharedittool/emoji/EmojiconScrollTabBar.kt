@@ -19,17 +19,11 @@ class EmojiconScrollTabBar @JvmOverloads constructor(private val mContext: Conte
 
     private val tabList = ArrayList<ImageView>()
     private var itemClickListener: EaseScrollTabBarItemClickListener? = null
-    private var sendBtnListener: OnClickListener? = null
 
     private val tabWidth = 60f
 
     init {
         LayoutInflater.from(mContext).inflate(R.layout.common_emoj_widget_emojicon_tab_bar, this)
-        send_btn.setOnClickListener { v ->
-            if (sendBtnListener != null) {
-                sendBtnListener?.onClick(v)
-            }
-        }
     }
 
     /**
@@ -50,9 +44,6 @@ class EmojiconScrollTabBar @JvmOverloads constructor(private val mContext: Conte
         }
     }
 
-    fun setSendBtnListener(sendBtnListener: OnClickListener) {
-        this.sendBtnListener = sendBtnListener
-    }
 
     /**
      * 移除tab
