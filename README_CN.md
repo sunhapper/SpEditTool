@@ -85,7 +85,7 @@ public class MentionUser implements IntegratedSpan {
     public String name;
     public long id;
 
-    public Spannable getSpanableString() {
+    public Spannable getSpannableString() {
         SpannableString spannableString = new SpannableString(getDisplayText());
         spannableString.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0, spannableString.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
