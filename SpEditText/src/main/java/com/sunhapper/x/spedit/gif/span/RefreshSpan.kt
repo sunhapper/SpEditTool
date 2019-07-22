@@ -7,5 +7,5 @@ import com.sunhapper.x.spedit.gif.drawable.InvalidateDrawable
  */
 interface RefreshSpan {
 
-    val invalidateDrawable: InvalidateDrawable?
+    fun getInvalidateDrawable(): InvalidateDrawable?
 }

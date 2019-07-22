@@ -23,14 +23,14 @@ class ProxyDrawable
             invalidateDrawable(this)
         }
 
+    override var needResize: Boolean = false
+    override fun getIntrinsicWidth(): Int {
+        return drawable.intrinsicWidth
+    }
 
-    private var needResize: Boolean = false
-
-    override val width: Int
-        get() = drawable.intrinsicWidth
-
-    override val height: Int
-        get() = drawable.intrinsicHeight
+    override fun getIntrinsicHeight(): Int {
+        return drawable.intrinsicHeight
+    }
 
     override fun draw(canvas: Canvas) {
         drawable.draw(canvas)
@@ -61,10 +61,6 @@ class ProxyDrawable
     override fun setBounds(left: Int, top: Int, right: Int, bottom: Int) {
         super.setBounds(left, top, right, bottom)
         drawable.setBounds(left, top, right, bottom)
-    }
-
-    override fun needResize(): Boolean {
-        return needResize
     }
 
 
