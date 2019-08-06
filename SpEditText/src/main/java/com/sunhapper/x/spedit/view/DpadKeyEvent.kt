@@ -8,7 +8,7 @@ import com.sunhapper.x.spedit.mention.span.IntegratedSpan
 /**
  * Created by sunhapper on 2019-07-19 .
  */
-class DpadKeyEvent :KeyEventProxy{
+class DpadKeyEvent : KeyEventProxy {
     override fun onKeyEvent(keyEvent: KeyEvent, text: Editable): Boolean {
         //处理光标左移事件
         if (keyEvent.keyCode == KeyEvent.KEYCODE_DPAD_LEFT && keyEvent.action == KeyEvent.ACTION_DOWN) {
@@ -16,7 +16,7 @@ class DpadKeyEvent :KeyEventProxy{
             val selectionStart = Selection.getSelectionStart(text)
             val selectionEnd = Selection.getSelectionEnd(text)
             val integratedSpans = text.getSpans(selectionEnd, selectionEnd, IntegratedSpan::class.java)
-            if (integratedSpans != null && integratedSpans.size > 0) {
+            if (integratedSpans != null && integratedSpans.isNotEmpty()) {
                 for (span in integratedSpans) {
                     val spanStart = text.getSpanStart(span)
                     val spanEnd = text.getSpanEnd(span)
@@ -33,7 +33,7 @@ class DpadKeyEvent :KeyEventProxy{
             val selectionStart = Selection.getSelectionStart(text)
             val selectionEnd = Selection.getSelectionEnd(text)
             val integratedSpans = text.getSpans(selectionEnd, selectionEnd, IntegratedSpan::class.java)
-            if (integratedSpans != null && integratedSpans.size > 0) {
+            if (integratedSpans != null && integratedSpans.isNotEmpty()) {
                 for (span in integratedSpans) {
                     val spanStart = text.getSpanStart(span)
                     val spanEnd = text.getSpanEnd(span)

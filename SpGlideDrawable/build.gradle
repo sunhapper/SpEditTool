@@ -30,4 +30,8 @@ dependencies {
     implementation('com.github.bumptech.glide:glide:4.8.0') {
         exclude group: 'com.android.support'
     }
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
