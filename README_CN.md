@@ -50,11 +50,11 @@
 [![](https://jitpack.io/v/sunhapper/SpEditTool.svg)](https://jitpack.io/#sunhapper/SpEditTool)
 ```
 dependencies {
-	        implementation 'com.github.sunhapper:SpEditTool:SpEditText:{last version}'
+	        implementation 'com.github.sunhapper.SpEditTool:SpEditText:{last version}'
 	        //help to create gif drawable use Glide
-	        implementation 'com.github.sunhapper:SpEditTool:SpGlideDrawable:{last version}'
+	        implementation 'com.github.sunhapper.SpEditTool:SpGlideDrawable:{last version}'
 	        //help to create gif drawable use AndroidGifDrawable
-	        implementation 'com.github.sunhapper:SpEditTool:SpGifDrawable:{last version}'
+	        implementation 'com.github.sunhapper.SpEditTool:SpGifDrawable:{last version}'
 	}
 ```
 
