@@ -46,7 +46,7 @@ open class IsoheightImageSpan : ImageSpan, IntegratedSpan {
 
     override fun getSize(paint: Paint, text: CharSequence,
                          start: Int, end: Int, fm: FontMetricsInt?): Int {
-        if (fm != null && paint.fontMetricsInt != null) {
+        if ( paint.fontMetricsInt != null) {
             //paint.getFontMetricsInt() 和 参数中FontMetricsInt不是同一个对象，数据不同
             // FontMetricsInt会变化，paint.getFontMetricsInt()会和TextView的文字大小保持一致
             val paintFontMetricsInt = paint.fontMetricsInt
