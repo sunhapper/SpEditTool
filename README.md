@@ -22,7 +22,7 @@ An efficient and scalable library for inputing and displaying gif or @mention on
 
 ## change log  
 
-* 1.0.1-1.0.3
+* 1.0.1-1.0.4
     * fix bug
 
 * 1.0.0 
